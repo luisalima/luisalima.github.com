@@ -51,6 +51,10 @@
 		
 		
 		
+		<a class="twitter" href="http://twitter.com/luisamoyalima" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/luisalima" title="GitHub">GitHub</a>
 		
     
 		
@@ -70,6 +74,20 @@
 </header>
 	
 		
+<div id="banner" class="inner">
+	<div class="container">
+		<ul class="feed"></ul>
+	</div>
+	<small><a href="http://twitter.com/luisamoyalima">luisamoyalima</a> @ <a href="http://twitter.com">Twitter</a></small>
+	<div class="loading">Loading...</div>
+</div>
+<script src="/javascripts/twitter.js"></script>
+<script type="text/javascript">
+	(function($){
+		$('#banner').getTwitterFeed('luisamoyalima', 4, false);
+	})(jQuery);
+</script>
+
 	
 	<div id="content" class="inner">
 
@@ -79,19 +97,23 @@
 		
 		<a href="/blog/2012/12/13/disabling-nagging-logs-in-rails/">
 		
-			Disabling Nagging Logs in Rails</a>
+			Silencing Nagging Logs in Rails</a>
 	</h2>
 	<div class="entry-content">
 		<p>Once upon a time, I was trying to do some meaningful debugging in rails with</p>
 
-<pre><code> logger.debug </pre>
+<pre><code>
+    logger.debug
+</pre>
 
 
 <p></code></p>
 
 <p>and I was being particularly nagged by these annoying messages from Webrick:</p>
 
-<pre><code> WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true [closed]</pre>
+<pre><code>
+    WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true [closed]
+</pre>
 
 
 <p></code></p>
@@ -144,7 +166,7 @@ end
 	<div class="tags">
 
 
-	<a class='category' href='/blog/categories/rails-/'>rails,</a>, <a class='category' href='/blog/categories/webrick-/'>webrick,</a>
+	<a class='category' href='/blog/categories/log-/'>log,</a>, <a class='category' href='/blog/categories/message-/'>message,</a>, <a class='category' href='/blog/categories/rails-/'>rails,</a>, <a class='category' href='/blog/categories/thin-/'>thin,</a>, <a class='category' href='/blog/categories/verbose/'>verbose</a>, <a class='category' href='/blog/categories/webrick-/'>webrick,</a>
 
 
 </div>

@@ -4,7 +4,7 @@
   <title><![CDATA[My path to enlightnment]]></title>
   <link href="http://luisalima.github.com/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-13T10:28:53+00:00</updated>
+  <updated>2012-12-13T10:35:42+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -14,20 +14,24 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Disabling nagging logs in rails]]></title>
+    <title type="html"><![CDATA[Silencing nagging logs in rails]]></title>
     <link href="http://luisalima.github.com/blog/2012/12/13/disabling-nagging-logs-in-rails/"/>
     <updated>2012-12-13T10:20:00+00:00</updated>
     <id>http://luisalima.github.com/blog/2012/12/13/disabling-nagging-logs-in-rails</id>
     <content type="html"><![CDATA[<p>Once upon a time, I was trying to do some meaningful debugging in rails with</p>
 
-<pre><code> logger.debug </pre>
+<pre><code>
+    logger.debug
+</pre>
 
 
 <p></code></p>
 
 <p>and I was being particularly nagged by these annoying messages from Webrick:</p>
 
-<pre><code> WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true [closed]</pre>
+<pre><code>
+    WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true [closed]
+</pre>
 
 
 <p></code></p>

@@ -3,11 +3,11 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Silencing nagging logs in rails - My path to enlightnment</title>
+	<title>Category: message, - My path to enlightnment</title>
 	<meta name="author" content="Luisa Lima">
 
 	
-	<meta name="description" content="Once upon a time, I was trying to do some meaningful debugging in rails with logger.debug and I was being particularly nagged by these annoying &hellip;">
+	<meta name="description" content="Category: message,">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -89,90 +89,28 @@
 </script>
 
 	
-	<div id="content" class="inner"><article class="post">
-	<h2 class="title">Silencing Nagging Logs in Rails</h2>
-	<div class="entry-content"><p>Once upon a time, I was trying to do some meaningful debugging in rails with</p>
-
-<pre><code>
-    logger.debug
-</pre>
+	<div id="content" class="inner">
+	
 
 
-<p></code></p>
+	
+	
+	<section class="archives"><h1 class="year">2012</h1>
 
-<p>and I was being particularly nagged by these annoying messages from Webrick:</p>
-
-<pre><code>
-    WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true [closed]
-</pre>
-
-
-<p></code></p>
-
-<p>The way to solve this? I am using &#8216;thin&#8217; instead of Webrick as a development server (yeah, I know that there are <a href="https://bugs.ruby-lang.org/attachments/2300/204_304_keep_alive.patch">patches to solve this in Webrick</a> but I decided to go a bit aggressive instead).</p>
-
-<p>And another thing that nagged me were the asset pipeline messages with the gets for the css, js, images, etc. So one way to shut Sprockets up is given <a href="http://stackoverflow.com/questions/6312448/how-to-disable-logging-of-asset-pipeline-sprockets-messages-in-rails-3-1">here</a>, and just for the record:</p>
-
-<pre><code>
-    # place this code in config/initializers/quiet_assets.rb
-    if Rails.env.development?
-  Rails.application.assets.logger = Logger.new('/dev/null')
-  Rails::Rack::Logger.class_eval do
-    def call_with_quiet_assets(env)
-      previous_level = Rails.logger.level
-      Rails.logger.level = Logger::ERROR if env['PATH_INFO'] =~ %r{^/assets/}
-      call_without_quiet_assets(env)
-    ensure
-      Rails.logger.level = previous_level
-    end
-    alias_method_chain :call, :quiet_assets
-  end
-end
-</pre>
-
-
-<p></code></p>
-
-<p>Ahhhhh now I can actually see <strong>meaningful</strong> logs in my development log. <em>whew!</em></p>
-</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-13T10:20:00+00:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time></div>
-	<div class="tags">
+<article>
+	<h2 class="title"><a href="/blog/2012/12/13/disabling-nagging-logs-in-rails/">Silencing nagging logs in rails</a></h2>
+	<div class="meta">
+		<span class="date">Dec 13</span>
+		<span class="tags">
 
 
 	<a class='category' href='/blog/categories/log-/'>log,</a>, <a class='category' href='/blog/categories/message-/'>message,</a>, <a class='category' href='/blog/categories/rails-/'>rails,</a>, <a class='category' href='/blog/categories/thin-/'>thin,</a>, <a class='category' href='/blog/categories/verbose/'>verbose</a>, <a class='category' href='/blog/categories/webrick-/'>webrick,</a>
 
 
-</div>
-	
-</div></article>
-
-	<div class="share">
-	<div class="addthis_toolbox addthis_default_style ">
-	
-	
-	<a class="addthis_button_tweet"></a>
-	
-	
-	<a class="addthis_counter addthis_pill_style"></a>
+</span>
+	    
 	</div>
-  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
-</div>
-
+</article>
 
 </div>
 	<footer id="footer" class="inner">Copyright &copy; 2012
