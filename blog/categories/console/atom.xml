@@ -4,7 +4,7 @@
   <title><![CDATA[Category: console | My path to enlightnment]]></title>
   <link href="http://luisalima.github.com/blog/categories/console/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-13T11:09:37+00:00</updated>
+  <updated>2012-12-13T11:12:58+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -20,7 +20,8 @@
     <id>http://luisalima.github.com/blog/2012/12/13/adding-automatic-code-reloading-in-rails-console</id>
     <content type="html"><![CDATA[<p>So I have no idea why the rails console in development mode doesn't already do this, since the whole idea of the console in development mode is for us to mess around and test random stuff in development mode, right? Anyway, I got inspired and helped by <a href="http://jkfill.com/">Jkfill</a> with his post on <a href="http://jkfill.com/2012/12/08/automatic-code-reloading-in-rails-console">Automatic Code Reloading in Rails Console</a>, so here goes, more for my records than yours since you should follow the instructions in his post. I am using Rails 3.2.9, so I had to copy the code from the <a href="https://github.com/rails/rails/blob/master/railties/lib/rails/console/app.rb#L25">reload! method in the rails console code</a>, which is not exactly the best practice, but it's just for dev mode and it works :-)</p>
 
-<pre><code> if defined?(IRB::Context) && !defined?(Rails::Server) && Rails.env.development?
+<pre><code> #this should be in config/initializers/irb_reloading.rb
+    if defined?(IRB::Context) && !defined?(Rails::Server) && Rails.env.development?
 
   class IRB::Context
     def evaluate_with_reloading(line, line_no)
