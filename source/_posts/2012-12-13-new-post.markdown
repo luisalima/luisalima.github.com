@@ -10,8 +10,7 @@ I created this blog specifically to jot down notes of interesting / useful / mea
 
 And to start with, here is a link to a post that really helped me out [Octopress: Setting up a Blog and Contributing to an Existing One](http://code.dblock.org/octopress-setting-up-a-blog-and-contributing-to-an-existing-one). It wasn't really clear to me from Octopress instructions that I had to run rake generate and rake deploy; I was just trying to make the git commits and push by hand (and becoming really frustrated by it). So, just for my own reference:
 
-<pre><code>
-	# do stuff in your blog, like rake new_post
+<pre><code> # do stuff in your blog, like rake new_post
 	# then generate the blog
 	rake generate
 	# then save the source branch and push it to Github
@@ -25,6 +24,9 @@ And to start with, here is a link to a post that really helped me out [Octopress
 
 (depending on your system, you might need to run bundle exec followed by the rake commands).
 
+Oh, and also... to delete a post, delete it only from <pre><code>blog-root/source/_posts/post-title</code></pre>, and then run the commands above again. The rake tasks from octopress take care of everything.
+
 Ta-da!
 
 So far I'm really enjoying Octopress -- I chose it because I want to be able to do everything from the shell, and never leave my dev environment and my beloved ST2/emacs combination.
+
