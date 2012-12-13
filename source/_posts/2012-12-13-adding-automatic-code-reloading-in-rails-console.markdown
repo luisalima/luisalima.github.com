@@ -23,6 +23,6 @@ So I have no idea why the rails console in development mode doesn't already do t
 
   puts "=> IRB code reloading enabled"
 end
-</pre></code>
+</code></pre>
 
 In the meanwhile, shortly browsed the code at [the Rails gihub project](https://github.com/rails) and it's really a nice way to learn more about rails... must do it more often.

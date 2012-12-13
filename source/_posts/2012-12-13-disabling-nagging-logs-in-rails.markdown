@@ -7,11 +7,11 @@ categories: rails webrick thin log message verbose
 ---
 
 Once upon a time, I was trying to do some meaningful debugging in rails with
-<pre><code> logger.debug </pre></code>
+<pre><code> logger.debug </code></pre>
 
 and I was being particularly nagged by these annoying messages from Webrick:
 <pre><code> WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true [closed]
-</pre></code>
+</code></pre>
 
 The way to solve this? I am using 'thin' instead of Webrick as a development server (yeah, I know that there are [patches to solve this in Webrick](https://bugs.ruby-lang.org/attachments/2300/204_304_keep_alive.patch) but I decided to go a bit aggressive instead).
 
@@ -31,6 +31,6 @@ And another thing that nagged me were the asset pipeline messages with the gets 
     alias_method_chain :call, :quiet_assets
   end
 end
-</pre></code>
+</code></pre>
 
 Ahhhhh now I can actually see **meaningful** logs in my development log. *whew!*
