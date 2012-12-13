@@ -3,7 +3,7 @@ layout: post
 title: "Silencing nagging logs in rails"
 date: 2012-12-13 10:20
 comments: true
-categories: rails, webrick, thin, log, message, verbose
+categories: rails webrick thin log message verbose
 ---
 
 Once upon a time, I was trying to do some meaningful debugging in rails with
