@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: rails | Enlightnment through entreprevelopment]]></title>
+  <title><![CDATA[Category: rails | Entreprevelopment => Enlightnment]]></title>
   <link href="http://luisalima.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-13T17:20:05+00:00</updated>
+  <updated>2012-12-13T17:21:34+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
