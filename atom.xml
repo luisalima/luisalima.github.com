@@ -4,7 +4,7 @@
   <title><![CDATA[My path to enlightnment]]></title>
   <link href="http://luisalima.github.com/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-13T11:42:34+00:00</updated>
+  <updated>2012-12-13T12:19:47+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -12,6 +12,34 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Grooveshark media center with raspberry pi]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/13/grooveshark-media-center-with-raspberry-pi/"/>
+    <updated>2012-12-13T12:09:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/13/grooveshark-media-center-with-raspberry-pi</id>
+    <content type="html"><![CDATA[<p>&#8230; and better yet: in the command line. No more messing around with slooow browsers in the Pi.</p>
+
+<p>First, install mplayer if you don&#8217;t already have it:</p>
+
+<pre><code> sudo apt-get install mplayer </code></pre>
+
+
+<p>Then, open ~/.mplayer/config and <a href="http://martin.ankerl.com/2006/06/10/pimp-my-mplayer/">pimp your player</a> by adding the following settings:</p>
+
+<pre><code> cache=8192
+cache-min=4 </code></pre>
+
+
+<p>Next, clone the <a href="https://github.com/drakedevel/gsclient">gsclient plugin</a> by <a href="https://github.com/drakedevel">drakedevel</a>:</p>
+
+<pre><code> 
+git clone https://github.com/drakedevel/gsclient.git</code></pre>
+
+
+<p>And now&#8230; RoCk and RoLL :-)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Better errors gem]]></title>
@@ -48,10 +76,8 @@
 
   puts "=> IRB code reloading enabled"
 end
-</pre>
+</code></pre>
 
-
-<p></code></p>
 
 <p>In the meanwhile, shortly browsed the code at <a href="https://github.com/rails">the Rails gihub project</a> and it&#8217;s really a nice way to learn more about rails&#8230; must do it more often.</p>
 ]]></content>
@@ -64,18 +90,14 @@ end
     <id>http://luisalima.github.com/blog/2012/12/13/disabling-nagging-logs-in-rails</id>
     <content type="html"><![CDATA[<p>Once upon a time, I was trying to do some meaningful debugging in rails with</p>
 
-<pre><code> logger.debug </pre>
+<pre><code> logger.debug </code></pre>
 
-
-<p></code></p>
 
 <p>and I was being particularly nagged by these annoying messages from Webrick:</p>
 
 <pre><code> WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true [closed]
-</pre>
+</code></pre>
 
-
-<p></code></p>
 
 <p>The way to solve this? I am using &#8216;thin&#8217; instead of Webrick as a development server (yeah, I know that there are <a href="https://bugs.ruby-lang.org/attachments/2300/204_304_keep_alive.patch">patches to solve this in Webrick</a> but I decided to go a bit aggressive instead).</p>
 
@@ -95,10 +117,8 @@ end
     alias_method_chain :call, :quiet_assets
   end
 end
-</pre>
+</code></pre>
 
-
-<p></code></p>
 
 <p>Ahhhhh now I can actually see <strong>meaningful</strong> logs in my development log. <em>whew!</em></p>
 ]]></content>

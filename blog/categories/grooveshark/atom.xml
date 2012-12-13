@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: grooveshark | My path to enlightnment]]></title>
+  <link href="http://luisalima.github.com/blog/categories/grooveshark/atom.xml" rel="self"/>
+  <link href="http://luisalima.github.com/"/>
+  <updated>2012-12-13T12:19:47+00:00</updated>
+  <id>http://luisalima.github.com/</id>
+  <author>
+    <name><![CDATA[Luisa Lima]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Grooveshark media center with raspberry pi]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/13/grooveshark-media-center-with-raspberry-pi/"/>
+    <updated>2012-12-13T12:09:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/13/grooveshark-media-center-with-raspberry-pi</id>
+    <content type="html"><![CDATA[<p>... and better yet: in the command line. No more messing around with slooow browsers in the Pi.</p>
+
+<p>First, install mplayer if you don't already have it:</p>
+
+<pre><code> sudo apt-get install mplayer </code></pre>
+
+
+<p>Then, open ~/.mplayer/config and <a href="http://martin.ankerl.com/2006/06/10/pimp-my-mplayer/">pimp your player</a> by adding the following settings:</p>
+
+<pre><code> cache=8192
+cache-min=4 </code></pre>
+
+
+<p>Next, clone the <a href="https://github.com/drakedevel/gsclient">gsclient plugin</a> by <a href="https://github.com/drakedevel">drakedevel</a>:</p>
+
+<pre><code> 
+git clone https://github.com/drakedevel/gsclient.git</code></pre>
+
+
+<p>And now... RoCk and RoLL :-)</p>
+]]></content>
+  </entry>
+  
+</feed>

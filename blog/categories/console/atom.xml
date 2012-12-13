@@ -4,7 +4,7 @@
   <title><![CDATA[Category: console | My path to enlightnment]]></title>
   <link href="http://luisalima.github.com/blog/categories/console/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-13T11:42:34+00:00</updated>
+  <updated>2012-12-13T12:19:47+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -35,10 +35,8 @@
 
   puts "=> IRB code reloading enabled"
 end
-</pre>
+</code></pre>
 
-
-<p></code></p>
 
 <p>In the meanwhile, shortly browsed the code at <a href="https://github.com/rails">the Rails gihub project</a> and it's really a nice way to learn more about rails... must do it more often.</p>
 ]]></content>
