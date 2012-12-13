@@ -1,0 +1,8 @@
+---
+layout: post
+title: "Managed to make it work!"
+date: 2012-12-13 09:45
+comments: true
+categories: 
+---
+Did I?
