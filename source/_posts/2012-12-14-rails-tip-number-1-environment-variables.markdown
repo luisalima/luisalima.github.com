@@ -3,7 +3,7 @@ layout: post
 title: "Rails tip #1 - environment variables"
 date: 2012-12-14 10:24
 comments: true
-categories: rails, rails_tips
+categories: rails rails_tips
 ---
 This isn't exactly my tip (well, since this is a learning / work in progress blog, none of them are), but when an article is already as comprehensive as this one, there's nothing left to say except:
 
