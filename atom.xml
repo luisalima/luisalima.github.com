@@ -4,7 +4,7 @@
   <title><![CDATA[Entreprevelopment adventures]]></title>
   <link href="http://luisalima.github.com/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-13T17:22:56+00:00</updated>
+  <updated>2012-12-14T10:00:23+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Controlling a Rapberry Pi via VNC without keyboard]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/14/controlling-a-rapberry-pi-via-vnc-without-keyboard/"/>
+    <updated>2012-12-14T09:45:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/14/controlling-a-rapberry-pi-via-vnc-without-keyboard</id>
+    <content type="html"><![CDATA[<p>I don&#8217;t have a USB keyboard, so my only option for controlling my Raspberry Pi is via SSH. That turned out to work quite well, since the customized image of Debian provided by Raspberry Pi (<a href="http://www.raspberrypi.org/downloads">2012-10-28-wheezy-raspbian.img</a>) already has ssh enabled by default. It suffices to discover the IP address that was assigned by the router, and connect :-)</p>
+
+<p>(By the way, for those with Mac OS, the command line instructions <a href="http://elinux.org/RPi_Easy_SD_Card_Setup#Copying_an_image_to_the_SD_Card_in_Mac_OS_X_.28command_line.29">here</a>) are very nice and comprehensive.</p>
+
+<p>So now on to the cool stuff&#8230; Initally I had installed TightVNC, but could not connect to the same session as being displayed via HDMI (which is console 0). I don&#8217;t know whether that&#8217;s possible with TightVNC, but I sort of got tired of trying. So <a href="http://www.raspberrypi.org/phpBB3/viewtopic.php?p=108862#p108862">here are the steps to make it work</a>, which basically consist of installing x11vnc instead of TightVNC and having your desktop manager autostart it:</p>
+
+<pre><code>
+sudo apt-get install x11vnc
+11vnc -storepasswd
+
+# to create the autostart entry, do:
+
+cd .config
+mkdir autostart
+cd autostart
+nano x11vnc.desktop
+
+# paste following text:
+
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=X11VNC
+Comment=
+Exec=x11vnc -forever -usepw -display :0 -ultrafilexfer
+StartupNotify=false
+Terminal=false
+Hidden=false
+
+</code></pre>
+
+
+<p>&#8230; aaand it works :-) For more details (check the original link)[http://www.raspberrypi.org/phpBB3/viewtopic.php?p=108862#p108862].</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Installable Web Apps]]></title>
