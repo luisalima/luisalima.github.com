@@ -37,4 +37,4 @@ Hidden=false
 
 </code></pre>
 
-... aaand it works :-) For more details (check the original link)[http://www.raspberrypi.org/phpBB3/viewtopic.php?p=108862#p108862].
+... aaand it works :-) For more details [check the original link](http://www.raspberrypi.org/phpBB3/viewtopic.php?p=108862#p108862).
