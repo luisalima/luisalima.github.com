@@ -24,9 +24,11 @@ You actually get a guide of what to test by looking at the cheat sheet! It's too
 
 Furthermore, it's great for lazy people and it's definitely easier on the eyes. Just check the following example:
 
+<!---
 <script src="https://gist.github.com/4339197.js">
 
 </script>
+-->
 
 {% gist 4339197 shoulda_model.rb %}
 
@@ -37,7 +39,7 @@ What I test exactly with shoulda
 
 I go through the whole list of shoulda macros for models, and I just use and abuse them. Since the cheat sheet is not up to date, I created a new one (just for models for now) at:
 
-{% gist 4339490 %}
+{% gist 4339490 shoulda_cheat_model.rb %}
 
 Yes, it's a bit tedious. But (1) you make sure that you are actually testing all these details, which is extremely useful when you are constantly refactoring your code, and (2) it's not that slow with the multiple cursors of Sublime Text 2. You just need to have a scaffold.
 
