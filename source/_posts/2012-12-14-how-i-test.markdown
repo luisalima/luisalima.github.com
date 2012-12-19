@@ -1,0 +1,48 @@
+---
+layout: post
+title: "How I test - Part I: Environment"
+date: 2012-12-14 11:43
+comments: true
+categories: rails, testing, TDD
+---
+
+Not that I am an authority in testing... this is just a compilation of the so-called "best practices" that I've been seeing around, as well as some extra tips from my (very limited) experience. I'd love to hear the feedback from more experienced people... I'm going to do several of these as I go along.
+
+Gems I use
+----------
+
+I test using [rspec](http://rspec.info) and [shoulda](https://github.com/thoughtbot/shoulda), which dramatically reduces the size of the tests. But beware -- rspec is a DSL, and I think that I only got a bit more intuition on what I was exactly testing after doing some tests in Test::Unit. I also use [FactoryGirl](https://github.com/thoughtbot/factory_girl) for setting up the test data, instead of fixtures. Last but not least, the [simplecov](https://github.com/colszowka/simplecov) gem is amazing, and although you shouldn't rely on it to determine when to stop testing, it really is good to get a (very precise) sense of what's covered and what's not in their beautiful html reports.
+
+General tips
+------------
+
+When all your tests are red for no apparent reason, it's because you were messing around with the db and then forgot to do
+
+<pre><code>rake db:test:clone</code></pre>
+
+Yup, the reason I am mentioning it here even though it seems completely obvious is because I am distracted and do that a lot... :-)
+
+Tips for running guard/spork in vagrant
+---------------------------------------
+
+I use vagrant to keep my environment all neatly in one place. However, there are downsides. When running guard inside the guest OS, use
+<pre><code>bundle exec guard -p</code></pre>
+Otherwise, guard won't detect changes in the guest filesystem.
+
+FactoryGirl tips
+----------------
+
+You can keep all factories in one file, for me that is more intuitive (and also, I don't have to keep opening files while I'm testing, it's all in one place.)
+
+To try FactoryGirl methods in the console, run:
+<pre><code>FactoryGirl.find_definitions</code></pre>
+
+At least in my case, I would get a [factory not registered](http://stackoverflow.com/questions/8409787/factorygirl-factory-not-registered-user-argumenterror
+) error when I didn't do that.
+
+Better Errors
+-------------
+
+Not exactly related to testing, but this gem has been a life changer! When there is an error, the standard error page gets replaced by a much better and useful error page, which has a full trace, the local and instance variables that are set at the time, and a terminal that you can use to inspect and make changes to the variables in the models and controllers in real time (or code whatever you want). I know I already mentioned it in another post, but I can't stress enough how cool this gem is!
+
+In the next posts, I'll give an overview of how I test the models and controllers, which I only started testing this week!
