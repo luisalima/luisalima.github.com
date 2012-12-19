@@ -3,7 +3,7 @@ layout: post
 title: "How I test - Part I: Environment"
 date: 2012-12-14 11:43
 comments: true
-categories: rails, testing, TDD
+categories: rails testing TDD rails_tips rspec
 ---
 
 Not that I am an authority in testing... this is just a compilation of the so-called "best practices" that I've been seeing around, as well as some extra tips from my (very limited) experience. I'd love to hear the feedback from more experienced people... I'm going to do several of these as I go along.
@@ -43,6 +43,6 @@ At least in my case, I would get a [factory not registered](http://stackoverflow
 Better Errors
 -------------
 
-Not exactly related to testing, but this gem has been a life changer! When there is an error, the standard error page gets replaced by a much better and useful error page, which has a full trace, the local and instance variables that are set at the time, and a terminal that you can use to inspect and make changes to the variables in the models and controllers in real time (or code whatever you want). I know I already mentioned it in another post, but I can't stress enough how cool this gem is!
+Not exactly related to testing, but [this gem](https://github.com/charliesome/better_errors) has been a life changer! When there is an error, the standard error page gets replaced by a much better and useful error page, which has a full trace, the local and instance variables that are set at the time, and a terminal that you can use to inspect and make changes to the variables in the models and controllers in real time (or code whatever you want). I know I already mentioned it in another post, but I can't stress enough how cool this gem is!
 
 In the next posts, I'll give an overview of how I test the models and controllers, which I only started testing this week!
