@@ -4,7 +4,7 @@
   <title><![CDATA[Category: testing | Entreprevelopment adventures]]></title>
   <link href="http://luisalima.github.com/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-19T19:49:26+00:00</updated>
+  <updated>2012-12-19T19:54:03+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -34,10 +34,12 @@
 
 <p>Furthermore, it's great for lazy people and it's definitely easier on the eyes. Just check the following example:</p>
 
-<script src="https://gist.github.com/4339197.js"></script>
+<script src="https://gist.github.com/4339197.js">
+
+</script>
 
 
-<p><div><script src='https://gist.github.com/4339197.js?file='></script>
+<p><div><script src='https://gist.github.com/4339197.js?file=shoulda_model.rb'></script>
 <noscript><pre><code># without shoulda... tons of code :-)
 it &quot;should belong to person&quot; do
 	Model.reflect_on_association(:person).macro.should == :belongs_to
