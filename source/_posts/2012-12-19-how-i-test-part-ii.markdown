@@ -24,12 +24,6 @@ You actually get a guide of what to test by looking at the cheat sheet! It's too
 
 Furthermore, it's great for lazy people and it's definitely easier on the eyes. Just check the following example:
 
-<!---
-<script src="https://gist.github.com/4339197.js">
-
-</script>
--->
-
 {% gist 4339197 shoulda_model.rb %}
 
 Convinced? ;-)
