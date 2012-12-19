@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rspec | Entreprevelopment adventures]]></title>
   <link href="http://luisalima.github.com/blog/categories/rspec/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-19T10:14:15+00:00</updated>
+  <updated>2012-12-19T19:41:28+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -12,6 +12,151 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How I test part II - testing models]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/19/how-i-test-part-ii/"/>
+    <updated>2012-12-19T10:17:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/19/how-i-test-part-ii</id>
+    <content type="html"><![CDATA[<h2>Testing models</h2>
+
+<p>From <a href="http://guides.rubyonrails.org/testing.html">rails guides</a>:</p>
+
+<p>"Ideally, you would like to include a test for everything which could possibly break. It’s a good practice to have at least one test for each of your validations and at least one test for every method in your model."</p>
+
+<p>Which leads me to...</p>
+
+<h2>Why I use shoulda</h2>
+
+<p>I think that the best thing is just to take a peek at <a href="http://cheat.errtheblog.com/s/rspec_shoulda/">The shoulda cheat sheets</a>.</p>
+
+<p>You actually get a guide of what to test by looking at the cheat sheet! It's too bad that it's not up to date (actually I think that the whole site is not up to date -- even the gem doesn't work anymore, which I think is too bad :-( )</p>
+
+<p>Furthermore, it's great for lazy people and it's definitely easier on the eyes. Just check the following example:</p>
+
+<p><div><script src='https://gist.github.com/4339197.js?file='></script>
+<noscript><pre><code># without shoulda... tons of code :-)
+it &quot;should belong to person&quot; do
+	Model.reflect_on_association(:person).macro.should == :belongs_to
+end
+
+# with shoulda... one-liner!
+it{should belong_to(:person)}
+</code></pre></noscript></div>
+</p>
+
+<p>Convinced? ;-)</p>
+
+<h2>What I test exactly with shoulda</h2>
+
+<p>I go through the whole list of shoulda macros for models, and I just use and abuse them. Since the cheat sheet is not up to date, I created a new one (just for models for now) at:</p>
+
+<p><div><script src='https://gist.github.com/4339490.js?file='></script>
+<noscript><pre><code># updated from the original @ http://cheat.errtheblog.com/s/rspec_shoulda
+# just a subset -- models -- is included here. I'll update this, and create cheat sheets for others, as I go along.
+# I marked the ones I added with NEW and also added the links to the corresponding code, as I think it's useful.
+# Any comments/corrections are welcome!
+
+# =================  Data and Associations =======================
+# https://github.com/thoughtbot/shoulda-matchers/tree/master/lib/shoulda/matchers/active_record
+
+it { should_not have_db_column(:admin).of_type(:boolean) }
+it { should have_db_column(:salary).
+      of_type(:decimal).
+      with_options(:precision =&gt; 10, :scale =&gt; 2) }
+it { should have_readonly_attributes(:password) }
+it { should belong_to(:parent) }
+it { should have_db_index(:id) } # NEW
+
+it { should have_many(:friends) }
+it { should have_many(:enemies).through(:friends) }
+it { should have_many(:enemies).dependent(:destroy) }
+
+it { should have_one(:god) }
+
+it { should have_and_belong_to_many(:posts) }
+
+it {should accept_nested_attributes_for(:user)} # NEW
+
+# ================== Validation Matchers ============================
+# https://github.com/thoughtbot/shoulda-matchers/tree/master/lib/shoulda/matchers/active_model
+
+it { should validate_uniqueness_of(:keyword) }
+it { should validate_uniqueness_of(:keyword).with_message(/dup/) }
+it { should validate_uniqueness_of(:email).scoped_to(:name) }
+it { should validate_uniqueness_of(:email).
+              scoped_to(:first_name, :last_name) }
+it { should validate_uniqueness_of(:keyword).case_insensitive }
+
+it { should validate_presence_of(:name) }
+it { should validate_presence_of(:name).
+              with_message(/is not optional/) }
+
+it { should validate_numericality_of(:age) }
+
+it { should validate_format_of(:name).
+              with('12345').
+              with_message(/is not optional/) }
+it { should validate_format_of(:name).
+              not_with('12D45').
+              with_message(/is not optional/) }
+
+it { should validate_acceptance_of(:eula) }
+
+it { should ensure_length_of(:password).
+              is_at_least(6).
+              is_at_most(20) }
+it { should ensure_length_of(:name).
+              is_at_least(3).
+              with_short_message(/not long enough/) }
+it { should ensure_length_of(:ssn).
+              is_equal_to(9).
+              with_message(/is invalid/) }
+
+it { should ensure_inclusion_of(:age).in_range(0..100) }
+it { should_not allow_mass_assignment_of(:password) }
+it { should allow_mass_assignment_of(:first_name) }
+it { should validate_format_of(:first_name).with(&quot;Carl&quot;) }
+
+it { should validate_confirmation_of(:password) } # NEW</code></pre></noscript></div>
+</p>
+
+<p>Yes, it's a bit tedious. But (1) you make sure that you are actually testing all these details, which is extremely useful when you are constantly refactoring your code, and (2) it's not that slow with the multiple cursors of Sublime Text 2. You just need to have a scaffold.</p>
+
+<h2>What I test without shoulda</h2>
+
+<p>Apart from model methods, is there that much to test without shoulda? I test:</p>
+
+<ul>
+<li>Any model methods, extensively</li>
+<li>Callbacks, extremely extensively</li>
+<li>Some validations - but just to make sure I coded them right. See more of this perspective in <a href="http://www.christopherbloom.com/2011/07/12/testing-model-validations-in-rspec-the-short-and-sweet-way/">Testing model validations in rspec the short and sweet way</a></li>
+</ul>
+
+
+<p>... and for now, that's about it.</p>
+
+<h2>Regarding generating fake data</h2>
+
+<p>Like I mentioned before, I do use FactoryGirl extensively. Maybe that means that <a href="http://blog.steveklabnik.com/posts/2012-07-14-why-i-don-t-like-factory_girl">my models are complicated</a>? I don't know, but for now, I am sort of using good sense and stuff. Let's see what happens. I do use <a href="http://faker.rubyforge.org">Faker</a> as well. Come to think about it, will do a post on that eventually.</p>
+
+<h2>Random issues in testing models</h2>
+
+<p>When everything seems to be absolutely correct in the models and in the tests and you are still getting unexplainable errors, do restart guard. I already spent several hours messing around with the tests because guard didn't refresh the models. <a href="http://stackoverflow.com/questions/5855587/spork-is-really-great-but-how-can-i-get-it-to-refresh-validations-and-other-cod">There are automatic solutions</a>, but I didn't feel like hacking away the spork/guard configurations again... yet.</p>
+
+<h2>Random resources</h2>
+
+<ul>
+<li><p><a href="http://everydayrails.com/2012/03/19/testing-series-rspec-models-factory-girl.html">Everyday Rails: How I learned to test my Rails applications, Part 3: Model specs</a> - this has a very nice overview of the actual steps required to test models. Now I just cheat using shoulda, but it's very nice and useful to get a</p></li>
+<li><p><a href="http://www.christopherbloom.com/2011/07/12/testing-model-validations-in-rspec-the-short-and-sweet-way/">Testing model validations in rspec the short and sweet way</a> - it's a bit outdated, but describes how to test validations in a short way.</p></li>
+</ul>
+
+
+<hr />
+
+<p>Again, as I already mentioned, I am a beginner to rails and, consequently, in testing rails, so I might be doing/saying terribly wrong things. Any input is very much appreciated :-)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How I test - Part I: Environment]]></title>
