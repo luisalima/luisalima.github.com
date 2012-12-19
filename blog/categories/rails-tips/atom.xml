@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails_tips | Entreprevelopment adventures]]></title>
   <link href="http://luisalima.github.com/blog/categories/rails-tips/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-19T19:41:28+00:00</updated>
+  <updated>2012-12-19T19:49:26+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -33,6 +33,9 @@
 <p>You actually get a guide of what to test by looking at the cheat sheet! It's too bad that it's not up to date (actually I think that the whole site is not up to date -- even the gem doesn't work anymore, which I think is too bad :-( )</p>
 
 <p>Furthermore, it's great for lazy people and it's definitely easier on the eyes. Just check the following example:</p>
+
+<script src="https://gist.github.com/4339197.js"></script>
+
 
 <p><div><script src='https://gist.github.com/4339197.js?file='></script>
 <noscript><pre><code># without shoulda... tons of code :-)
