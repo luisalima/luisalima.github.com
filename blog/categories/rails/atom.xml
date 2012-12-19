@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Entreprevelopment adventures]]></title>
   <link href="http://luisalima.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-19T10:09:58+00:00</updated>
+  <updated>2012-12-19T10:14:15+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -37,6 +37,54 @@
 <h2>Indexes in Rails databases</h2>
 
 <p><a href="http://tomafro.net/2009/08/using-indexes-in-rails-index-your-associations">Extremely good article by Tom Ward on using indexes in rails associations</a>. An excellent guide to determine what indexes your app should include (no more, no less).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How I test - Part I: Environment]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/14/how-i-test/"/>
+    <updated>2012-12-14T11:43:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/14/how-i-test</id>
+    <content type="html"><![CDATA[<p>Not that I am an authority in testing... this is just a compilation of the so-called "best practices" that I've been seeing around, as well as some extra tips from my (very limited) experience. I'd love to hear the feedback from more experienced people... I'm going to do several of these as I go along.</p>
+
+<h2>Gems I use</h2>
+
+<p>I test using <a href="http://rspec.info">rspec</a> and <a href="https://github.com/thoughtbot/shoulda">shoulda</a>, which dramatically reduces the size of the tests. But beware -- rspec is a DSL, and I think that I only got a bit more intuition on what I was exactly testing after doing some tests in Test::Unit. I also use <a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a> for setting up the test data, instead of fixtures. Last but not least, the <a href="https://github.com/colszowka/simplecov">simplecov</a> gem is amazing, and although you shouldn't rely on it to determine when to stop testing, it really is good to get a (very precise) sense of what's covered and what's not in their beautiful html reports.</p>
+
+<h2>General tips</h2>
+
+<p>When all your tests are red for no apparent reason, it's because you were messing around with the db and then forgot to do</p>
+
+<pre><code>rake db:test:clone</code></pre>
+
+
+<p>Yup, the reason I am mentioning it here even though it seems completely obvious is because I am distracted and do that a lot... :-)</p>
+
+<h2>Tips for running guard/spork in vagrant</h2>
+
+<p>I use vagrant to keep my environment all neatly in one place. However, there are downsides. When running guard inside the guest OS, use</p>
+
+<pre><code>bundle exec guard -p</code></pre>
+
+
+<p>Otherwise, guard won't detect changes in the guest filesystem.</p>
+
+<h2>FactoryGirl tips</h2>
+
+<p>You can keep all factories in one file, for me that is more intuitive (and also, I don't have to keep opening files while I'm testing, it's all in one place.)</p>
+
+<p>To try FactoryGirl methods in the console, run:</p>
+
+<pre><code>FactoryGirl.find_definitions</code></pre>
+
+
+<p>At least in my case, I would get a <a href="http://stackoverflow.com/questions/8409787/factorygirl-factory-not-registered-user-argumenterror">factory not registered</a> error when I didn't do that.</p>
+
+<h2>Better Errors</h2>
+
+<p>Not exactly related to testing, but <a href="https://github.com/charliesome/better_errors">this gem</a> has been a life changer! When there is an error, the standard error page gets replaced by a much better and useful error page, which has a full trace, the local and instance variables that are set at the time, and a terminal that you can use to inspect and make changes to the variables in the models and controllers in real time (or code whatever you want). I know I already mentioned it in another post, but I can't stress enough how cool this gem is!</p>
+
+<p>In the next posts, I'll give an overview of how I test the models and controllers, which I only started testing this week!</p>
 ]]></content>
   </entry>
   
@@ -79,19 +127,6 @@ end
     <updated>2012-12-13T14:01:00+00:00</updated>
     <id>http://luisalima.github.com/blog/2012/12/13/rack-protection-another-cool-gem</id>
     <content type="html"><![CDATA[<p>This one I haven't evaluated yet, but looks promising: <a href="http://rkh.github.com/rack-protection/">Rack Protection</a>, to prevent typical web attacks such as <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery">cross site request forgery</a>, <a href="https://www.owasp.org/index.php/Cross_site_scripting">cross site scripting</a>, <a href="https://www.owasp.org/index.php/Clickjacking">clickjacking</a>, directory traversal, <a href="https://www.owasp.org/index.php/Session_hijacking_attack">session hijacking</a> and IP spoofing.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Better errors gem]]></title>
-    <link href="http://luisalima.github.com/blog/2012/12/13/better-errors-gem/"/>
-    <updated>2012-12-13T11:29:00+00:00</updated>
-    <id>http://luisalima.github.com/blog/2012/12/13/better-errors-gem</id>
-    <content type="html"><![CDATA[<p>Yes, today I am in "documentation" mode, which means "bloggation" mode :-)</p>
-
-<p>Just installed this gem -- <a href="https://github.com/charliesome/better_errors">Better errors</a>. It is a gem meant to help you out in development mode that replaces the standard Rails error page with a wayyyy better and more useful error page, featuring full stack trace, source code inspection for all stack frames, local and instance variable inspection, etc.</p>
-
-<p>I'm going to try it out today, but definitely beats the time spent looking at development logs (even if they are as clean and contained as mine after doing the changes described in <a href="/blog/2012/12/13/disabling-nagging-logs-in-rails">this post</a>).</p>
 ]]></content>
   </entry>
   
