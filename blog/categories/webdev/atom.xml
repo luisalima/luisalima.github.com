@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: webdev | Entreprevelopment adventures]]></title>
+  <link href="http://luisalima.github.com/blog/categories/webdev/atom.xml" rel="self"/>
+  <link href="http://luisalima.github.com/"/>
+  <updated>2012-12-19T10:09:58+00:00</updated>
+  <id>http://luisalima.github.com/</id>
+  <author>
+    <name><![CDATA[Luisa Lima]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Analytics js & a mash of interesting rails stuff]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/14/analytics-js/"/>
+    <updated>2012-12-14T13:34:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/14/analytics-js</id>
+    <content type="html"><![CDATA[<h2>Analytics.js</h2>
+
+<p>I don't know whether this library is very common, but it definitely shows a lot of promise:</p>
+
+<p><a href="http://segmentio.github.com/analytics.js/">Segmentio's Analytics.js</a></p>
+
+<p>It provides provider-agnostic hooks to route to analytics services. They also have a hosted version where the analytics services can be changed without touching the code. Looks really clean and neat.</p>
+
+<h2>Nice video: to_proc</h2>
+
+<p><a href="http://www.youtube.com/watch?v=aISNtCAZlMg">This video by CooperPress</a> explains in a very clear fashion how to use the "to_proc" feature of Ruby (and understand some weird code you might come across). It is also well worth it to subscribe to <a href="http://www.youtube.com/user/CooperPress?feature=watch">their other videos</a>.</p>
+
+<h2>Faster Rails partial rendering and caching</h2>
+
+<p>I sure will try out <a href="http://ninjasandrobots.com/rails-faster-partial-rendering-and-caching/">this gem (multi_fetch_fragments)</a> to optimize Rails when I get to that point of my work...</p>
+
+<h2>Indexes in Rails databases</h2>
+
+<p><a href="http://tomafro.net/2009/08/using-indexes-in-rails-index-your-associations">Extremely good article by Tom Ward on using indexes in rails associations</a>. An excellent guide to determine what indexes your app should include (no more, no less).</p>
+]]></content>
+  </entry>
+  
+</feed>

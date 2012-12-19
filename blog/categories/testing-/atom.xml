@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: TDD | Entreprevelopment adventures]]></title>
-  <link href="http://luisalima.github.com/blog/categories/tdd/atom.xml" rel="self"/>
+  <title><![CDATA[Category: testing, | Entreprevelopment adventures]]></title>
+  <link href="http://luisalima.github.com/blog/categories/testing-/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
   <updated>2012-12-19T10:09:58+00:00</updated>
   <id>http://luisalima.github.com/</id>
@@ -58,26 +58,6 @@
 <p>Not exactly related to testing, but this gem has been a life changer! When there is an error, the standard error page gets replaced by a much better and useful error page, which has a full trace, the local and instance variables that are set at the time, and a terminal that you can use to inspect and make changes to the variables in the models and controllers in real time (or code whatever you want). I know I already mentioned it in another post, but I can't stress enough how cool this gem is!</p>
 
 <p>In the next posts, I'll give an overview of how I test the models and controllers, which I only started testing this week!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails tip #2 - less Rspec in more color]]></title>
-    <link href="http://luisalima.github.com/blog/2012/12/14/rails-tip-number-2-less-rspec-in-color/"/>
-    <updated>2012-12-14T11:04:00+00:00</updated>
-    <id>http://luisalima.github.com/blog/2012/12/14/rails-tip-number-2-less-rspec-in-color</id>
-    <content type="html"><![CDATA[<p>I usually have Guard running in the background with Spork, but when I'm writing tests I like to do it the old fashioned way and be able to do rspec some_test | less. The problem with that approach is that we get a monochrome version of our tests. In order to redirect the color in the pipe, edit spec_helper and add the following:</p>
-
-<pre><code> # spec/spec_helper.rb
-Rspec.configure do |config|
-    config.tty = true
-    config.color_enabled = true
-    # ... whatever configurations you might have here...
-end
-</code></pre>
-
-
-<p>And enjoy a more colorful life ;-)</p>
 ]]></content>
   </entry>
   

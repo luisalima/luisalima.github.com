@@ -4,7 +4,7 @@
   <title><![CDATA[Entreprevelopment adventures]]></title>
   <link href="http://luisalima.github.com/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-14T11:14:31+00:00</updated>
+  <updated>2012-12-19T10:09:58+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -12,6 +12,98 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Inspiring TED talk]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/18/inspiring-ted-talk/"/>
+    <updated>2012-12-18T11:06:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/18/inspiring-ted-talk</id>
+    <content type="html"><![CDATA[<p>For anyone who works in business (especially startups), this is most probably (or most definitely) the most important TED talk that you&#8217;ll ever get to watch. Or the most important talk/piece of advice that you&#8217;ll ever get, I believe.</p>
+
+<p><a href="http://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action.html">How great leaders inspire action</a></p>
+
+<p>The fact is that this is what attracts me (and many people, probably) to startups. It&#8217;s just easier to find this sharing of common beliefs &#8211; and if it&#8217;s not, it&#8217;s the wrong startup.</p>
+
+<p><strong>People don&#8217;t buy what you do, they buy why you do it.</strong></p>
+
+<p>People buy what you believe in. Somehow this makes me believe in mankind a bit more :-)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Analytics js & a mash of interesting rails stuff]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/14/analytics-js/"/>
+    <updated>2012-12-14T13:34:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/14/analytics-js</id>
+    <content type="html"><![CDATA[<h2>Analytics.js</h2>
+
+<p>I don&#8217;t know whether this library is very common, but it definitely shows a lot of promise:</p>
+
+<p><a href="http://segmentio.github.com/analytics.js/">Segmentio&#8217;s Analytics.js</a></p>
+
+<p>It provides provider-agnostic hooks to route to analytics services. They also have a hosted version where the analytics services can be changed without touching the code. Looks really clean and neat.</p>
+
+<h2>Nice video: to_proc</h2>
+
+<p><a href="http://www.youtube.com/watch?v=aISNtCAZlMg">This video by CooperPress</a> explains in a very clear fashion how to use the &#8220;to_proc&#8221; feature of Ruby (and understand some weird code you might come across). It is also well worth it to subscribe to <a href="http://www.youtube.com/user/CooperPress?feature=watch">their other videos</a>.</p>
+
+<h2>Faster Rails partial rendering and caching</h2>
+
+<p>I sure will try out <a href="http://ninjasandrobots.com/rails-faster-partial-rendering-and-caching/">this gem (multi_fetch_fragments)</a> to optimize Rails when I get to that point of my work&#8230;</p>
+
+<h2>Indexes in Rails databases</h2>
+
+<p><a href="http://tomafro.net/2009/08/using-indexes-in-rails-index-your-associations">Extremely good article by Tom Ward on using indexes in rails associations</a>. An excellent guide to determine what indexes your app should include (no more, no less).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How I test - Part I: Environment]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/14/how-i-test/"/>
+    <updated>2012-12-14T11:43:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/14/how-i-test</id>
+    <content type="html"><![CDATA[<p>Not that I am an authority in testing&#8230; this is just a compilation of the so-called &#8220;best practices&#8221; that I&#8217;ve been seeing around, as well as some extra tips from my (very limited) experience. I&#8217;d love to hear the feedback from more experienced people&#8230; I&#8217;m going to do several of these as I go along.</p>
+
+<h2>Gems I use</h2>
+
+<p>I test using <a href="http://rspec.info">rspec</a> and <a href="https://github.com/thoughtbot/shoulda">shoulda</a>, which dramatically reduces the size of the tests. But beware &#8211; rspec is a DSL, and I think that I only got a bit more intuition on what I was exactly testing after doing some tests in Test::Unit. I also use <a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a> for setting up the test data, instead of fixtures. Last but not least, the <a href="https://github.com/colszowka/simplecov">simplecov</a> gem is amazing, and although you shouldn&#8217;t rely on it to determine when to stop testing, it really is good to get a (very precise) sense of what&#8217;s covered and what&#8217;s not in their beautiful html reports.</p>
+
+<h2>General tips</h2>
+
+<p>When all your tests are red for no apparent reason, it&#8217;s because you were messing around with the db and then forgot to do</p>
+
+<pre><code>rake db:test:clone</code></pre>
+
+
+<p>Yup, the reason I am mentioning it here even though it seems completely obvious is because I am distracted and do that a lot&#8230; :-)</p>
+
+<h2>Tips for running guard/spork in vagrant</h2>
+
+<p>I use vagrant to keep my environment all neatly in one place. However, there are downsides. When running guard inside the guest OS, use</p>
+
+<pre><code>bundle exec guard -p</code></pre>
+
+
+<p>Otherwise, guard won&#8217;t detect changes in the guest filesystem.</p>
+
+<h2>FactoryGirl tips</h2>
+
+<p>You can keep all factories in one file, for me that is more intuitive (and also, I don&#8217;t have to keep opening files while I&#8217;m testing, it&#8217;s all in one place.)</p>
+
+<p>To try FactoryGirl methods in the console, run:</p>
+
+<pre><code>FactoryGirl.find_definitions</code></pre>
+
+
+<p>At least in my case, I would get a <a href="http://stackoverflow.com/questions/8409787/factorygirl-factory-not-registered-user-argumenterror">factory not registered</a> error when I didn&#8217;t do that.</p>
+
+<h2>Better Errors</h2>
+
+<p>Not exactly related to testing, but this gem has been a life changer! When there is an error, the standard error page gets replaced by a much better and useful error page, which has a full trace, the local and instance variables that are set at the time, and a terminal that you can use to inspect and make changes to the variables in the models and controllers in real time (or code whatever you want). I know I already mentioned it in another post, but I can&#8217;t stress enough how cool this gem is!</p>
+
+<p>In the next posts, I&#8217;ll give an overview of how I test the models and controllers, which I only started testing this week!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails tip #2 - less Rspec in more color]]></title>

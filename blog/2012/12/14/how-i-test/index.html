@@ -1,0 +1,194 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>How I test - Part I: Environment - Entreprevelopment adventures</title>
+	<meta name="author" content="Luisa Lima">
+
+	
+	<meta name="description" content="Not that I am an authority in testing&#8230; this is just a compilation of the so-called &#8220;best practices&#8221; that I&#8217;ve been seeing &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Entreprevelopment adventures" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Entreprevelopment adventures</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:luisalima.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/luisamoyalima" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/luisalima" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:luisalima.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+<div id="banner" class="inner">
+	<div class="container">
+		<ul class="feed"></ul>
+	</div>
+	<small><a href="http://twitter.com/luisamoyalima">luisamoyalima</a> @ <a href="http://twitter.com">Twitter</a></small>
+	<div class="loading">Loading...</div>
+</div>
+<script src="/javascripts/twitter.js"></script>
+<script type="text/javascript">
+	(function($){
+		$('#banner').getTwitterFeed('luisamoyalima', 4, false);
+	})(jQuery);
+</script>
+
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">How I Test - Part I: Environment</h2>
+	<div class="entry-content"><p>Not that I am an authority in testing&#8230; this is just a compilation of the so-called &#8220;best practices&#8221; that I&#8217;ve been seeing around, as well as some extra tips from my (very limited) experience. I&#8217;d love to hear the feedback from more experienced people&#8230; I&#8217;m going to do several of these as I go along.</p>
+
+<h2>Gems I use</h2>
+
+<p>I test using <a href="http://rspec.info">rspec</a> and <a href="https://github.com/thoughtbot/shoulda">shoulda</a>, which dramatically reduces the size of the tests. But beware &#8211; rspec is a DSL, and I think that I only got a bit more intuition on what I was exactly testing after doing some tests in Test::Unit. I also use <a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a> for setting up the test data, instead of fixtures. Last but not least, the <a href="https://github.com/colszowka/simplecov">simplecov</a> gem is amazing, and although you shouldn&#8217;t rely on it to determine when to stop testing, it really is good to get a (very precise) sense of what&#8217;s covered and what&#8217;s not in their beautiful html reports.</p>
+
+<h2>General tips</h2>
+
+<p>When all your tests are red for no apparent reason, it&#8217;s because you were messing around with the db and then forgot to do</p>
+
+<pre><code>rake db:test:clone</code></pre>
+
+
+<p>Yup, the reason I am mentioning it here even though it seems completely obvious is because I am distracted and do that a lot&#8230; :-)</p>
+
+<h2>Tips for running guard/spork in vagrant</h2>
+
+<p>I use vagrant to keep my environment all neatly in one place. However, there are downsides. When running guard inside the guest OS, use</p>
+
+<pre><code>bundle exec guard -p</code></pre>
+
+
+<p>Otherwise, guard won&#8217;t detect changes in the guest filesystem.</p>
+
+<h2>FactoryGirl tips</h2>
+
+<p>You can keep all factories in one file, for me that is more intuitive (and also, I don&#8217;t have to keep opening files while I&#8217;m testing, it&#8217;s all in one place.)</p>
+
+<p>To try FactoryGirl methods in the console, run:</p>
+
+<pre><code>FactoryGirl.find_definitions</code></pre>
+
+
+<p>At least in my case, I would get a <a href="http://stackoverflow.com/questions/8409787/factorygirl-factory-not-registered-user-argumenterror">factory not registered</a> error when I didn&#8217;t do that.</p>
+
+<h2>Better Errors</h2>
+
+<p>Not exactly related to testing, but this gem has been a life changer! When there is an error, the standard error page gets replaced by a much better and useful error page, which has a full trace, the local and instance variables that are set at the time, and a terminal that you can use to inspect and make changes to the variables in the models and controllers in real time (or code whatever you want). I know I already mentioned it in another post, but I can&#8217;t stress enough how cool this gem is!</p>
+
+<p>In the next posts, I&#8217;ll give an overview of how I test the models and controllers, which I only started testing this week!</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-14T11:43:00+00:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/rails-/'>rails,</a>, <a class='category' href='/blog/categories/testing-/'>testing,</a>
+
+
+</div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2012
+
+    Luisa Lima
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>

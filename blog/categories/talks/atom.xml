@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: talks | Entreprevelopment adventures]]></title>
+  <link href="http://luisalima.github.com/blog/categories/talks/atom.xml" rel="self"/>
+  <link href="http://luisalima.github.com/"/>
+  <updated>2012-12-19T10:09:58+00:00</updated>
+  <id>http://luisalima.github.com/</id>
+  <author>
+    <name><![CDATA[Luisa Lima]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Inspiring TED talk]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/18/inspiring-ted-talk/"/>
+    <updated>2012-12-18T11:06:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/18/inspiring-ted-talk</id>
+    <content type="html"><![CDATA[<p>For anyone who works in business (especially startups), this is most probably (or most definitely) the most important TED talk that you'll ever get to watch. Or the most important talk/piece of advice that you'll ever get, I believe.</p>
+
+<p><a href="http://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action.html">How great leaders inspire action</a></p>
+
+<p>The fact is that this is what attracts me (and many people, probably) to startups. It's just easier to find this sharing of common beliefs -- and if it's not, it's the wrong startup.</p>
+
+<p><strong>People don't buy what you do, they buy why you do it.</strong></p>
+
+<p>People buy what you believe in. Somehow this makes me believe in mankind a bit more :-)</p>
+]]></content>
+  </entry>
+  
+</feed>
