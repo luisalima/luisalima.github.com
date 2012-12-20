@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: intriguing | Entreprevelopment adventures]]></title>
+  <link href="http://luisalima.github.com/blog/categories/intriguing/atom.xml" rel="self"/>
+  <link href="http://luisalima.github.com/"/>
+  <updated>2012-12-20T20:26:18+00:00</updated>
+  <id>http://luisalima.github.com/</id>
+  <author>
+    <name><![CDATA[Luisa Lima]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Intriguing behavior: validating presence of a boolean field]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/20/intriguing-behavior/"/>
+    <updated>2012-12-20T20:15:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/20/intriguing-behavior</id>
+    <content type="html"><![CDATA[<p>So, for those who don't know it (I just discovered about it), if you want to validate the presence of a boolean field, you can't do it with validates_presence_of.</p>
+
+<p>So, suppose that we have a model like</p>
+
+<pre><code>
+# == Schema Information
+# Table name: Bla
+#  test       :boolean
+class Bla < ActiveRecord::Base
+  attr_accessible :test
+</code></pre>
+
+
+<p>For example, if I had used validates_presence_of :test in the example above, it would have failed miserably because false.blank? is true -- so in practice, we could have never set bla.test to false, since it would make the validation fail (<a href="http://apidock.com/rails/ActiveModel/Validations/ClassMethods/validates_presence_of">more details here</a>).</p>
+
+<p>So I set out to try this out:</p>
+
+<pre><code>
+validates_inclusion_of :test, :in => [true, false]
+</code></pre>
+
+
+<p>and test it like this:</p>
+
+<pre><code>
+it {should_not allow_value("bla").for(:completed)}
+</code></pre>
+
+
+<p>and it still failed miserably.</p>
+
+<p>Now I was puzzled... So I tried this one out:</p>
+
+<p><div><script src='https://gist.github.com/4348179.js?file=bla.rb'></script>
+<noscript><pre><code># == Schema Information
+#
+# Table name: Bla
+#  test       :boolean
+
+class Bla &lt; ActiveRecord::Base
+  attr_accessible :test
+  before_validation :test_present
+  def test_present
+  	puts &quot;TEST PRESENT&quot;
+  	puts self.test
+  	errors.add(:test, &quot;Must be set to true or false&quot;) if !([true, false].include?(self.test))
+  end
+  
+# Same behavior with validate, before_save, before_validation:
+b = Bla.new
+b.test = &quot;bla&quot;
+b.save
+# prints
+# TEST PRESENT
+# false
+
+# found out about this while testing
+# 	it {should_not allow_value(:other).for(:completed)}
+# I know that I don't need to test that the boolean will be true or false, the db does it for me...
+# but I'm wondering... does the test attribute ever get to be &quot;bla&quot;?
+</code></pre></noscript></div>
+</p>
+
+<p>I was thinking that at some point the test attribute would be set to "bla", but since the field is a boolean, inserting other values will always evaluate to false. So we don't have to go to all this trouble: this way we can validate the presence, but we never need to validate whether the value itself is valid. More about this <a href="http://stackoverflow.com/questions/5170008/rails-validating-inclusion-of-a-boolean-fails-tests/5171074#5171074">here</a>. Living and learning!</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Entreprevelopment adventures]]></title>
   <link href="http://luisalima.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2012-12-20T17:11:53+00:00</updated>
+  <updated>2012-12-20T20:26:18+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Intriguing behavior: validating presence of a boolean field]]></title>
+    <link href="http://luisalima.github.com/blog/2012/12/20/intriguing-behavior/"/>
+    <updated>2012-12-20T20:15:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2012/12/20/intriguing-behavior</id>
+    <content type="html"><![CDATA[<p>So, for those who don't know it (I just discovered about it), if you want to validate the presence of a boolean field, you can't do it with validates_presence_of.</p>
+
+<p>So, suppose that we have a model like</p>
+
+<pre><code>
+# == Schema Information
+# Table name: Bla
+#  test       :boolean
+class Bla < ActiveRecord::Base
+  attr_accessible :test
+</code></pre>
+
+
+<p>For example, if I had used validates_presence_of :test in the example above, it would have failed miserably because false.blank? is true -- so in practice, we could have never set bla.test to false, since it would make the validation fail (<a href="http://apidock.com/rails/ActiveModel/Validations/ClassMethods/validates_presence_of">more details here</a>).</p>
+
+<p>So I set out to try this out:</p>
+
+<pre><code>
+validates_inclusion_of :test, :in => [true, false]
+</code></pre>
+
+
+<p>and test it like this:</p>
+
+<pre><code>
+it {should_not allow_value("bla").for(:completed)}
+</code></pre>
+
+
+<p>and it still failed miserably.</p>
+
+<p>Now I was puzzled... So I tried this one out:</p>
+
+<p><div><script src='https://gist.github.com/4348179.js?file=bla.rb'></script>
+<noscript><pre><code># == Schema Information
+#
+# Table name: Bla
+#  test       :boolean
+
+class Bla &lt; ActiveRecord::Base
+  attr_accessible :test
+  before_validation :test_present
+  def test_present
+  	puts &quot;TEST PRESENT&quot;
+  	puts self.test
+  	errors.add(:test, &quot;Must be set to true or false&quot;) if !([true, false].include?(self.test))
+  end
+  
+# Same behavior with validate, before_save, before_validation:
+b = Bla.new
+b.test = &quot;bla&quot;
+b.save
+# prints
+# TEST PRESENT
+# false
+
+# found out about this while testing
+# 	it {should_not allow_value(:other).for(:completed)}
+# I know that I don't need to test that the boolean will be true or false, the db does it for me...
+# but I'm wondering... does the test attribute ever get to be &quot;bla&quot;?
+</code></pre></noscript></div>
+</p>
+
+<p>I was thinking that at some point the test attribute would be set to "bla", but since the field is a boolean, inserting other values will always evaluate to false. So we don't have to go to all this trouble: this way we can validate the presence, but we never need to validate whether the value itself is valid. More about this <a href="http://stackoverflow.com/questions/5170008/rails-validating-inclusion-of-a-boolean-fails-tests/5171074#5171074">here</a>. Living and learning!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How I test part III: Why rspec?]]></title>
@@ -258,26 +330,6 @@ it { should validate_confirmation_of(:password) } # NEW</code></pre></noscript><
 <p>Not exactly related to testing, but <a href="https://github.com/charliesome/better_errors">this gem</a> has been a life changer! When there is an error, the standard error page gets replaced by a much better and useful error page, which has a full trace, the local and instance variables that are set at the time, and a terminal that you can use to inspect and make changes to the variables in the models and controllers in real time (or code whatever you want). I know I already mentioned it in another post, but I can't stress enough how cool this gem is!</p>
 
 <p>In the next posts, I'll give an overview of how I test the models and controllers, which I only started testing this week!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails tip #2 - less Rspec in more color]]></title>
-    <link href="http://luisalima.github.com/blog/2012/12/14/rails-tip-number-2-less-rspec-in-color/"/>
-    <updated>2012-12-14T11:04:00+00:00</updated>
-    <id>http://luisalima.github.com/blog/2012/12/14/rails-tip-number-2-less-rspec-in-color</id>
-    <content type="html"><![CDATA[<p>I usually have Guard running in the background with Spork, but when I'm writing tests I like to do it the old fashioned way and be able to do rspec some_test | less. The problem with that approach is that we get a monochrome version of our tests. In order to redirect the color in the pipe, edit spec_helper and add the following:</p>
-
-<pre><code> # spec/spec_helper.rb
-Rspec.configure do |config|
-    config.tty = true
-    config.color_enabled = true
-    # ... whatever configurations you might have here...
-end
-</code></pre>
-
-
-<p>And enjoy a more colorful life ;-)</p>
 ]]></content>
   </entry>
   

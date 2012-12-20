@@ -7,7 +7,7 @@
 	<meta name="author" content="Luisa Lima">
 
 	
-	<meta name="description" content="Why RSpec? That is a good question. My main reason for using RSpec right now is because I want to have a testing + documentation + TODO bundle, all &hellip;">
+	<meta name="description" content="So, for those who don&#8217;t know it (I just discovered about it), if you want to validate the presence of a boolean field, you can&#8217;t do it &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +90,109 @@
 
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2012/12/20/intriguing-behavior/">
+		
+			Intriguing Behavior: Validating Presence of a Boolean Field</a>
+	</h2>
+	<div class="entry-content">
+		<p>So, for those who don&#8217;t know it (I just discovered about it), if you want to validate the presence of a boolean field, you can&#8217;t do it with validates_presence_of.</p>
+
+<p>So, suppose that we have a model like</p>
+
+<pre><code>
+# == Schema Information
+# Table name: Bla
+#  test       :boolean
+class Bla < ActiveRecord::Base
+  attr_accessible :test
+</code></pre>
+
+
+<p>For example, if I had used validates_presence_of :test in the example above, it would have failed miserably because false.blank? is true &#8211; so in practice, we could have never set bla.test to false, since it would make the validation fail (<a href="http://apidock.com/rails/ActiveModel/Validations/ClassMethods/validates_presence_of">more details here</a>).</p>
+
+<p>So I set out to try this out:</p>
+
+<pre><code>
+validates_inclusion_of :test, :in => [true, false]
+</code></pre>
+
+
+<p>and test it like this:</p>
+
+<pre><code>
+it {should_not allow_value("bla").for(:completed)}
+</code></pre>
+
+
+<p>and it still failed miserably.</p>
+
+<p>Now I was puzzled&#8230; So I tried this one out:</p>
+
+<div><script src='https://gist.github.com/4348179.js?file=bla.rb'></script>
+<noscript><pre><code># == Schema Information
+#
+# Table name: Bla
+#  test       :boolean
+
+class Bla &lt; ActiveRecord::Base
+  attr_accessible :test
+  before_validation :test_present
+  def test_present
+    puts &quot;TEST PRESENT&quot;
+    puts self.test
+    errors.add(:test, &quot;Must be set to true or false&quot;) if !([true, false].include?(self.test))
+  end
+  
+# Same behavior with validate, before_save, before_validation:
+b = Bla.new
+b.test = &quot;bla&quot;
+b.save
+# prints
+# TEST PRESENT
+# false
+
+# found out about this while testing
+#   it {should_not allow_value(:other).for(:completed)}
+# I know that I don't need to test that the boolean will be true or false, the db does it for me...
+# but I'm wondering... does the test attribute ever get to be &quot;bla&quot;?
+</code></pre></noscript></div>
+
+
+<p>I was thinking that at some point the test attribute would be set to &#8220;bla&#8221;, but since the field is a boolean, inserting other values will always evaluate to false. So we don&#8217;t have to go to all this trouble: this way we can validate the presence, but we never need to validate whether the value itself is valid. More about this <a href="http://stackoverflow.com/questions/5170008/rails-validating-inclusion-of-a-boolean-fails-tests/5171074#5171074">here</a>. Living and learning!</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-20T20:15:00+00:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/intriguing/'>intriguing</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/testing/'>testing</a>
+
+
+</div>
+	
+</div></article>
 
 
     <article class="post">
@@ -712,46 +815,6 @@ Hidden=false
 
 
 	<a class='category' href='/blog/categories/ot/'>OT</a>, <a class='category' href='/blog/categories/future/'>future</a>, <a class='category' href='/blog/categories/interesting/'>interesting</a>
-
-
-</div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/12/13/rack-protection-another-cool-gem/">
-		
-			Rack Protection - Another Cool Gem</a>
-	</h2>
-	<div class="entry-content">
-		<p>This one I haven&#8217;t evaluated yet, but looks promising: <a href="http://rkh.github.com/rack-protection/">Rack Protection</a>, to prevent typical web attacks such as <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery">cross site request forgery</a>, <a href="https://www.owasp.org/index.php/Cross_site_scripting">cross site scripting</a>, <a href="https://www.owasp.org/index.php/Clickjacking">clickjacking</a>, directory traversal, <a href="https://www.owasp.org/index.php/Session_hijacking_attack">session hijacking</a> and IP spoofing.</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-13T14:01:00+00:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/cool-gems/'>cool_gems</a>, <a class='category' href='/blog/categories/rails/'>rails</a>
 
 
 </div>
