@@ -7,7 +7,7 @@
 	<meta name="author" content="Luisa Lima">
 
 	
-	<meta name="description" content="Testing models From rails guides: &#8220;Ideally, you would like to include a test for everything which could possibly break. It’s a good practice &hellip;">
+	<meta name="description" content="Why RSpec? That is a good question. My main reason for using RSpec right now is because I want to have a testing + documentation + TODO bundle, all &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +90,65 @@
 
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2012/12/20/how-i-test-part-iii/">
+		
+			How I Test Part III: Why Rspec?</a>
+	</h2>
+	<div class="entry-content">
+		<p>Why RSpec? That is a good question. My main reason for using RSpec right now is because I want to have a testing + documentation + TODO bundle, all in one, like a shampoo:</p>
+
+<ul>
+<li>testing &#8211; ok, RSpec does make things a tad more complicated for testing. I believe that testing actually makes you learn more about what you code, and RSpec, being a DSL, can make things esoteric enough that sometimes you don&#8217;t know exactly what you&#8217;re testing (I confess that I like Test::Unit more because it&#8217;s simpler for developers to read &#8211; assert that this gives this result). But, on the other hand, you have shoulda! :-)</li>
+<li>documentation &#8211; the exact same thing that makes testing a bit more esoteric, makes documentation a piece of cake. You want to know how something works? Just read the tests. And RSpec does make that side of testing much clearer.</li>
+<li>TODO &#8211; yup, that&#8217;s right. If you have features that you want to implement later on, just add a &#8220;pending&#8221; spec with the description of what you want to do. Of course that you can do that in Test::Unit as well, but it&#8217;s not as beautiful and immediate as in RSpec.</li>
+</ul>
+
+
+<p>Of course that I&#8217;m really just beginning and I might change my mind eventually. <a href="http://www.rubyinside.com/dhh-offended-by-rspec-debate-4610.html">Even the creator of Rails argues against RSPec</a>, and there are quite a few arguments against it (if you missed the link, here&#8217;s an <a href="http://objectreload.com/articles/2010/09/thoughts-on-testing-part-1.html">excellent blog post on that</a>).</p>
+
+<p>By the way, I&#8217;m abiding by this rule from the last post:</p>
+
+<p>&#8221;- Keep things flat — deeply nested contexts are ugly as they hinder readability of your test cases. Split your tests up into different files if they’re getting too long.&#8221;</p>
+
+<p>I was trying to make things DRY in the tests, and then I thought&#8230; why bother, exactly? It&#8217;s better if they are more readable, for the sake of documentation as stated above. Amen, brothers.</p>
+
+<h2>Why not Cucumber for request specs?</h2>
+
+<p>All the reasons are in this <a href="http://epimetrics.com/entries/3129">excellent post</a>.</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-20T16:48:00+00:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/rspec/'>rspec</a>, <a class='category' href='/blog/categories/testing/'>testing</a>
+
+
+</div>
+	
+</div></article>
 
 
     <article class="post">
@@ -693,65 +752,6 @@ Hidden=false
 
 
 	<a class='category' href='/blog/categories/cool-gems/'>cool_gems</a>, <a class='category' href='/blog/categories/rails/'>rails</a>
-
-
-</div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/12/13/grooveshark-media-center-with-raspberry-pi/">
-		
-			Grooveshark Media Center With Raspberry Pi</a>
-	</h2>
-	<div class="entry-content">
-		<p>&#8230; and better yet: in the command line. No more messing around with slooow browsers in the Pi.</p>
-
-<p>First, install mplayer if you don&#8217;t already have it:</p>
-
-<pre><code> sudo apt-get install mplayer </code></pre>
-
-
-<p>Then, open ~/.mplayer/config and <a href="http://martin.ankerl.com/2006/06/10/pimp-my-mplayer/">pimp your player</a> by adding the following settings:</p>
-
-<pre><code> cache=8192
-cache-min=4 </code></pre>
-
-
-<p>Next, clone the <a href="https://github.com/drakedevel/gsclient">gsclient plugin</a> by <a href="https://github.com/drakedevel">drakedevel</a>:</p>
-
-<pre><code> 
-git clone https://github.com/drakedevel/gsclient.git</code></pre>
-
-
-<p>And now&#8230; RoCk and RoLL :-)</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-13T12:09:00+00:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/grooveshark/'>grooveshark</a>, <a class='category' href='/blog/categories/raspberrypi/'>raspberrypi</a>
 
 
 </div>
