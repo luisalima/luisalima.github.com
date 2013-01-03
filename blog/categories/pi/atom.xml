@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: pi | Entreprevelopment adventures]]></title>
+  <link href="http://luisalima.github.com/blog/categories/pi/atom.xml" rel="self"/>
+  <link href="http://luisalima.github.com/"/>
+  <updated>2013-01-03T10:38:58+00:00</updated>
+  <id>http://luisalima.github.com/</id>
+  <author>
+    <name><![CDATA[Luisa Lima]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Raspberry pi GPIO for beginners]]></title>
+    <link href="http://luisalima.github.com/blog/2013/01/03/raspberry-pi-gpio-for-beginners/"/>
+    <updated>2013-01-03T10:23:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2013/01/03/raspberry-pi-gpio-for-beginners</id>
+    <content type="html"><![CDATA[<p>Me and my boyfriend offered his father (an amateur electronics afficcionado) this Christmas the best gift ever (we think) -- a Raspberry Pi!</p>
+
+<p>But now I've been struggling with finding some true beginner tutorials for people who are new to Linux, don't know that much English, and have an interest on using the Pi for more advanced controller stuff. So here is the list that I found so far -- I'll be adding more links as time comes (and possibly translating some stuff to Portuguese, so if you are interested in that, stay tuned)!</p>
+
+<h2>From Adafruit learning system</h2>
+
+<p>They have extremely nice (I mean <em>extremely</em> nice) step-by-step tutorials, exactly with the focus I wanted. Just <a href="http://learn.adafruit.com/search?q=raspberry">perform a search by "raspberry" on their site</a> and you'll find:</p>
+
+<ul>
+<li><a href="http://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-gpio">GPIO setup on the Raspberry Pi</a></li>
+<li><a href="http://learn.adafruit.com/raspberry-pi-e-mail-notifier-using-leds">Raspberry Pi E-mail notifier using LEDs</a></li>
+<li><a href="http://learn.adafruit.com/reading-a-analog-in-and-controlling-audio-volume-with-the-raspberry-pi">Reading analog inputs with the Raspberry Pi</a></li>
+<li><a href="http://learn.adafruit.com/playing-sounds-and-using-buttons-with-raspberry-pi">Playing sounds and using buttons with the Raspberry Pi</a></li>
+</ul>
+
+
+<h2>Other sources</h2>
+
+<p>This <a href="http://www.raspberrypi.org/archives/2953">video tutorial from Geek Gurl Diaries</a> is also pretty neat to learn something more.</p>
+
+<p>I'll be doing some of these projects myself and translating them to PT as I have the time. My ultimate goal is to be able to control the lights and blinders in my house with the Pi and to do some sort of home automation smarts but for now, I think I'll stick to LEDs and not to 220V stuff :-) I also want to do some sort of intrusion detection system. Stay tuned!</p>
+]]></content>
+  </entry>
+  
+</feed>
