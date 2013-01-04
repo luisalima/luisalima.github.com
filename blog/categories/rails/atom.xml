@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Entreprevelopment adventures]]></title>
   <link href="http://luisalima.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2013-01-04T18:19:34+00:00</updated>
+  <updated>2013-01-04T20:23:55+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -12,6 +12,162 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Random pseudo-tutorialish notes on Factory Girl, part I]]></title>
+    <link href="http://luisalima.github.com/blog/2013/01/04/random-notes-on-factory-girl/"/>
+    <updated>2013-01-04T18:39:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2013/01/04/random-notes-on-factory-girl</id>
+    <content type="html"><![CDATA[<p>The guys at Thoughtbot do an excellent job. I especially love shoulda and high_voltage. I have a love/hate relationship with factory_girl, so I decided to write this post trying to detail some of the ways I've been using it. Maybe it will help someone. Hope it does!</p>
+
+<p>First of all, what is a factory and what do you need it for? Factories are a (healthier) alternative to fixtures, and fixtures are simply a "fixed state" for models, used as baseline for tests. In Rails, fixtures get automatically loaded into the test database before tests are run, and you define them in a YAML file. However, they can become awkward pretty easily, so Factories were created -- frameworks designed to allow a quick creation of fully featured objects for testing.</p>
+
+<p>And now you ask, why don't we just create the object directly before each test? Think required attributes and associations -- if your model has 10 attributes and 5 different associations you might want to have somewhere where you can create valid instances of that model upfront and then reuse them.</p>
+
+<p>So, we have (somewhat) established what factories are for. <a href="http://blog.steveklabnik.com/posts/2012-07-14-why-i-don-t-like-factory_girl">Just beware of the downsides of using factories</a> (quoting the blog in the link, which is highly recommended):
+"A big feature of tests is to give you feedback on your code. Tests and code have a symbiotic relationship. Your tests inform your code. If a test is complicated, your code is complicated. Ultimately, because tests are a client of your code, you can see how easy or hard your code's interfaces are."</p>
+
+<p>Yup, I feel your pain, bro. My latest project has tons of models, polymorphic interfaces, STI's, etc. Ultimately, flexibility creates complexity, and it's better to avoid extra features to keep simplicity. But I digress.</p>
+
+<p>So, how do we use these lil' bastards? :-)</p>
+
+<h2>Configuration</h2>
+
+<p>The <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md">Getting started</a> guide provides what you need. Except... I don't think it's that clear that if you are using Rspec, those lines</p>
+
+<pre><code>
+    require 'factory_girl'
+    FactoryGirl.find_definitions
+</code></pre>
+
+
+<p>go in the spec_helper.rb file. More precisely, <em>FactoryGirl.find_definitions</em> goes inside the <em>RSpec.configure do |config|</em> block.</p>
+
+<p><em>But:</em> if you are using Spork, you need to reload Factory definitions at each run, otherwise you get a "factory not registered" error. So, place the following inside the <em>Spork.each_run do</em> block:</p>
+
+<pre><code>
+    Spork.each_run do
+    # ....
+        FactoryGirl.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
+      FactoryGirl.find_definitions
+    # etc...
+</code></pre>
+
+
+<p>There you go! Everything nicely configured :-) Also, you can use FactoryGirl in rails console! Just use the code <a href="http://blog.thefrontiergroup.com.au/2011/03/reloading-factory-girl-factories-in-the-rails-3-console/">in this post</a>, which I'll shamelessly copy here for posterity and for my own reference:</p>
+
+<pre><code>
+    ActionDispatch::Callbacks.after do
+      # Reload the factories
+      return unless (Rails.env.development? || Rails.env.test?)
+
+      unless FactoryGirl.factories.blank? # first init will load factories, this should only run on subsequent reloads
+        FactoryGirl.factories.clear
+        FactoryGirl.find_definitions
+      end
+    end
+</code></pre>
+
+
+<p>You can also just run this code directly in the console. If you do have sequences defined, you'll need to add the following extra:</p>
+
+<pre><code>
+FactoryGirl.factories.clear
+FactoryGirl.sequences.clear
+FactoryGirl.find_definitions
+</code></pre>
+
+
+<p>(and if you are using <a href="http://robots.thoughtbot.com/post/23673635798/remove-duplication-with-factorygirls-traits">traits</a>, apparently you need to add FactoryGirl.traits.clear as well).</p>
+
+<h2>In unit testing</h2>
+
+<p>So first things first... You can have a file for testing factories but I'd rather have the test for the validity of the factory in the model test file itself -- this to avoid incurring errors when you are focusing on testing a particular model, all because your factory was ill-defined. So go ahead and test the factory itself:</p>
+
+<pre><code>
+    it "has a valid factory" do
+        m = FactoryGirl.build(:my_model)
+        m.should be_valid
+    end
+</code></pre>
+
+
+<p>What do we do if this goes wrong and we can't sort out the error? Go to the console, write</p>
+
+<pre><code>
+m = FactoryGirl.build(:my_model)
+m.valid?  # duh, it'll be false
+m.save    # just to trigger all validations callbacks etc that we might have
+m.errors
+</code></pre>
+
+
+<p>And now go ahead and complete your factory with the necessary information. Simple enough, right? The syntax for defining factories is explained pretty well <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md">in the starting guide</a> so I won't go to the trouble, except for the case when we are using Faker.</p>
+
+<h2>With Faker</h2>
+
+<p>Faker is a cool gem for... you guessed it, generating fake data. And here's how you do it:</p>
+
+<pre><code>
+  factory :company do
+    name { Faker::Company.name }
+    phone {Faker::PhoneNumber.cell_phone}
+  end
+</code></pre>
+
+
+<p>Yup, just a normal block, not too bad.</p>
+
+<h2>Sequences</h2>
+
+<p>Sequences are used for attributes that must be unique, such as email addresses. You can define sequences "outside" of the factory definition, or inside as a block:</p>
+
+<pre><code>
+  sequence :email do |n|
+    "test#{n}@example.com"
+  end
+
+    factory :user do
+        email
+    password "password"
+    password_confirmation "password"
+    phone {Faker::PhoneNumber.cell_phone}
+    end
+</code></pre>
+
+
+<p>is the same as:</p>
+
+<pre><code>
+    factory :user do
+        sequence(:email) { |n| "test#{n}@example.com"}
+    password "password"
+    password_confirmation "password"
+    phone {Faker::PhoneNumber.cell_phone}
+    end
+</code></pre>
+
+
+<h2>Associations</h2>
+
+<p>Associations in factories are simply created by adding the factory name for the association in the other factory block. For example, if my user has_one location:</p>
+
+<pre><code>
+    factory :user do
+        sequence(:email) { |n| "test#{n}@example.com"}
+    password "password"
+    password_confirmation "password"
+    phone {Faker::PhoneNumber.cell_phone}
+    location   # ta-da!
+    end
+</code></pre>
+
+
+<p>More detail about associations with FactoryGirl <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">here</a>.</p>
+
+<p>More about this tomorrow!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Intriguing behavior: validating presence of a boolean field]]></title>
@@ -282,54 +438,6 @@ it { should validate_confirmation_of(:password) } # NEW</code></pre></noscript><
 <h2>Indexes in Rails databases</h2>
 
 <p><a href="http://tomafro.net/2009/08/using-indexes-in-rails-index-your-associations">Extremely good article by Tom Ward on using indexes in rails associations</a>. An excellent guide to determine what indexes your app should include (no more, no less).</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How I test - Part I: Environment]]></title>
-    <link href="http://luisalima.github.com/blog/2012/12/14/how-i-test/"/>
-    <updated>2012-12-14T11:43:00+00:00</updated>
-    <id>http://luisalima.github.com/blog/2012/12/14/how-i-test</id>
-    <content type="html"><![CDATA[<p>Not that I am an authority in testing... this is just a compilation of the so-called "best practices" that I've been seeing around, as well as some extra tips from my (very limited) experience. I'd love to hear the feedback from more experienced people... I'm going to do several of these as I go along.</p>
-
-<h2>Gems I use</h2>
-
-<p>I test using <a href="http://rspec.info">rspec</a> and <a href="https://github.com/thoughtbot/shoulda">shoulda</a>, which dramatically reduces the size of the tests. But beware -- rspec is a DSL, and I think that I only got a bit more intuition on what I was exactly testing after doing some tests in Test::Unit. I also use <a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a> for setting up the test data, instead of fixtures. Last but not least, the <a href="https://github.com/colszowka/simplecov">simplecov</a> gem is amazing, and although you shouldn't rely on it to determine when to stop testing, it really is good to get a (very precise) sense of what's covered and what's not in their beautiful html reports.</p>
-
-<h2>General tips</h2>
-
-<p>When all your tests are red for no apparent reason, it's because you were messing around with the db and then forgot to do</p>
-
-<pre><code>rake db:test:clone</code></pre>
-
-
-<p>Yup, the reason I am mentioning it here even though it seems completely obvious is because I am distracted and do that a lot... :-)</p>
-
-<h2>Tips for running guard/spork in vagrant</h2>
-
-<p>I use vagrant to keep my environment all neatly in one place. However, there are downsides. When running guard inside the guest OS, use</p>
-
-<pre><code>bundle exec guard -p</code></pre>
-
-
-<p>Otherwise, guard won't detect changes in the guest filesystem.</p>
-
-<h2>FactoryGirl tips</h2>
-
-<p>You can keep all factories in one file, for me that is more intuitive (and also, I don't have to keep opening files while I'm testing, it's all in one place.)</p>
-
-<p>To try FactoryGirl methods in the console, run:</p>
-
-<pre><code>FactoryGirl.find_definitions</code></pre>
-
-
-<p>At least in my case, I would get a <a href="http://stackoverflow.com/questions/8409787/factorygirl-factory-not-registered-user-argumenterror">factory not registered</a> error when I didn't do that.</p>
-
-<h2>Better Errors</h2>
-
-<p>Not exactly related to testing, but <a href="https://github.com/charliesome/better_errors">this gem</a> has been a life changer! When there is an error, the standard error page gets replaced by a much better and useful error page, which has a full trace, the local and instance variables that are set at the time, and a terminal that you can use to inspect and make changes to the variables in the models and controllers in real time (or code whatever you want). I know I already mentioned it in another post, but I can't stress enough how cool this gem is!</p>
-
-<p>In the next posts, I'll give an overview of how I test the models and controllers, which I only started testing this week!</p>
 ]]></content>
   </entry>
   

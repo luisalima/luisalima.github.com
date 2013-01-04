@@ -7,7 +7,7 @@
 	<meta name="author" content="Luisa Lima">
 
 	
-	<meta name="description" content="This isn&#8217;t exactly my tip (well, since this is a learning / work in progress blog, none of them are), but when an article is already as &hellip;">
+	<meta name="description" content="I usually have Guard running in the background with Spork, but when I&#8217;m writing tests I like to do it the old fashioned way and be able to do &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +90,57 @@
 
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2012/12/14/rails-tip-number-2-less-rspec-in-color/">
+		
+			Rails Tip #2 - Less Rspec in More Color</a>
+	</h2>
+	<div class="entry-content">
+		<p>I usually have Guard running in the background with Spork, but when I&#8217;m writing tests I like to do it the old fashioned way and be able to do rspec some_test | less. The problem with that approach is that we get a monochrome version of our tests. In order to redirect the color in the pipe, edit spec_helper and add the following:</p>
+
+<pre><code> # spec/spec_helper.rb
+Rspec.configure do |config|
+    config.tty = true
+    config.color_enabled = true
+    # ... whatever configurations you might have here...
+end
+</code></pre>
+
+
+<p>And enjoy a more colorful life ;-)</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-14T11:04:00+00:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/rails-tips/'>rails_tips</a>, <a class='category' href='/blog/categories/rspec/'>rspec</a>, <a class='category' href='/blog/categories/testing/'>testing</a>
+
+
+</div>
+	
+</div></article>
 
 
     <article class="post">
