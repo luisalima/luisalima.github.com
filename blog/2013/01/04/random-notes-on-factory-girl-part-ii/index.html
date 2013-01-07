@@ -1,0 +1,280 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Random notes on Factory Girl Part II - Entreprevelopment adventures</title>
+	<meta name="author" content="Luisa Lima">
+
+	
+	<meta name="description" content="More random/tutorialish aspects of my usage of the FactoryGirl gem. I do advise you to read their getting started guide, it helps a lot. This is more &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Entreprevelopment adventures" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Entreprevelopment adventures</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:luisalima.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/luisamoyalima" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/luisalima" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:luisalima.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+<div id="banner" class="inner">
+	<div class="container">
+		<ul class="feed"></ul>
+	</div>
+	<small><a href="http://twitter.com/luisamoyalima">luisamoyalima</a> @ <a href="http://twitter.com">Twitter</a></small>
+	<div class="loading">Loading...</div>
+</div>
+<script src="/javascripts/twitter.js"></script>
+<script type="text/javascript">
+	(function($){
+		$('#banner').getTwitterFeed('luisamoyalima', 4, false);
+	})(jQuery);
+</script>
+
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Random Notes on Factory Girl Part II</h2>
+	<div class="entry-content"><p>More random/tutorialish aspects of my usage of the FactoryGirl gem. I do advise you to read their <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">getting started guide</a>, it helps a lot. This is more of a reference of the things I found most useful. If you have any questions/corrections/observations, let me know in the comments.</p>
+
+<h2>FactoryGirl and Polymorphic named associations</h2>
+
+<p>If you have polymorphic associations with different names, here&#8217;s how to go about it in factories:</p>
+
+<pre><code> factory :category, aliases: [:category_one, :category_two] </code></pre>
+
+
+<p>There are other approaches to this problem <a href="http://stackoverflow.com/questions/7747945/factorygirl-and-polymorphic-associations">here</a>, but I find this one to be the simplest and so far it hasn&#8217;t gotten me into trouble (perhaps yet :-) ).</p>
+
+<h2>Attributes_for</h2>
+
+<p>This is probably very obvious, but I find it useful to use attributes_for from FactoryGirl to build the valid attributes for use in controller specs.</p>
+
+<pre><code> def valid_attributes
+    FactoryGirl.attributes_for(:my_model)
+    end
+</code></pre>
+
+
+<p>One thing that is useful to know is that attributes_for ignores associations, and thus does not include attributes that are related to associations even if you have an association in the factory. <a href="http://stackoverflow.com/questions/10290286/factorygirl-why-does-attributes-for-omit-some-attributes">Here is a post at stackoverflow</a> that provides you with the foreign keys in the attributes if you need them.</p>
+
+<h2>Has_and_belongs_to_many associations</h2>
+
+<p>I&#8217;m just adding this for my own reference. It&#8217;s in the <a href="https://github.com/thoughtbot/factory_girl/wiki/Usage">FactoryGirl getting started wiki</a>.</p>
+
+<pre><code> FactoryGirl.define do
+  factory :person do
+    first_name { 'James' }
+    books {
+      Array(5..10).sample.times.map do
+        FactoryGirl.create(:book) # optionally add traits: FactoryGirl.create(:book, :book_description)
+      end
+    }
+  end
+end
+</code></pre>
+
+
+<p>There is more in FactoryGirl associations <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">here</a>.</p>
+
+<h2>DRYing up: Traits</h2>
+
+<p>I just discovered traits, which are ways to add state to a factory (read: create factories whose attributes have different values without having to go through aliases). I am <a href="http://robots.thoughtbot.com/post/23673635798/remove-duplication-with-factorygirls-traits">shamelessly copying Thoughtbot&#8217;s example</a> because I think it&#8217;s the clearest one to have here for your reference:</p>
+
+<pre><code> FactoryGirl.define do
+  factory :todo_item do
+    name 'Pick up a gallon of milk'
+
+    trait :completed do
+      complete true
+    end
+
+    trait :not_completed do
+      complete false
+    end
+  end
+end
+</code></pre>
+
+
+<h2>DRYing up: inheritance</h2>
+
+<p>Something that I wasn&#8217;t making much use of &#8211; you can nest factories, which allows you to create multiple factories for the same class without repeating common attributes:</p>
+
+<pre><code>
+factory :user do
+    name "testing"
+
+  factory :super_user do
+    super_powers true
+  end
+end
+</code></pre>
+
+
+<h2>Tracking factories</h2>
+
+<p>I followed the advice <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#activesupport-instrumentation">here</a> to track factories. I think it&#8217;s useful to know how factories are being used.</p>
+
+<h2>If you want to go really in depth&#8230;</h2>
+
+<p>You have a <a href="http://www.arailsdemo.com/posts/39">very nice post on code reading of the factorygirl gem here</a>. You can even learn something about how to do cool stuff in ruby/rails like:</p>
+
+<pre><code> def set(attribute, value)
+    @instance.send(:"#{attribute}=", value)
+  end
+</code></pre>
+
+
+<p>And that&#8217;s all, folks (for now&#8230;)!</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-04T20:25:00+00:00" pubdate data-updated="true">Jan 4<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/factory-girl/'>factory_girl</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/rspec/'>rspec</a>, <a class='category' href='/blog/categories/testing/'>testing</a>
+
+
+</div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Luisa Lima
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'luisalima';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://luisalima.github.com/blog/2013/01/04/random-notes-on-factory-girl-part-ii/';
+        var disqus_url = 'http://luisalima.github.com/blog/2013/01/04/random-notes-on-factory-girl-part-ii/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-37431227-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>

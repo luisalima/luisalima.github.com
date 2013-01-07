@@ -7,7 +7,7 @@
 	<meta name="author" content="Luisa Lima">
 
 	
-	<meta name="description" content="I usually have Guard running in the background with Spork, but when I&#8217;m writing tests I like to do it the old fashioned way and be able to do &hellip;">
+	<meta name="description" content="Analytics.js I don&#8217;t know whether this library is very common, but it definitely shows a lot of promise: Segmentio&#8217;s Analytics.js It &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +90,143 @@
 
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2012/12/14/analytics-js/">
+		
+			Analytics Js & a Mash of Interesting Rails Stuff</a>
+	</h2>
+	<div class="entry-content">
+		<h2>Analytics.js</h2>
+
+<p>I don&#8217;t know whether this library is very common, but it definitely shows a lot of promise:</p>
+
+<p><a href="http://segmentio.github.com/analytics.js/">Segmentio&#8217;s Analytics.js</a></p>
+
+<p>It provides provider-agnostic hooks to route to analytics services. They also have a hosted version where the analytics services can be changed without touching the code. Looks really clean and neat.</p>
+
+<h2>Nice video: to_proc</h2>
+
+<p><a href="http://www.youtube.com/watch?v=aISNtCAZlMg">This video by CooperPress</a> explains in a very clear fashion how to use the &#8220;to_proc&#8221; feature of Ruby (and understand some weird code you might come across). It is also well worth it to subscribe to <a href="http://www.youtube.com/user/CooperPress?feature=watch">their other videos</a>.</p>
+
+<h2>Faster Rails partial rendering and caching</h2>
+
+<p>I sure will try out <a href="http://ninjasandrobots.com/rails-faster-partial-rendering-and-caching/">this gem (multi_fetch_fragments)</a> to optimize Rails when I get to that point of my work&#8230;</p>
+
+<h2>Indexes in Rails databases</h2>
+
+<p><a href="http://tomafro.net/2009/08/using-indexes-in-rails-index-your-associations">Extremely good article by Tom Ward on using indexes in rails associations</a>. An excellent guide to determine what indexes your app should include (no more, no less).</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-14T13:34:00+00:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/analytics/'>analytics</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/webdev/'>webdev</a>
+
+
+</div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2012/12/14/how-i-test/">
+		
+			How I Test - Part I: Environment</a>
+	</h2>
+	<div class="entry-content">
+		<p>Not that I am an authority in testing&#8230; this is just a compilation of the so-called &#8220;best practices&#8221; that I&#8217;ve been seeing around, as well as some extra tips from my (very limited) experience. I&#8217;d love to hear the feedback from more experienced people&#8230; I&#8217;m going to do several of these as I go along.</p>
+
+<h2>Gems I use</h2>
+
+<p>I test using <a href="http://rspec.info">rspec</a> and <a href="https://github.com/thoughtbot/shoulda">shoulda</a>, which dramatically reduces the size of the tests. But beware &#8211; rspec is a DSL, and I think that I only got a bit more intuition on what I was exactly testing after doing some tests in Test::Unit. I also use <a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a> for setting up the test data, instead of fixtures. Last but not least, the <a href="https://github.com/colszowka/simplecov">simplecov</a> gem is amazing, and although you shouldn&#8217;t rely on it to determine when to stop testing, it really is good to get a (very precise) sense of what&#8217;s covered and what&#8217;s not in their beautiful html reports.</p>
+
+<h2>General tips</h2>
+
+<p>When all your tests are red for no apparent reason, it&#8217;s because you were messing around with the db and then forgot to do</p>
+
+<pre><code>rake db:test:clone</code></pre>
+
+
+<p>Yup, the reason I am mentioning it here even though it seems completely obvious is because I am distracted and do that a lot&#8230; :-)</p>
+
+<h2>Tips for running guard/spork in vagrant</h2>
+
+<p>I use vagrant to keep my environment all neatly in one place. However, there are downsides. When running guard inside the guest OS, use</p>
+
+<pre><code>bundle exec guard -p</code></pre>
+
+
+<p>Otherwise, guard won&#8217;t detect changes in the guest filesystem.</p>
+
+<h2>FactoryGirl tips</h2>
+
+<p>You can keep all factories in one file, for me that is more intuitive (and also, I don&#8217;t have to keep opening files while I&#8217;m testing, it&#8217;s all in one place.)</p>
+
+<p>To try FactoryGirl methods in the console, run:</p>
+
+<pre><code>FactoryGirl.find_definitions</code></pre>
+
+
+<p>At least in my case, I would get a <a href="http://stackoverflow.com/questions/8409787/factorygirl-factory-not-registered-user-argumenterror">factory not registered</a> error when I didn&#8217;t do that.</p>
+
+<h2>Better Errors</h2>
+
+<p>Not exactly related to testing, but <a href="https://github.com/charliesome/better_errors">this gem</a> has been a life changer! When there is an error, the standard error page gets replaced by a much better and useful error page, which has a full trace, the local and instance variables that are set at the time, and a terminal that you can use to inspect and make changes to the variables in the models and controllers in real time (or code whatever you want). I know I already mentioned it in another post, but I can&#8217;t stress enough how cool this gem is!</p>
+
+<p>In the next posts, I&#8217;ll give an overview of how I test the models and controllers, which I only started testing this week!</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-14T11:43:00+00:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/rails-tips/'>rails_tips</a>, <a class='category' href='/blog/categories/rspec/'>rspec</a>, <a class='category' href='/blog/categories/testing/'>testing</a>
+
+
+</div>
+	
+</div></article>
 
 
     <article class="post">
@@ -501,147 +638,12 @@ end
 	
 </div></article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/12/13/disabling-nagging-logs-in-rails/">
-		
-			Silencing Nagging Logs in Rails</a>
-	</h2>
-	<div class="entry-content">
-		<p>Once upon a time, I was trying to do some meaningful debugging in rails with</p>
-
-<pre><code> logger.debug </code></pre>
-
-
-<p>and I was being particularly nagged by these annoying messages from Webrick:</p>
-
-<pre><code> WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true [closed]
-</code></pre>
-
-
-<p>The way to solve this? I am using &#8216;thin&#8217; instead of Webrick as a development server (yeah, I know that there are <a href="https://bugs.ruby-lang.org/attachments/2300/204_304_keep_alive.patch">patches to solve this in Webrick</a> but I decided to go a bit aggressive instead).</p>
-
-<p>And another thing that nagged me were the asset pipeline messages with the gets for the css, js, images, etc. So one way to shut Sprockets up is given <a href="http://stackoverflow.com/questions/6312448/how-to-disable-logging-of-asset-pipeline-sprockets-messages-in-rails-3-1">here</a>, and just for the record:</p>
-
-<pre><code> # place this code in config/initializers/quiet_assets.rb
-    if Rails.env.development?
-  Rails.application.assets.logger = Logger.new('/dev/null')
-  Rails::Rack::Logger.class_eval do
-    def call_with_quiet_assets(env)
-      previous_level = Rails.logger.level
-      Rails.logger.level = Logger::ERROR if env['PATH_INFO'] =~ %r{^/assets/}
-      call_without_quiet_assets(env)
-    ensure
-      Rails.logger.level = previous_level
-    end
-    alias_method_chain :call, :quiet_assets
-  end
-end
-</code></pre>
-
-
-<p>Ahhhhh now I can actually see <strong>meaningful</strong> logs in my development log. <em>whew!</em></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-13T10:20:00+00:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/log/'>log</a>, <a class='category' href='/blog/categories/message/'>message</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/thin/'>thin</a>, <a class='category' href='/blog/categories/verbose/'>verbose</a>, <a class='category' href='/blog/categories/webrick/'>webrick</a>
-
-
-</div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/12/13/new-post/">
-		
-			New Octopress Blog&#8230;</a>
-	</h2>
-	<div class="entry-content">
-		<p>I created this blog specifically to jot down notes of interesting / useful / meaningful stuff I find during my adventures with development, which I hope are useful to others.</p>
-
-<p>And to start with, here is a link to a post that really helped me out <a href="http://code.dblock.org/Octopress-setting-up-a-blog-and-contributing-to-an-existing-one">Octopress: Setting up a Blog and Contributing to an Existing One</a>. It wasn&#8217;t really clear to me from Octopress instructions that I had to run rake generate and rake deploy; I was just trying to make the git commits and push by hand (and becoming really frustrated by it). So, just for my own reference:</p>
-
-<pre><code> # do stuff in your blog, like rake new_post
-    # then generate the blog
-    rake generate
-    # then save the source branch and push it to Github
-    git add .
-    git commit -m "whatever message"
-    git push origin source
-    # and now, this is where the magic happens! this takes care
-    # of pushing everything automagically onto the master branch!
-    rake deploy
-</code></pre>
-
-
-<p>(depending on your system, you might need to run bundle exec followed by the rake commands).</p>
-
-<p>Oh, and also&#8230; to delete a post, delete it only from <pre><code>blog-root/source/_posts/post-title</code></pre> and then run the commands above again. The rake tasks from Octopress take care of everything.</p>
-
-<p>This cool minimalistic theme is from <a href="http://zespia.tw">zespia.tw</a>, and it&#8217;s called <a href="http://zespia.tw/Octopress-Theme-Slash/">Slash</a>.</p>
-
-<p>Ta-da!</p>
-
-<p>So far I&#8217;m really enjoying Octopress &#8211; I chose it because I want to be able to do everything from the shell, and never leave my dev environment and my beloved ST2/emacs combination.</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-13T09:56:00+00:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/blog/'>blog</a>, <a class='category' href='/blog/categories/octopress/'>octopress</a>
-
-
-</div>
-	
-</div></article>
-
 <nav id="pagenavi">
     
         <a href="/" class="prev">Prev</a>
     
+    
+        <a href="/blog/page/3/" class="next">Next</a>
     
     <div class="center"><a href="/blog/archives">Blog Archives</a></div>
 </nav></div>

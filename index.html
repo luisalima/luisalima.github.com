@@ -7,7 +7,7 @@
 	<meta name="author" content="Luisa Lima">
 
 	
-	<meta name="description" content="The guys at Thoughtbot do an excellent job. I especially love shoulda and high_voltage. I have a love/hate relationship with factory_girl, so I &hellip;">
+	<meta name="description" content="Back when I was in undergrad, web programming was something considered to be a tad boring, unchallenging and chaotic. How things have changed during &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +90,185 @@
 
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/01/05/understanding-large-systems-on-the-web-interesting-links/">
+		
+			Understanding Large Systems on the Web - Interesting Links</a>
+	</h2>
+	<div class="entry-content">
+		<p>Back when I was in undergrad, web programming was something considered to be a tad boring, unchallenging and chaotic. How things have changed during my PhD :-) I assume, largely thanks to Google and Apple, the advent of smartphones and mobile. But I digress, yet again.</p>
+
+<p><a href="http://martinfowler.com/">Martin Fowler</a>, the father of software patterns, has <a href="http://martinfowler.com/articles/nosql-intro.pdf">an amazing introduction to nosql</a> (or, rather, &#8220;polyglot persistence&#8221;) which should remind us of why we have nosql systems: to facilitate horizontal scaling. That means that so many startups that are using nosql just because it&#8217;s fashionable should probably just use a traditional sql model and follow the &#8220;Premature optimization is the root of all evil&#8221; motto by Knuth.</p>
+
+<p>And now jumping from backend to frontend, he also has another amazing overview of <a href="http://martinfowler.com/articles/multiMobile/">developing software for multiple mobile devices</a>. The most obvious downside to writing multiple native apps is the cost of building several copies of the same application and then, especially, maintaining them. In my case, I started learning iOS programming some time ago, but didn&#8217;t pursue it actively at the time, and am now wondering whether learning multiple platforms is a good idea, or whether I should go with a cross-platform toolkit. The overview has a list of the problems of going down that road. The solution is again&#8230; mobile web apps:</p>
+
+<p>&#8220;Don&#8217;t try to make a web app work like a native app. This is the path to the Uncanny Valley. Instead focus on making it a usable web app, building on the familiarity of how the web works on devices.&#8221;</p>
+
+<p>In the end, the slideshow provides a nice algorithmic way to determine whether you should go the native route, the mobile web app route, or something in between, depending on whether the app is part of your core product or just a side channel to reach more customers. Highly recommended!</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-05T15:58:00+00:00" pubdate data-updated="true">Jan 5<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/mobile/'>mobile</a>, <a class='category' href='/blog/categories/nosql/'>nosql</a>, <a class='category' href='/blog/categories/sql/'>sql</a>, <a class='category' href='/blog/categories/web/'>web</a>
+
+
+</div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/01/04/random-notes-on-factory-girl-part-ii/">
+		
+			Random Notes on Factory Girl Part II</a>
+	</h2>
+	<div class="entry-content">
+		<p>More random/tutorialish aspects of my usage of the FactoryGirl gem. I do advise you to read their <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">getting started guide</a>, it helps a lot. This is more of a reference of the things I found most useful. If you have any questions/corrections/observations, let me know in the comments.</p>
+
+<h2>FactoryGirl and Polymorphic named associations</h2>
+
+<p>If you have polymorphic associations with different names, here&#8217;s how to go about it in factories:</p>
+
+<pre><code> factory :category, aliases: [:category_one, :category_two] </code></pre>
+
+
+<p>There are other approaches to this problem <a href="http://stackoverflow.com/questions/7747945/factorygirl-and-polymorphic-associations">here</a>, but I find this one to be the simplest and so far it hasn&#8217;t gotten me into trouble (perhaps yet :-) ).</p>
+
+<h2>Attributes_for</h2>
+
+<p>This is probably very obvious, but I find it useful to use attributes_for from FactoryGirl to build the valid attributes for use in controller specs.</p>
+
+<pre><code> def valid_attributes
+    FactoryGirl.attributes_for(:my_model)
+    end
+</code></pre>
+
+
+<p>One thing that is useful to know is that attributes_for ignores associations, and thus does not include attributes that are related to associations even if you have an association in the factory. <a href="http://stackoverflow.com/questions/10290286/factorygirl-why-does-attributes-for-omit-some-attributes">Here is a post at stackoverflow</a> that provides you with the foreign keys in the attributes if you need them.</p>
+
+<h2>Has_and_belongs_to_many associations</h2>
+
+<p>I&#8217;m just adding this for my own reference. It&#8217;s in the <a href="https://github.com/thoughtbot/factory_girl/wiki/Usage">FactoryGirl getting started wiki</a>.</p>
+
+<pre><code> FactoryGirl.define do
+  factory :person do
+    first_name { 'James' }
+    books {
+      Array(5..10).sample.times.map do
+        FactoryGirl.create(:book) # optionally add traits: FactoryGirl.create(:book, :book_description)
+      end
+    }
+  end
+end
+</code></pre>
+
+
+<p>There is more in FactoryGirl associations <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">here</a>.</p>
+
+<h2>DRYing up: Traits</h2>
+
+<p>I just discovered traits, which are ways to add state to a factory (read: create factories whose attributes have different values without having to go through aliases). I am <a href="http://robots.thoughtbot.com/post/23673635798/remove-duplication-with-factorygirls-traits">shamelessly copying Thoughtbot&#8217;s example</a> because I think it&#8217;s the clearest one to have here for your reference:</p>
+
+<pre><code> FactoryGirl.define do
+  factory :todo_item do
+    name 'Pick up a gallon of milk'
+
+    trait :completed do
+      complete true
+    end
+
+    trait :not_completed do
+      complete false
+    end
+  end
+end
+</code></pre>
+
+
+<h2>DRYing up: inheritance</h2>
+
+<p>Something that I wasn&#8217;t making much use of &#8211; you can nest factories, which allows you to create multiple factories for the same class without repeating common attributes:</p>
+
+<pre><code>
+factory :user do
+    name "testing"
+
+  factory :super_user do
+    super_powers true
+  end
+end
+</code></pre>
+
+
+<h2>Tracking factories</h2>
+
+<p>I followed the advice <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#activesupport-instrumentation">here</a> to track factories. I think it&#8217;s useful to know how factories are being used.</p>
+
+<h2>If you want to go really in depth&#8230;</h2>
+
+<p>You have a <a href="http://www.arailsdemo.com/posts/39">very nice post on code reading of the factorygirl gem here</a>. You can even learn something about how to do cool stuff in ruby/rails like:</p>
+
+<pre><code> def set(attribute, value)
+    @instance.send(:"#{attribute}=", value)
+  end
+</code></pre>
+
+
+<p>And that&#8217;s all, folks (for now&#8230;)!</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-04T20:25:00+00:00" pubdate data-updated="true">Jan 4<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/factory-girl/'>factory_girl</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/rspec/'>rspec</a>, <a class='category' href='/blog/categories/testing/'>testing</a>
+
+
+</div>
+	
+</div></article>
 
 
     <article class="post">
@@ -852,143 +1031,6 @@ it { should validate_confirmation_of(:password) } # NEW</code></pre></noscript><
 
 
 	<a class='category' href='/blog/categories/business/'>business</a>, <a class='category' href='/blog/categories/inspiring/'>inspiring</a>, <a class='category' href='/blog/categories/talks/'>talks</a>, <a class='category' href='/blog/categories/ted/'>ted</a>
-
-
-</div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/12/14/analytics-js/">
-		
-			Analytics Js & a Mash of Interesting Rails Stuff</a>
-	</h2>
-	<div class="entry-content">
-		<h2>Analytics.js</h2>
-
-<p>I don&#8217;t know whether this library is very common, but it definitely shows a lot of promise:</p>
-
-<p><a href="http://segmentio.github.com/analytics.js/">Segmentio&#8217;s Analytics.js</a></p>
-
-<p>It provides provider-agnostic hooks to route to analytics services. They also have a hosted version where the analytics services can be changed without touching the code. Looks really clean and neat.</p>
-
-<h2>Nice video: to_proc</h2>
-
-<p><a href="http://www.youtube.com/watch?v=aISNtCAZlMg">This video by CooperPress</a> explains in a very clear fashion how to use the &#8220;to_proc&#8221; feature of Ruby (and understand some weird code you might come across). It is also well worth it to subscribe to <a href="http://www.youtube.com/user/CooperPress?feature=watch">their other videos</a>.</p>
-
-<h2>Faster Rails partial rendering and caching</h2>
-
-<p>I sure will try out <a href="http://ninjasandrobots.com/rails-faster-partial-rendering-and-caching/">this gem (multi_fetch_fragments)</a> to optimize Rails when I get to that point of my work&#8230;</p>
-
-<h2>Indexes in Rails databases</h2>
-
-<p><a href="http://tomafro.net/2009/08/using-indexes-in-rails-index-your-associations">Extremely good article by Tom Ward on using indexes in rails associations</a>. An excellent guide to determine what indexes your app should include (no more, no less).</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-14T13:34:00+00:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/analytics/'>analytics</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/webdev/'>webdev</a>
-
-
-</div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/12/14/how-i-test/">
-		
-			How I Test - Part I: Environment</a>
-	</h2>
-	<div class="entry-content">
-		<p>Not that I am an authority in testing&#8230; this is just a compilation of the so-called &#8220;best practices&#8221; that I&#8217;ve been seeing around, as well as some extra tips from my (very limited) experience. I&#8217;d love to hear the feedback from more experienced people&#8230; I&#8217;m going to do several of these as I go along.</p>
-
-<h2>Gems I use</h2>
-
-<p>I test using <a href="http://rspec.info">rspec</a> and <a href="https://github.com/thoughtbot/shoulda">shoulda</a>, which dramatically reduces the size of the tests. But beware &#8211; rspec is a DSL, and I think that I only got a bit more intuition on what I was exactly testing after doing some tests in Test::Unit. I also use <a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a> for setting up the test data, instead of fixtures. Last but not least, the <a href="https://github.com/colszowka/simplecov">simplecov</a> gem is amazing, and although you shouldn&#8217;t rely on it to determine when to stop testing, it really is good to get a (very precise) sense of what&#8217;s covered and what&#8217;s not in their beautiful html reports.</p>
-
-<h2>General tips</h2>
-
-<p>When all your tests are red for no apparent reason, it&#8217;s because you were messing around with the db and then forgot to do</p>
-
-<pre><code>rake db:test:clone</code></pre>
-
-
-<p>Yup, the reason I am mentioning it here even though it seems completely obvious is because I am distracted and do that a lot&#8230; :-)</p>
-
-<h2>Tips for running guard/spork in vagrant</h2>
-
-<p>I use vagrant to keep my environment all neatly in one place. However, there are downsides. When running guard inside the guest OS, use</p>
-
-<pre><code>bundle exec guard -p</code></pre>
-
-
-<p>Otherwise, guard won&#8217;t detect changes in the guest filesystem.</p>
-
-<h2>FactoryGirl tips</h2>
-
-<p>You can keep all factories in one file, for me that is more intuitive (and also, I don&#8217;t have to keep opening files while I&#8217;m testing, it&#8217;s all in one place.)</p>
-
-<p>To try FactoryGirl methods in the console, run:</p>
-
-<pre><code>FactoryGirl.find_definitions</code></pre>
-
-
-<p>At least in my case, I would get a <a href="http://stackoverflow.com/questions/8409787/factorygirl-factory-not-registered-user-argumenterror">factory not registered</a> error when I didn&#8217;t do that.</p>
-
-<h2>Better Errors</h2>
-
-<p>Not exactly related to testing, but <a href="https://github.com/charliesome/better_errors">this gem</a> has been a life changer! When there is an error, the standard error page gets replaced by a much better and useful error page, which has a full trace, the local and instance variables that are set at the time, and a terminal that you can use to inspect and make changes to the variables in the models and controllers in real time (or code whatever you want). I know I already mentioned it in another post, but I can&#8217;t stress enough how cool this gem is!</p>
-
-<p>In the next posts, I&#8217;ll give an overview of how I test the models and controllers, which I only started testing this week!</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-14T11:43:00+00:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/rails-tips/'>rails_tips</a>, <a class='category' href='/blog/categories/rspec/'>rspec</a>, <a class='category' href='/blog/categories/testing/'>testing</a>
 
 
 </div>

@@ -4,7 +4,7 @@
   <title><![CDATA[Entreprevelopment adventures]]></title>
   <link href="http://luisalima.github.com/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2013-01-04T20:23:55+00:00</updated>
+  <updated>2013-01-07T09:31:09+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -12,6 +12,123 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Understanding large systems on the web - interesting links]]></title>
+    <link href="http://luisalima.github.com/blog/2013/01/05/understanding-large-systems-on-the-web-interesting-links/"/>
+    <updated>2013-01-05T15:58:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2013/01/05/understanding-large-systems-on-the-web-interesting-links</id>
+    <content type="html"><![CDATA[<p>Back when I was in undergrad, web programming was something considered to be a tad boring, unchallenging and chaotic. How things have changed during my PhD :-) I assume, largely thanks to Google and Apple, the advent of smartphones and mobile. But I digress, yet again.</p>
+
+<p><a href="http://martinfowler.com/">Martin Fowler</a>, the father of software patterns, has <a href="http://martinfowler.com/articles/nosql-intro.pdf">an amazing introduction to nosql</a> (or, rather, &#8220;polyglot persistence&#8221;) which should remind us of why we have nosql systems: to facilitate horizontal scaling. That means that so many startups that are using nosql just because it&#8217;s fashionable should probably just use a traditional sql model and follow the &#8220;Premature optimization is the root of all evil&#8221; motto by Knuth.</p>
+
+<p>And now jumping from backend to frontend, he also has another amazing overview of <a href="http://martinfowler.com/articles/multiMobile/">developing software for multiple mobile devices</a>. The most obvious downside to writing multiple native apps is the cost of building several copies of the same application and then, especially, maintaining them. In my case, I started learning iOS programming some time ago, but didn&#8217;t pursue it actively at the time, and am now wondering whether learning multiple platforms is a good idea, or whether I should go with a cross-platform toolkit. The overview has a list of the problems of going down that road. The solution is again&#8230; mobile web apps:</p>
+
+<p>&#8220;Don&#8217;t try to make a web app work like a native app. This is the path to the Uncanny Valley. Instead focus on making it a usable web app, building on the familiarity of how the web works on devices.&#8221;</p>
+
+<p>In the end, the slideshow provides a nice algorithmic way to determine whether you should go the native route, the mobile web app route, or something in between, depending on whether the app is part of your core product or just a side channel to reach more customers. Highly recommended!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Random notes on Factory Girl Part II]]></title>
+    <link href="http://luisalima.github.com/blog/2013/01/04/random-notes-on-factory-girl-part-ii/"/>
+    <updated>2013-01-04T20:25:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2013/01/04/random-notes-on-factory-girl-part-ii</id>
+    <content type="html"><![CDATA[<p>More random/tutorialish aspects of my usage of the FactoryGirl gem. I do advise you to read their <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">getting started guide</a>, it helps a lot. This is more of a reference of the things I found most useful. If you have any questions/corrections/observations, let me know in the comments.</p>
+
+<h2>FactoryGirl and Polymorphic named associations</h2>
+
+<p>If you have polymorphic associations with different names, here&#8217;s how to go about it in factories:</p>
+
+<pre><code> factory :category, aliases: [:category_one, :category_two] </code></pre>
+
+
+<p>There are other approaches to this problem <a href="http://stackoverflow.com/questions/7747945/factorygirl-and-polymorphic-associations">here</a>, but I find this one to be the simplest and so far it hasn&#8217;t gotten me into trouble (perhaps yet :-) ).</p>
+
+<h2>Attributes_for</h2>
+
+<p>This is probably very obvious, but I find it useful to use attributes_for from FactoryGirl to build the valid attributes for use in controller specs.</p>
+
+<pre><code> def valid_attributes
+    FactoryGirl.attributes_for(:my_model)
+    end
+</code></pre>
+
+
+<p>One thing that is useful to know is that attributes_for ignores associations, and thus does not include attributes that are related to associations even if you have an association in the factory. <a href="http://stackoverflow.com/questions/10290286/factorygirl-why-does-attributes-for-omit-some-attributes">Here is a post at stackoverflow</a> that provides you with the foreign keys in the attributes if you need them.</p>
+
+<h2>Has_and_belongs_to_many associations</h2>
+
+<p>I&#8217;m just adding this for my own reference. It&#8217;s in the <a href="https://github.com/thoughtbot/factory_girl/wiki/Usage">FactoryGirl getting started wiki</a>.</p>
+
+<pre><code> FactoryGirl.define do
+  factory :person do
+    first_name { 'James' }
+    books {
+      Array(5..10).sample.times.map do
+        FactoryGirl.create(:book) # optionally add traits: FactoryGirl.create(:book, :book_description)
+      end
+    }
+  end
+end
+</code></pre>
+
+
+<p>There is more in FactoryGirl associations <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">here</a>.</p>
+
+<h2>DRYing up: Traits</h2>
+
+<p>I just discovered traits, which are ways to add state to a factory (read: create factories whose attributes have different values without having to go through aliases). I am <a href="http://robots.thoughtbot.com/post/23673635798/remove-duplication-with-factorygirls-traits">shamelessly copying Thoughtbot&#8217;s example</a> because I think it&#8217;s the clearest one to have here for your reference:</p>
+
+<pre><code> FactoryGirl.define do
+  factory :todo_item do
+    name 'Pick up a gallon of milk'
+
+    trait :completed do
+      complete true
+    end
+
+    trait :not_completed do
+      complete false
+    end
+  end
+end
+</code></pre>
+
+
+<h2>DRYing up: inheritance</h2>
+
+<p>Something that I wasn&#8217;t making much use of &#8211; you can nest factories, which allows you to create multiple factories for the same class without repeating common attributes:</p>
+
+<pre><code>
+factory :user do
+    name "testing"
+
+  factory :super_user do
+    super_powers true
+  end
+end
+</code></pre>
+
+
+<h2>Tracking factories</h2>
+
+<p>I followed the advice <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#activesupport-instrumentation">here</a> to track factories. I think it&#8217;s useful to know how factories are being used.</p>
+
+<h2>If you want to go really in depth&#8230;</h2>
+
+<p>You have a <a href="http://www.arailsdemo.com/posts/39">very nice post on code reading of the factorygirl gem here</a>. You can even learn something about how to do cool stuff in ruby/rails like:</p>
+
+<pre><code> def set(attribute, value)
+    @instance.send(:"#{attribute}=", value)
+  end
+</code></pre>
+
+
+<p>And that&#8217;s all, folks (for now&#8230;)!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Random pseudo-tutorialish notes on Factory Girl, part I]]></title>
@@ -766,81 +883,6 @@ end
 
 
 <p>In the meanwhile, shortly browsed the code at <a href="https://github.com/rails">the Rails gihub project</a> and it&#8217;s really a nice way to learn more about rails&#8230; must do it more often.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Silencing nagging logs in rails]]></title>
-    <link href="http://luisalima.github.com/blog/2012/12/13/disabling-nagging-logs-in-rails/"/>
-    <updated>2012-12-13T10:20:00+00:00</updated>
-    <id>http://luisalima.github.com/blog/2012/12/13/disabling-nagging-logs-in-rails</id>
-    <content type="html"><![CDATA[<p>Once upon a time, I was trying to do some meaningful debugging in rails with</p>
-
-<pre><code> logger.debug </code></pre>
-
-
-<p>and I was being particularly nagged by these annoying messages from Webrick:</p>
-
-<pre><code> WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true [closed]
-</code></pre>
-
-
-<p>The way to solve this? I am using &#8216;thin&#8217; instead of Webrick as a development server (yeah, I know that there are <a href="https://bugs.ruby-lang.org/attachments/2300/204_304_keep_alive.patch">patches to solve this in Webrick</a> but I decided to go a bit aggressive instead).</p>
-
-<p>And another thing that nagged me were the asset pipeline messages with the gets for the css, js, images, etc. So one way to shut Sprockets up is given <a href="http://stackoverflow.com/questions/6312448/how-to-disable-logging-of-asset-pipeline-sprockets-messages-in-rails-3-1">here</a>, and just for the record:</p>
-
-<pre><code> # place this code in config/initializers/quiet_assets.rb
-    if Rails.env.development?
-  Rails.application.assets.logger = Logger.new('/dev/null')
-  Rails::Rack::Logger.class_eval do
-    def call_with_quiet_assets(env)
-      previous_level = Rails.logger.level
-      Rails.logger.level = Logger::ERROR if env['PATH_INFO'] =~ %r{^/assets/}
-      call_without_quiet_assets(env)
-    ensure
-      Rails.logger.level = previous_level
-    end
-    alias_method_chain :call, :quiet_assets
-  end
-end
-</code></pre>
-
-
-<p>Ahhhhh now I can actually see <strong>meaningful</strong> logs in my development log. <em>whew!</em></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[New Octopress blog...]]></title>
-    <link href="http://luisalima.github.com/blog/2012/12/13/new-post/"/>
-    <updated>2012-12-13T09:56:00+00:00</updated>
-    <id>http://luisalima.github.com/blog/2012/12/13/new-post</id>
-    <content type="html"><![CDATA[<p>I created this blog specifically to jot down notes of interesting / useful / meaningful stuff I find during my adventures with development, which I hope are useful to others.</p>
-
-<p>And to start with, here is a link to a post that really helped me out <a href="http://code.dblock.org/Octopress-setting-up-a-blog-and-contributing-to-an-existing-one">Octopress: Setting up a Blog and Contributing to an Existing One</a>. It wasn&#8217;t really clear to me from Octopress instructions that I had to run rake generate and rake deploy; I was just trying to make the git commits and push by hand (and becoming really frustrated by it). So, just for my own reference:</p>
-
-<pre><code> # do stuff in your blog, like rake new_post
-    # then generate the blog
-    rake generate
-    # then save the source branch and push it to Github
-    git add .
-    git commit -m "whatever message"
-    git push origin source
-    # and now, this is where the magic happens! this takes care
-    # of pushing everything automagically onto the master branch!
-    rake deploy
-</code></pre>
-
-
-<p>(depending on your system, you might need to run bundle exec followed by the rake commands).</p>
-
-<p>Oh, and also&#8230; to delete a post, delete it only from <pre><code>blog-root/source/_posts/post-title</code></pre> and then run the commands above again. The rake tasks from Octopress take care of everything.</p>
-
-<p>This cool minimalistic theme is from <a href="http://zespia.tw">zespia.tw</a>, and it&#8217;s called <a href="http://zespia.tw/Octopress-Theme-Slash/">Slash</a>.</p>
-
-<p>Ta-da!</p>
-
-<p>So far I&#8217;m really enjoying Octopress &#8211; I chose it because I want to be able to do everything from the shell, and never leave my dev environment and my beloved ST2/emacs combination.</p>
 ]]></content>
   </entry>
   

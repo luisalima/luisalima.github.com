@@ -1,0 +1,197 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Understanding large systems on the web - interesting links - Entreprevelopment adventures</title>
+	<meta name="author" content="Luisa Lima">
+
+	
+	<meta name="description" content="Back when I was in undergrad, web programming was something considered to be a tad boring, unchallenging and chaotic. How things have changed during &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Entreprevelopment adventures" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Entreprevelopment adventures</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:luisalima.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/luisamoyalima" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/luisalima" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:luisalima.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+<div id="banner" class="inner">
+	<div class="container">
+		<ul class="feed"></ul>
+	</div>
+	<small><a href="http://twitter.com/luisamoyalima">luisamoyalima</a> @ <a href="http://twitter.com">Twitter</a></small>
+	<div class="loading">Loading...</div>
+</div>
+<script src="/javascripts/twitter.js"></script>
+<script type="text/javascript">
+	(function($){
+		$('#banner').getTwitterFeed('luisamoyalima', 4, false);
+	})(jQuery);
+</script>
+
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Understanding Large Systems on the Web - Interesting Links</h2>
+	<div class="entry-content"><p>Back when I was in undergrad, web programming was something considered to be a tad boring, unchallenging and chaotic. How things have changed during my PhD :-) I assume, largely thanks to Google and Apple, the advent of smartphones and mobile. But I digress, yet again.</p>
+
+<p><a href="http://martinfowler.com/">Martin Fowler</a>, the father of software patterns, has <a href="http://martinfowler.com/articles/nosql-intro.pdf">an amazing introduction to nosql</a> (or, rather, &#8220;polyglot persistence&#8221;) which should remind us of why we have nosql systems: to facilitate horizontal scaling. That means that so many startups that are using nosql just because it&#8217;s fashionable should probably just use a traditional sql model and follow the &#8220;Premature optimization is the root of all evil&#8221; motto by Knuth.</p>
+
+<p>And now jumping from backend to frontend, he also has another amazing overview of <a href="http://martinfowler.com/articles/multiMobile/">developing software for multiple mobile devices</a>. The most obvious downside to writing multiple native apps is the cost of building several copies of the same application and then, especially, maintaining them. In my case, I started learning iOS programming some time ago, but didn&#8217;t pursue it actively at the time, and am now wondering whether learning multiple platforms is a good idea, or whether I should go with a cross-platform toolkit. The overview has a list of the problems of going down that road. The solution is again&#8230; mobile web apps:</p>
+
+<p>&#8220;Don&#8217;t try to make a web app work like a native app. This is the path to the Uncanny Valley. Instead focus on making it a usable web app, building on the familiarity of how the web works on devices.&#8221;</p>
+
+<p>In the end, the slideshow provides a nice algorithmic way to determine whether you should go the native route, the mobile web app route, or something in between, depending on whether the app is part of your core product or just a side channel to reach more customers. Highly recommended!</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-05T15:58:00+00:00" pubdate data-updated="true">Jan 5<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/mobile/'>mobile</a>, <a class='category' href='/blog/categories/nosql/'>nosql</a>, <a class='category' href='/blog/categories/sql/'>sql</a>, <a class='category' href='/blog/categories/web/'>web</a>
+
+
+</div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Luisa Lima
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'luisalima';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://luisalima.github.com/blog/2013/01/05/understanding-large-systems-on-the-web-interesting-links/';
+        var disqus_url = 'http://luisalima.github.com/blog/2013/01/05/understanding-large-systems-on-the-web-interesting-links/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-37431227-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>

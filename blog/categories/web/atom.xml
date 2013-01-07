@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: web | Entreprevelopment adventures]]></title>
+  <link href="http://luisalima.github.com/blog/categories/web/atom.xml" rel="self"/>
+  <link href="http://luisalima.github.com/"/>
+  <updated>2013-01-07T09:31:09+00:00</updated>
+  <id>http://luisalima.github.com/</id>
+  <author>
+    <name><![CDATA[Luisa Lima]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Understanding large systems on the web - interesting links]]></title>
+    <link href="http://luisalima.github.com/blog/2013/01/05/understanding-large-systems-on-the-web-interesting-links/"/>
+    <updated>2013-01-05T15:58:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2013/01/05/understanding-large-systems-on-the-web-interesting-links</id>
+    <content type="html"><![CDATA[<p>Back when I was in undergrad, web programming was something considered to be a tad boring, unchallenging and chaotic. How things have changed during my PhD :-) I assume, largely thanks to Google and Apple, the advent of smartphones and mobile. But I digress, yet again.</p>
+
+<p><a href="http://martinfowler.com/">Martin Fowler</a>, the father of software patterns, has <a href="http://martinfowler.com/articles/nosql-intro.pdf">an amazing introduction to nosql</a> (or, rather, "polyglot persistence") which should remind us of why we have nosql systems: to facilitate horizontal scaling. That means that so many startups that are using nosql just because it's fashionable should probably just use a traditional sql model and follow the "Premature optimization is the root of all evil" motto by Knuth.</p>
+
+<p>And now jumping from backend to frontend, he also has another amazing overview of <a href="http://martinfowler.com/articles/multiMobile/">developing software for multiple mobile devices</a>. The most obvious downside to writing multiple native apps is the cost of building several copies of the same application and then, especially, maintaining them. In my case, I started learning iOS programming some time ago, but didn't pursue it actively at the time, and am now wondering whether learning multiple platforms is a good idea, or whether I should go with a cross-platform toolkit. The overview has a list of the problems of going down that road. The solution is again... mobile web apps:</p>
+
+<p>"Don't try to make a web app work like a native app. This is the path to the Uncanny Valley. Instead focus on making it a usable web app, building on the familiarity of how the web works on devices."</p>
+
+<p>In the end, the slideshow provides a nice algorithmic way to determine whether you should go the native route, the mobile web app route, or something in between, depending on whether the app is part of your core product or just a side channel to reach more customers. Highly recommended!</p>
+]]></content>
+  </entry>
+  
+</feed>
