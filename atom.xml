@@ -4,7 +4,7 @@
   <title><![CDATA[Entreprevelopment adventures]]></title>
   <link href="http://luisalima.github.com/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2013-01-07T09:31:09+00:00</updated>
+  <updated>2013-01-09T16:02:42+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -12,6 +12,189 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How I test part IV -- testing controllers in rails]]></title>
+    <link href="http://luisalima.github.com/blog/2013/01/09/how-i-test-part-iv/"/>
+    <updated>2013-01-09T11:21:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2013/01/09/how-i-test-part-iv</id>
+    <content type="html"><![CDATA[<p>First and foremost, I advise you to <a href="http://everydayrails.com/2012/04/07/testing-series-rspec-controllers.html">read this post from Everyday Rails</a>. It gives a very nice overview, by controller method, of what controller tests should look like. Like Aaron, I had read about testing and noone advises you to test controllers &#8211; rather, they would say &#8220;test models and do integration testing, and controllers will be covered by those tests&#8221;. But as you can see in <a href="http://solnic.eu/2012/02/02/yes-you-should-write-controller-tests.html">&#8220;Yes, you should write controller tests!&#8221;</a>, controllers should be tested. I&#8217;ll post their reasons here and add a few reasons extra why to test controllers:</p>
+
+<ul>
+<li>Controllers are models, too;</li>
+<li>Controller specs can be written and ran more quickly than integration tests;</li>
+<li>(My own reason #1) It&#8217;s very easy to write them using the basic scaffholding provided;</li>
+<li>(My own reason #2) If they are not easy to write, it&#8217;s because you are doing some nasty complex not-that-CRUDdy stuff. Uh oh. Which is what was happening in my case.</li>
+</ul>
+
+
+<p>But mainly, I don&#8217;t see tests as testing instruments per se. I see tests as a way to reflect on your code, see how complex it is, and an opportunity for refactoring as well.</p>
+
+<p>That being said&#8230; What I did was to pick up the scaffholding and adapt it as needed, and here is the trouble that I ran into when testing controllers.</p>
+
+<p>First, run the scaffholding routing tests. Yeah, just go ahead and do it. And now correct them to account for all the nested resource paths that you have, as well as the paths that you don&#8217;t want to allow. You are going to need it.</p>
+
+<p>Now open your scaffholding controller tests. Each example refers to a single method of the controller, and you have tests for each action that the method must take. If you run them and they don&#8217;t behave as expected, there can be several reasons, but from my (very limited experience), here are the most common:</p>
+
+<ol>
+<li>you didn&#8217;t set your valid_attributes properly &#8211; including having nested attributes that are required and are not being set;</li>
+<li>you are using authentication and need a current_user (modifying valid_session);</li>
+<li>you have nested resources and so need to set the id(s) of the parent resource(s).</li>
+</ol>
+
+
+<p>Let&#8217;s go through each of these in order&#8230;</p>
+
+<h2>Attributes</h2>
+
+<p>First and foremost, have you tested your factories in your models? Good.</p>
+
+<p>What I usually do is to make use of the <em>FactoryGirl attributes_for</em> method and just stick it in valid_attributes:</p>
+
+<pre><code>def valid_attributes
+  FactoryGirl.attributes_for(:my_model)
+end
+</code></pre>
+
+
+<p>However, this won&#8217;t work when you have <em>validates_presence_of</em> for a has_one association. Say that my model has:</p>
+
+<pre><code>
+    has_one :banana
+    validates_presence_of :banana
+    accepts_nested_attributes_for :banana
+</code></pre>
+
+
+<p>Then, even if you have the association with the banana model in your &#8220;my_model&#8221; Factory, you&#8217;ll get an error because attributes_for does not include associations and thus banana is not there. To fix that, we do:</p>
+
+<pre><code>def valid_attributes
+    banana_attribs = FactoryGirl.attributes_for(:banana)
+  FactoryGirl.attributes_for(:my_model).merge({:banana_attributes => banana_attribs})
+end
+</code></pre>
+
+
+<p>Finally&#8230; if your model belongs_to another model, let&#8217;s say that it looks like this (can you tell I&#8217;m hungry?):</p>
+
+<pre><code>
+    has_one :banana
+    validates_presence_of :banana
+    accepts_nested_attributes_for :banana
+    belongs_to :strawberry
+</code></pre>
+
+
+<p>Assuming that you set up this association correctly in FactoryGirl, you&#8217;ll have a strawberry_id in your model&#8217;s attributes. You have two options: either to set it up as an attr_accessible, or to get rid of it in the valid_attributes in order not to get a security error:</p>
+
+<pre><code>def valid_attributes
+    banana_attribs = FactoryGirl.attributes_for(:banana)
+  FactoryGirl.attributes_for(:my_model).except(:strawberry_id).merge({:banana_attributes => banana_attribs})
+end
+</code></pre>
+
+
+<p>Disclaimer: I was going to write a method go go through all the associations and do this automagically, but then I figured that it was kind of cheating because it is really valuable, like I said, to reflect on the way that you are writing your code. At least for me, it is.</p>
+
+<h2>Authentication and authorization &#8211; you need valid session data and a current_user variable</h2>
+
+<p>If you are using any kind of authentication, you need to set up a valid current user and a valid session. Here&#8217;s <a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Controllers-and-Views-tests-with-Rails-3-%28and-rspec%29">how to do it if you are using Devise</a>:</p>
+
+<pre><code>before(:each) do
+  @request.env["devise.mapping"] = Devise.mappings[:user]
+  user = FactoryGirl.create(:user)
+  user.add_role(:master_of_all_fruits) # don't forget that if you are doing authorization, you need to set up the correct role as well
+    user.confirm! # or set a confirmed_at inside the factory. Only necessary if you are using the confirmable module
+  sign_in user
+end
+
+it "should have a current_user" do
+  subject.current_user.should_not be_nil
+end
+</code></pre>
+
+
+<p>Also, don&#8217;t forget to set up the session:</p>
+
+<pre><code>def valid_session
+  {"warden.user.user.key" => session["warden.user.user.key"]}
+end
+</code></pre>
+
+
+<p>The errors that are given are not clear at all in this case, so make sure to check that you didn&#8217;t forget to set up the valid session and the current_user!</p>
+
+<h2>Nested resources</h2>
+
+<p>If my_model is a nested resource, you need to adapt your controller spec in order to account for that. Suppose that we have</p>
+
+<pre><code>resources :strawberries do
+  resources :my_model do
+</code></pre>
+
+
+<p>When you run the scaffholding for my_model controller tests, you&#8217;ll get a &#8220;No route matches&#8230;&#8221; followed by a hash of my_model.</p>
+
+<p>So what you have to do is to:
+* add the strawberry_id to the actions that require a /strawberries/:strawberry_id/my_model route;
+* add the @strawberry to the redirects that require the same type of routes.</p>
+
+<p>What I do is to use a before(:each) that creates the required @strawberry:</p>
+
+<pre><code>before(:each) do
+    @strawberry = FactoryGirl.create(:strawberry)
+  end
+
+it "redirects to the created my_model" do
+post :create, {:strawberry_id => @strawberry.id, :my_model => valid_attributes}, valid_session
+response.should redirect_to([@strawberry, MyModel.last])
+end
+
+it "redirects to the my_models list" do
+  my_model = MyModel.create! valid_attributes
+  delete :destroy, {:strawberry_id => @strawberry.id, :id => my_model.to_param}, valid_session
+  response.should redirect_to(strawberry_my_models_url(@strawberry))
+end
+
+# Don't forget to create my_models for @strawberry in the nested route!
+describe "GET index" do
+  it "assigns all my_models as @my_models" do
+    my_model = MyModel.create! valid_attributes
+    @strawberry.my_models << my_model
+    get :index, {:strawberry_id => @strawberry.id}, valid_session
+    assigns(:my_models).should eq([my_model])
+  end
+end
+</code></pre>
+
+
+<p>What if you also have a route like this:</p>
+
+<pre><code> resources :my_models, :only => [:index, :show]
+</code></pre>
+
+
+<p>What I do is that I divide the tests into two contexts:</p>
+
+<pre><code> context "directly via /my_models" do
+  #...
+end
+
+context "via /strawberries/:strawberry_id/my_models" do
+  #...
+end
+</code></pre>
+
+
+<p>and place the &#8220;before(:each)&#8221; that creates @strawberry in the nested route context.</p>
+
+<h2>Conclusion</h2>
+
+<p>I managed to detect many bugs in my controllers doing this (especially variables that I had assumed not to be nil and that were not set). Testing controllers is easy and fast, so I strongly advise you to test your controllers!</p>
+
+<p>Eventually, I&#8217;ll also do a post on integration testing with rspec, but for now, <a href="http://everydayrails.com/2012/04/24/testing-series-rspec-requests.html">here&#8217;s another resource from Everyday Rails that covers the topic very nicely</a>. Enjoy!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Understanding large systems on the web - interesting links]]></title>
@@ -854,35 +1037,6 @@ git clone https://github.com/drakedevel/gsclient.git</code></pre>
 <p>Just installed this gem &#8211; <a href="https://github.com/charliesome/better_errors">Better errors</a>. It is a gem meant to help you out in development mode that replaces the standard Rails error page with a wayyyy better and more useful error page, featuring full stack trace, source code inspection for all stack frames, local and instance variable inspection, etc.</p>
 
 <p>I&#8217;m going to try it out today, but definitely beats the time spent looking at development logs (even if they are as clean and contained as mine after doing the changes described in <a href="http://luisalima.github.com/blog/2012/12/13/disabling-nagging-logs-in-rails">this post</a>).</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Adding automatic code reloading to rails console]]></title>
-    <link href="http://luisalima.github.com/blog/2012/12/13/adding-automatic-code-reloading-in-rails-console/"/>
-    <updated>2012-12-13T10:56:00+00:00</updated>
-    <id>http://luisalima.github.com/blog/2012/12/13/adding-automatic-code-reloading-in-rails-console</id>
-    <content type="html"><![CDATA[<p>So I have no idea why the rails console in development mode doesn&#8217;t already do this, since the whole idea of the console in development mode is for us to mess around and test random stuff in development mode, right? Anyway, I got inspired and helped by <a href="http://jkfill.com/">Jkfill</a> with his post on <a href="http://jkfill.com/2012/12/08/automatic-code-reloading-in-rails-console">Automatic Code Reloading in Rails Console</a>, so here goes, more for my records than yours since you should follow the instructions in his post. I am using Rails 3.2.9, so I had to copy the code from the <a href="https://github.com/rails/rails/blob/master/railties/lib/rails/console/app.rb#L25">reload! method in the rails console code</a>, which is not exactly the best practice, but it&#8217;s just for dev mode and it works :-)</p>
-
-<pre><code> #this should be in config/initializers/irb_reloading.rb
-    if defined?(IRB::Context) && !defined?(Rails::Server) && Rails.env.development?
-
-  class IRB::Context
-    def evaluate_with_reloading(line, line_no)
-
-        ActionDispatch::Reloader.cleanup!
-      ActionDispatch::Reloader.prepare!
-      evaluate_without_reloading(line, line_no)
-    end
-    alias_method_chain :evaluate, :reloading
-  end
-
-  puts "=> IRB code reloading enabled"
-end
-</code></pre>
-
-
-<p>In the meanwhile, shortly browsed the code at <a href="https://github.com/rails">the Rails gihub project</a> and it&#8217;s really a nice way to learn more about rails&#8230; must do it more often.</p>
 ]]></content>
   </entry>
   

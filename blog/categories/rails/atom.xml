@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Entreprevelopment adventures]]></title>
   <link href="http://luisalima.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://luisalima.github.com/"/>
-  <updated>2013-01-07T09:31:09+00:00</updated>
+  <updated>2013-01-09T16:02:42+00:00</updated>
   <id>http://luisalima.github.com/</id>
   <author>
     <name><![CDATA[Luisa Lima]]></name>
@@ -12,6 +12,189 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How I test part IV -- testing controllers in rails]]></title>
+    <link href="http://luisalima.github.com/blog/2013/01/09/how-i-test-part-iv/"/>
+    <updated>2013-01-09T11:21:00+00:00</updated>
+    <id>http://luisalima.github.com/blog/2013/01/09/how-i-test-part-iv</id>
+    <content type="html"><![CDATA[<p>First and foremost, I advise you to <a href="http://everydayrails.com/2012/04/07/testing-series-rspec-controllers.html">read this post from Everyday Rails</a>. It gives a very nice overview, by controller method, of what controller tests should look like. Like Aaron, I had read about testing and noone advises you to test controllers -- rather, they would say "test models and do integration testing, and controllers will be covered by those tests". But as you can see in <a href="http://solnic.eu/2012/02/02/yes-you-should-write-controller-tests.html">"Yes, you should write controller tests!"</a>, controllers should be tested. I'll post their reasons here and add a few reasons extra why to test controllers:</p>
+
+<ul>
+<li>Controllers are models, too;</li>
+<li>Controller specs can be written and ran more quickly than integration tests;</li>
+<li>(My own reason #1) It's very easy to write them using the basic scaffholding provided;</li>
+<li>(My own reason #2) If they are not easy to write, it's because you are doing some nasty complex not-that-CRUDdy stuff. Uh oh. Which is what was happening in my case.</li>
+</ul>
+
+
+<p>But mainly, I don't see tests as testing instruments per se. I see tests as a way to reflect on your code, see how complex it is, and an opportunity for refactoring as well.</p>
+
+<p>That being said... What I did was to pick up the scaffholding and adapt it as needed, and here is the trouble that I ran into when testing controllers.</p>
+
+<p>First, run the scaffholding routing tests. Yeah, just go ahead and do it. And now correct them to account for all the nested resource paths that you have, as well as the paths that you don't want to allow. You are going to need it.</p>
+
+<p>Now open your scaffholding controller tests. Each example refers to a single method of the controller, and you have tests for each action that the method must take. If you run them and they don't behave as expected, there can be several reasons, but from my (very limited experience), here are the most common:</p>
+
+<ol>
+<li>you didn't set your valid_attributes properly -- including having nested attributes that are required and are not being set;</li>
+<li>you are using authentication and need a current_user (modifying valid_session);</li>
+<li>you have nested resources and so need to set the id(s) of the parent resource(s).</li>
+</ol>
+
+
+<p>Let's go through each of these in order...</p>
+
+<h2>Attributes</h2>
+
+<p>First and foremost, have you tested your factories in your models? Good.</p>
+
+<p>What I usually do is to make use of the <em>FactoryGirl attributes_for</em> method and just stick it in valid_attributes:</p>
+
+<pre><code>def valid_attributes
+  FactoryGirl.attributes_for(:my_model)
+end
+</code></pre>
+
+
+<p>However, this won't work when you have <em>validates_presence_of</em> for a has_one association. Say that my model has:</p>
+
+<pre><code>
+    has_one :banana
+    validates_presence_of :banana
+    accepts_nested_attributes_for :banana
+</code></pre>
+
+
+<p>Then, even if you have the association with the banana model in your "my_model" Factory, you'll get an error because attributes_for does not include associations and thus banana is not there. To fix that, we do:</p>
+
+<pre><code>def valid_attributes
+    banana_attribs = FactoryGirl.attributes_for(:banana)
+  FactoryGirl.attributes_for(:my_model).merge({:banana_attributes => banana_attribs})
+end
+</code></pre>
+
+
+<p>Finally... if your model belongs_to another model, let's say that it looks like this (can you tell I'm hungry?):</p>
+
+<pre><code>
+    has_one :banana
+    validates_presence_of :banana
+    accepts_nested_attributes_for :banana
+    belongs_to :strawberry
+</code></pre>
+
+
+<p>Assuming that you set up this association correctly in FactoryGirl, you'll have a strawberry_id in your model's attributes. You have two options: either to set it up as an attr_accessible, or to get rid of it in the valid_attributes in order not to get a security error:</p>
+
+<pre><code>def valid_attributes
+    banana_attribs = FactoryGirl.attributes_for(:banana)
+  FactoryGirl.attributes_for(:my_model).except(:strawberry_id).merge({:banana_attributes => banana_attribs})
+end
+</code></pre>
+
+
+<p>Disclaimer: I was going to write a method go go through all the associations and do this automagically, but then I figured that it was kind of cheating because it is really valuable, like I said, to reflect on the way that you are writing your code. At least for me, it is.</p>
+
+<h2>Authentication and authorization -- you need valid session data and a current_user variable</h2>
+
+<p>If you are using any kind of authentication, you need to set up a valid current user and a valid session. Here's <a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Controllers-and-Views-tests-with-Rails-3-%28and-rspec%29">how to do it if you are using Devise</a>:</p>
+
+<pre><code>before(:each) do
+  @request.env["devise.mapping"] = Devise.mappings[:user]
+  user = FactoryGirl.create(:user)
+  user.add_role(:master_of_all_fruits) # don't forget that if you are doing authorization, you need to set up the correct role as well
+    user.confirm! # or set a confirmed_at inside the factory. Only necessary if you are using the confirmable module
+  sign_in user
+end
+
+it "should have a current_user" do
+  subject.current_user.should_not be_nil
+end
+</code></pre>
+
+
+<p>Also, don't forget to set up the session:</p>
+
+<pre><code>def valid_session
+  {"warden.user.user.key" => session["warden.user.user.key"]}
+end
+</code></pre>
+
+
+<p>The errors that are given are not clear at all in this case, so make sure to check that you didn't forget to set up the valid session and the current_user!</p>
+
+<h2>Nested resources</h2>
+
+<p>If my_model is a nested resource, you need to adapt your controller spec in order to account for that. Suppose that we have</p>
+
+<pre><code>resources :strawberries do
+  resources :my_model do
+</code></pre>
+
+
+<p>When you run the scaffholding for my_model controller tests, you'll get a "No route matches..." followed by a hash of my_model.</p>
+
+<p>So what you have to do is to:
+* add the strawberry_id to the actions that require a /strawberries/:strawberry_id/my_model route;
+* add the @strawberry to the redirects that require the same type of routes.</p>
+
+<p>What I do is to use a before(:each) that creates the required @strawberry:</p>
+
+<pre><code>before(:each) do
+    @strawberry = FactoryGirl.create(:strawberry)
+  end
+
+it "redirects to the created my_model" do
+post :create, {:strawberry_id => @strawberry.id, :my_model => valid_attributes}, valid_session
+response.should redirect_to([@strawberry, MyModel.last])
+end
+
+it "redirects to the my_models list" do
+  my_model = MyModel.create! valid_attributes
+  delete :destroy, {:strawberry_id => @strawberry.id, :id => my_model.to_param}, valid_session
+  response.should redirect_to(strawberry_my_models_url(@strawberry))
+end
+
+# Don't forget to create my_models for @strawberry in the nested route!
+describe "GET index" do
+  it "assigns all my_models as @my_models" do
+    my_model = MyModel.create! valid_attributes
+    @strawberry.my_models << my_model
+    get :index, {:strawberry_id => @strawberry.id}, valid_session
+    assigns(:my_models).should eq([my_model])
+  end
+end
+</code></pre>
+
+
+<p>What if you also have a route like this:</p>
+
+<pre><code> resources :my_models, :only => [:index, :show]
+</code></pre>
+
+
+<p>What I do is that I divide the tests into two contexts:</p>
+
+<pre><code> context "directly via /my_models" do
+  #...
+end
+
+context "via /strawberries/:strawberry_id/my_models" do
+  #...
+end
+</code></pre>
+
+
+<p>and place the "before(:each)" that creates @strawberry in the nested route context.</p>
+
+<h2>Conclusion</h2>
+
+<p>I managed to detect many bugs in my controllers doing this (especially variables that I had assumed not to be nil and that were not set). Testing controllers is easy and fast, so I strongly advise you to test your controllers!</p>
+
+<p>Eventually, I'll also do a post on integration testing with rspec, but for now, <a href="http://everydayrails.com/2012/04/24/testing-series-rspec-requests.html">here's another resource from Everyday Rails that covers the topic very nicely</a>. Enjoy!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Random notes on Factory Girl Part II]]></title>
@@ -366,151 +549,6 @@ b.save
 <h2>Why not Cucumber for request specs?</h2>
 
 <p>All the reasons are in this <a href="http://epimetrics.com/entries/3129">excellent post</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How I test part II - testing models]]></title>
-    <link href="http://luisalima.github.com/blog/2012/12/19/how-i-test-part-ii/"/>
-    <updated>2012-12-19T10:17:00+00:00</updated>
-    <id>http://luisalima.github.com/blog/2012/12/19/how-i-test-part-ii</id>
-    <content type="html"><![CDATA[<h2>Testing models</h2>
-
-<p>From <a href="http://guides.rubyonrails.org/testing.html">rails guides</a>:</p>
-
-<p>"Ideally, you would like to include a test for everything which could possibly break. It’s a good practice to have at least one test for each of your validations and at least one test for every method in your model."</p>
-
-<p>Which leads me to...</p>
-
-<h2>Why I use shoulda</h2>
-
-<p>I think that the best thing is just to take a peek at <a href="http://cheat.errtheblog.com/s/rspec_shoulda/">The shoulda cheat sheets</a>.</p>
-
-<p>You actually get a guide of what to test by looking at the cheat sheet! It's too bad that it's not up to date (actually I think that the whole site is not up to date -- even the gem doesn't work anymore, which I think is too bad :-( )</p>
-
-<p>Furthermore, it's great for lazy people and it's definitely easier on the eyes. Just check the following example:</p>
-
-<p><div><script src='https://gist.github.com/4339197.js?file=shoulda_model.rb'></script>
-<noscript><pre><code># without shoulda... tons of code :-)
-it &quot;should belong to person&quot; do
-	Model.reflect_on_association(:person).macro.should == :belongs_to
-end
-
-# with shoulda... one-liner!
-it{should belong_to(:person)}
-</code></pre></noscript></div>
-</p>
-
-<p>Convinced? ;-)</p>
-
-<h2>What I test exactly with shoulda</h2>
-
-<p>I go through the whole list of shoulda macros for models, and I just use and abuse them. Since the cheat sheet is not up to date, I created a new one (just for models for now) at:</p>
-
-<p><div><script src='https://gist.github.com/4339490.js?file=shoulda_cheat_model.rb'></script>
-<noscript><pre><code># updated from the original @ http://cheat.errtheblog.com/s/rspec_shoulda
-# just a subset -- models -- is included here. I'll update this, and create cheat sheets for others, as I go along.
-# I marked the ones I added with NEW and also added the links to the corresponding code, as I think it's useful.
-# Any comments/corrections are welcome!
-
-# =================  Data and Associations =======================
-# https://github.com/thoughtbot/shoulda-matchers/tree/master/lib/shoulda/matchers/active_record
-
-it { should_not have_db_column(:admin).of_type(:boolean) }
-it { should have_db_column(:salary).
-      of_type(:decimal).
-      with_options(:precision =&gt; 10, :scale =&gt; 2) }
-it { should have_readonly_attributes(:password) }
-it { should belong_to(:parent) }
-it { should have_db_index(:id) } # NEW
-
-it { should have_many(:friends) }
-it { should have_many(:enemies).through(:friends) }
-it { should have_many(:enemies).dependent(:destroy) }
-
-it { should have_one(:god) }
-
-it { should have_and_belong_to_many(:posts) }
-
-it {should accept_nested_attributes_for(:user)} # NEW
-
-# ================== Validation Matchers ============================
-# https://github.com/thoughtbot/shoulda-matchers/tree/master/lib/shoulda/matchers/active_model
-
-it { should validate_uniqueness_of(:keyword) }
-it { should validate_uniqueness_of(:keyword).with_message(/dup/) }
-it { should validate_uniqueness_of(:email).scoped_to(:name) }
-it { should validate_uniqueness_of(:email).
-              scoped_to(:first_name, :last_name) }
-it { should validate_uniqueness_of(:keyword).case_insensitive }
-
-it { should validate_presence_of(:name) }
-it { should validate_presence_of(:name).
-              with_message(/is not optional/) }
-
-it { should validate_numericality_of(:age) }
-
-it { should validate_format_of(:name).
-              with('12345').
-              with_message(/is not optional/) }
-it { should validate_format_of(:name).
-              not_with('12D45').
-              with_message(/is not optional/) }
-
-it { should validate_acceptance_of(:eula) }
-
-it { should ensure_length_of(:password).
-              is_at_least(6).
-              is_at_most(20) }
-it { should ensure_length_of(:name).
-              is_at_least(3).
-              with_short_message(/not long enough/) }
-it { should ensure_length_of(:ssn).
-              is_equal_to(9).
-              with_message(/is invalid/) }
-
-it { should ensure_inclusion_of(:age).in_range(0..100) }
-it { should_not allow_mass_assignment_of(:password) }
-it { should allow_mass_assignment_of(:first_name) }
-it { should validate_format_of(:first_name).with(&quot;Carl&quot;) }
-
-it { should validate_confirmation_of(:password) } # NEW</code></pre></noscript></div>
-</p>
-
-<p>Yes, it's a bit tedious. But (1) you make sure that you are actually testing all these details, which is extremely useful when you are constantly refactoring your code, and (2) it's not that slow with the multiple cursors of Sublime Text 2. You just need to have a scaffold.</p>
-
-<h2>What I test without shoulda</h2>
-
-<p>Apart from model methods, is there that much to test without shoulda? I test:</p>
-
-<ul>
-<li>Any model methods, extensively</li>
-<li>Callbacks, extremely extensively</li>
-<li>Some validations - but just to make sure I coded them right. See more of this perspective in <a href="http://www.christopherbloom.com/2011/07/12/testing-model-validations-in-rspec-the-short-and-sweet-way/">Testing model validations in rspec the short and sweet way</a></li>
-</ul>
-
-
-<p>... and for now, that's about it.</p>
-
-<h2>Regarding generating fake data</h2>
-
-<p>Like I mentioned before, I do use FactoryGirl extensively. Maybe that means that <a href="http://blog.steveklabnik.com/posts/2012-07-14-why-i-don-t-like-factory_girl">my models are complicated</a>? I don't know, but for now, I am sort of using good sense and stuff. Let's see what happens. I do use <a href="http://faker.rubyforge.org">Faker</a> as well. Come to think about it, will do a post on that eventually.</p>
-
-<h2>Random issues in testing models</h2>
-
-<p>When everything seems to be absolutely correct in the models and in the tests and you are still getting unexplainable errors, do restart guard. I already spent several hours messing around with the tests because guard didn't refresh the models. <a href="http://stackoverflow.com/questions/5855587/spork-is-really-great-but-how-can-i-get-it-to-refresh-validations-and-other-cod">There are automatic solutions</a>, but I didn't feel like hacking away the spork/guard configurations again... yet.</p>
-
-<h2>Random resources</h2>
-
-<ul>
-<li><p><a href="http://everydayrails.com/2012/03/19/testing-series-rspec-models-factory-girl.html">Everyday Rails: How I learned to test my Rails applications, Part 3: Model specs</a> - this has a very nice overview of the actual steps required to test models. Now I just cheat using shoulda, but it's very nice and useful to get a</p></li>
-<li><p><a href="http://www.christopherbloom.com/2011/07/12/testing-model-validations-in-rspec-the-short-and-sweet-way/">Testing model validations in rspec the short and sweet way</a> - it's a bit outdated, but describes how to test validations in a short way.</p></li>
-</ul>
-
-
-<hr />
-
-<p>Again, as I already mentioned, I am a beginner to rails and, consequently, in testing rails, so I might be doing/saying terribly wrong things. Any input is very much appreciated :-)</p>
 ]]></content>
   </entry>
   

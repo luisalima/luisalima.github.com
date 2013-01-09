@@ -7,7 +7,7 @@
 	<meta name="author" content="Luisa Lima">
 
 	
-	<meta name="description" content="Analytics.js I don&#8217;t know whether this library is very common, but it definitely shows a lot of promise: Segmentio&#8217;s Analytics.js It &hellip;">
+	<meta name="description" content="For anyone who works in business (especially startups), this is most probably (or most definitely) the most important TED talk that you&#8217;ll &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +90,54 @@
 
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2012/12/18/inspiring-ted-talk/">
+		
+			Inspiring TED Talk</a>
+	</h2>
+	<div class="entry-content">
+		<p>For anyone who works in business (especially startups), this is most probably (or most definitely) the most important TED talk that you&#8217;ll ever get to watch. Or the most important talk/piece of advice that you&#8217;ll ever get, I believe.</p>
+
+<p><a href="http://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action.html">How great leaders inspire action</a></p>
+
+<p>The fact is that this is what attracts me (and many people, probably) to startups. It&#8217;s just easier to find this sharing of common beliefs &#8211; and if it&#8217;s not, it&#8217;s the wrong startup.</p>
+
+<p><strong>People don&#8217;t buy what you do, they buy why you do it.</strong></p>
+
+<p>People buy what you believe in. Somehow this makes me believe in mankind a bit more :-)</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-18T11:06:00+00:00" pubdate data-updated="true">Dec 18<span>th</span>, 2012</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/business/'>business</a>, <a class='category' href='/blog/categories/inspiring/'>inspiring</a>, <a class='category' href='/blog/categories/talks/'>talks</a>, <a class='category' href='/blog/categories/ted/'>ted</a>
+
+
+</div>
+	
+</div></article>
 
 
     <article class="post">
@@ -572,66 +620,6 @@ git clone https://github.com/drakedevel/gsclient.git</code></pre>
 
 
 	<a class='category' href='/blog/categories/cool-gems/'>cool_gems</a>, <a class='category' href='/blog/categories/rails/'>rails</a>
-
-
-</div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/12/13/adding-automatic-code-reloading-in-rails-console/">
-		
-			Adding Automatic Code Reloading to Rails Console</a>
-	</h2>
-	<div class="entry-content">
-		<p>So I have no idea why the rails console in development mode doesn&#8217;t already do this, since the whole idea of the console in development mode is for us to mess around and test random stuff in development mode, right? Anyway, I got inspired and helped by <a href="http://jkfill.com/">Jkfill</a> with his post on <a href="http://jkfill.com/2012/12/08/automatic-code-reloading-in-rails-console">Automatic Code Reloading in Rails Console</a>, so here goes, more for my records than yours since you should follow the instructions in his post. I am using Rails 3.2.9, so I had to copy the code from the <a href="https://github.com/rails/rails/blob/master/railties/lib/rails/console/app.rb#L25">reload! method in the rails console code</a>, which is not exactly the best practice, but it&#8217;s just for dev mode and it works :-)</p>
-
-<pre><code> #this should be in config/initializers/irb_reloading.rb
-    if defined?(IRB::Context) && !defined?(Rails::Server) && Rails.env.development?
-
-  class IRB::Context
-    def evaluate_with_reloading(line, line_no)
-
-        ActionDispatch::Reloader.cleanup!
-      ActionDispatch::Reloader.prepare!
-      evaluate_without_reloading(line, line_no)
-    end
-    alias_method_chain :evaluate, :reloading
-  end
-
-  puts "=> IRB code reloading enabled"
-end
-</code></pre>
-
-
-<p>In the meanwhile, shortly browsed the code at <a href="https://github.com/rails">the Rails gihub project</a> and it&#8217;s really a nice way to learn more about rails&#8230; must do it more often.</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-13T10:56:00+00:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/console/'>console</a>, <a class='category' href='/blog/categories/rails/'>rails</a>
 
 
 </div>
