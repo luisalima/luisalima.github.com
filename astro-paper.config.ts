@@ -1,0 +1,39 @@
+import { defineAstroPaperConfig } from "./src/types/config";
+
+export default defineAstroPaperConfig({
+  site: {
+    url: "https://luisalima.com/",
+    title: "Luisa Lima",
+    description:
+      "Writing about software, AI-assisted development, and the work of building things.",
+    author: "Luisa Lima",
+    profile: "https://luisalima.com/",
+    ogImage: "default-og.jpg",
+    lang: "en",
+    timezone: "Europe/Lisbon",
+    dir: "ltr",
+  },
+  posts: {
+    perPage: 6,
+    perIndex: 4,
+    scheduledPostMargin: 15 * 60 * 1000,
+  },
+  features: {
+    lightAndDarkMode: true,
+    dynamicOgImage: true,
+    showArchives: true,
+    showBackButton: true,
+    editPost: { enabled: false },
+    search: "pagefind",
+  },
+  socials: [
+    { name: "github", url: "https://github.com/luisalima" },
+    { name: "linkedin", url: "https://www.linkedin.com/in/luisalima/" },
+    { name: "mail", url: "mailto:luisa@nubia-labs.com" },
+  ],
+  shareLinks: [
+    { name: "x", url: "https://x.com/intent/post?url=" },
+    { name: "linkedin", url: "https://www.linkedin.com/shareArticle?url=" },
+    { name: "mail", url: "mailto:?subject=See%20this%20post&body=" },
+  ],
+});
