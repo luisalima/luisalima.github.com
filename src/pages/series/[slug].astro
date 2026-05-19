@@ -1,0 +1,81 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import { postFilter } from "@/utils/postFilter";
+import { getPostUrl } from "@/utils/getPostPaths";
+import config from "@/config";
+
+export async function getStaticPaths() {
+  const seriesList = await getCollection("series");
+  return seriesList.map(s => ({ params: { slug: s.id }, props: { series: s } }));
+}
+
+const { series } = Astro.props;
+const { Content } = await render(series);
+
+const allPosts = (await getCollection("posts")).filter(postFilter);
+const chapters = allPosts
+  .filter(p => p.data.series?.id === series.id)
+  .sort((a, b) => {
+    const ao = a.data.seriesOrder ?? Number.POSITIVE_INFINITY;
+    const bo = b.data.seriesOrder ?? Number.POSITIVE_INFINITY;
+    if (ao !== bo) return ao - bo;
+    return a.data.pubDatetime.getTime() - b.data.pubDatetime.getTime();
+  });
+
+const statusLabel: Record<string, string> = {
+  ongoing: "Ongoing",
+  complete: "Complete",
+  planned: "Planned",
+};
+---
+
+<Layout
+  title={`${series.data.title} | ${config.site.title}`}
+  description={series.data.description}
+>
+  <Header />
+  <Breadcrumb />
+  <Main pageTitle={series.data.title} pageDesc={series.data.description}>
+    <p class="text-muted-foreground mb-6 text-sm">
+      {statusLabel[series.data.status] ?? series.data.status} · {chapters.length}
+      {chapters.length === 1 ? "chapter" : "chapters"}
+    </p>
+
+    <div class="app-prose mb-8">
+      <Content />
+    </div>
+
+    {
+      chapters.length === 0 ? (
+        <p class="text-muted-foreground italic">No chapters published yet.</p>
+      ) : (
+        <ol class="space-y-4">
+          {chapters.map((post, i) => (
+            <li class="border-border border-b pb-4 last:border-b-0">
+              <span class="text-muted-foreground mr-2 inline-block w-8 tabular-nums">
+                {(post.data.seriesOrder ?? i + 1).toString().padStart(2, "0")}.
+              </span>
+              <a
+                href={getPostUrl(post.id, post.filePath)}
+                class="hover:text-accent font-medium"
+              >
+                {post.data.title}
+              </a>
+              {post.data.description && (
+                <p class="text-muted-foreground ml-10 text-sm">
+                  {post.data.description}
+                </p>
+              )}
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </Main>
+  <Footer />
+</Layout>

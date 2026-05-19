@@ -1,0 +1,63 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import { postFilter } from "@/utils/postFilter";
+import config from "@/config";
+
+const seriesList = await getCollection("series");
+const allPosts = (await getCollection("posts")).filter(postFilter);
+
+const seriesWithCount = seriesList
+  .map(s => ({
+    ...s,
+    chapterCount: allPosts.filter(p => p.data.series?.id === s.id).length,
+  }))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const statusLabel: Record<string, string> = {
+  ongoing: "Ongoing",
+  complete: "Complete",
+  planned: "Planned",
+};
+---
+
+<Layout title={`Series | ${config.site.title}`}>
+  <Header />
+  <Breadcrumb />
+  <Main pageTitle="Series" pageDesc="Multi-chapter article series.">
+    {
+      seriesWithCount.length === 0 ? (
+        <p class="text-muted-foreground italic">
+          No series yet. Check back soon.
+        </p>
+      ) : (
+        <ul class="space-y-8">
+          {seriesWithCount.map(s => (
+            <li class="border-border border-b pb-6 last:border-b-0">
+              <a
+                href={`/series/${s.id}/`}
+                class="hover:text-accent text-xl font-semibold"
+              >
+                {s.data.title}
+              </a>
+              <div class="text-muted-foreground mt-1 text-sm">
+                <span>{statusLabel[s.data.status] ?? s.data.status}</span>
+                <span> · </span>
+                <span>
+                  {s.chapterCount}{" "}
+                  {s.chapterCount === 1 ? "chapter" : "chapters"}
+                </span>
+              </div>
+              <p class="mt-2">{s.data.description}</p>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </Main>
+  <Footer />
+</Layout>
