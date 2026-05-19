@@ -1,0 +1,208 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Grooveshark media center with raspberry pi - Entreprevelopment adventures</title>
+	<meta name="author" content="Luisa Lima">
+
+	
+	<meta name="description" content="&#8230; and better yet: in the command line. No more messing around with slooow browsers in the Pi. First, install mplayer if you don&#8217;t already &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/archive/atom.xml" rel="alternate" title="Entreprevelopment adventures" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/archive/favicon.png" rel="shortcut icon">
+	<link href="/archive/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Entreprevelopment adventures</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/archive/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/archive/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:luisalima.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/luisamoyalima" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/luisalima" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/archive/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:luisalima.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+<div id="banner" class="inner">
+	<div class="container">
+		<ul class="feed"></ul>
+	</div>
+	<small><a href="http://twitter.com/luisamoyalima">luisamoyalima</a> @ <a href="http://twitter.com">Twitter</a></small>
+	<div class="loading">Loading...</div>
+</div>
+<script src="/archive/javascripts/twitter.js"></script>
+<script type="text/javascript">
+	(function($){
+		$('#banner').getTwitterFeed('luisamoyalima', 4, false);
+	})(jQuery);
+</script>
+
+	
+	<div id="content" class="inner"><div style="background:#fffbea;border:1px solid #f0d77a;color:#5a4a00;padding:14px 18px;margin:20px 0;border-radius:5px;font-size:14px;line-height:1.5;"><strong>This is from my old blog (2012–2019), archived.</strong> New writing lives at <a href="/" style="color:#258fb8;text-decoration:underline;">luisalima.com</a>.</div><article class="post">
+	<h2 class="title">Grooveshark Media Center With Raspberry Pi</h2>
+	<div class="entry-content"><p>&#8230; and better yet: in the command line. No more messing around with slooow browsers in the Pi.</p>
+
+<p>First, install mplayer if you don&#8217;t already have it:</p>
+
+<pre><code> sudo apt-get install mplayer </code></pre>
+
+
+<p>Then, open ~/.mplayer/config and <a href="http://martin.ankerl.com/2006/06/10/pimp-my-mplayer/">pimp your player</a> by adding the following settings:</p>
+
+<pre><code> cache=8192
+cache-min=4 </code></pre>
+
+
+<p>Next, clone the <a href="https://github.com/drakedevel/gsclient">gsclient plugin</a> by <a href="https://github.com/drakedevel">drakedevel</a>:</p>
+
+<pre><code> 
+git clone https://github.com/drakedevel/gsclient.git</code></pre>
+
+
+<p>And now&#8230; RoCk and RoLL :-)</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-13T12:09:00+00:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/archive/blog/categories/grooveshark/'>grooveshark</a>, <a class='category' href='/archive/blog/categories/raspberrypi/'>raspberrypi</a>
+
+
+</div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Luisa Lima
+
+</footer>
+	<script src="/archive/javascripts/slash.js"></script>
+<script src="/archive/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'luisalima';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://luisalima.github.com/blog/2012/12/13/grooveshark-media-center-with-raspberry-pi/';
+        var disqus_url = 'http://luisalima.github.com/blog/2012/12/13/grooveshark-media-center-with-raspberry-pi/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-37431227-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>
