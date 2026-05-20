@@ -35,6 +35,7 @@ export default defineAstroPaperConfig({
       linkTitle: "Luisa Lima on Substack (Herding Agents)",
     },
     { name: "mail", url: "mailto:luisa@nubia-labs.com" },
+    { name: "rss", url: "/rss.xml" },
   ],
   shareLinks: [
     { name: "x", url: "https://x.com/intent/post?url=" },

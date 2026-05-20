@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
-import IconRss from "@/assets/icons/IconRss.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
@@ -53,46 +52,43 @@ const homePath = getRelativeLocaleUrl(locale, "");
     data-home-path={homePath}
     class="app-layout"
   >
-    <section id="hero" class="border-border border-b pt-8 pb-6">
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        Hi, I'm Luisa.
-      </h1>
-      <a
-        target="_blank"
-        href={getRelativeLocaleUrl(locale, "rss.xml")}
-        class="inline-block"
-        aria-label="RSS Feed"
-        title="RSS Feed"
-      >
-        <IconRss
-          width={20}
-          height={20}
-          class="stroke-accent scale-125 stroke-3 rtl:-rotate-90"
-        />
-        <span class="sr-only">RSS Feed</span>
-      </a>
-
-      <p>
-        I work on agentic AI systems and how to make them secure by design.
-        I write about the architectural decisions behind that here, and on
-        my Substack,
-        <LinkButton
-          class="hover:text-accent underline decoration-dashed underline-offset-4"
-          href="https://herdingagents.substack.com"
-        >
-          Herding Agents
-        </LinkButton>.
-      </p>
-      {
-        socials.length > 0 && (
-          <div class="mt-4 flex max-sm:flex-col sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">
-              {t.home.socialLinks}:
+    <section
+      id="hero"
+      class="border-border flex flex-col-reverse items-start gap-6 border-b pt-8 pb-6 sm:flex-row sm:items-center sm:gap-8"
+    >
+      <div class="flex-1">
+        <h1 class="my-4 inline-block text-4xl font-bold sm:my-4 sm:text-5xl">
+          Hi, I'm Luisa.
+        </h1>
+        <p>
+          I work on agentic AI systems and how to make them secure by design.
+          I write about the architectural decisions behind that here, and on
+          my Substack,
+          <LinkButton
+            class="hover:text-accent underline decoration-dashed underline-offset-4"
+            href="https://herdingagents.substack.com"
+          >
+            Herding Agents
+          </LinkButton>.
+        </p>
+        {
+          socials.length > 0 && (
+            <div class="mt-4 flex max-sm:flex-col sm:items-center">
+              <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">
+                {t.home.socialLinks}:
+              </div>
+              <Socials />
             </div>
-            <Socials />
-          </div>
-        )
-      }
+          )
+        }
+      </div>
+      <img
+        src="/avatar.jpg"
+        alt="Luisa Lima"
+        width="160"
+        height="160"
+        class="ring-border size-32 flex-none rounded-full object-cover ring-1 sm:size-40"
+      />
     </section>
 
     <section id="recent-essays" class="border-border border-b pt-12 pb-6">
