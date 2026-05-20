@@ -6,8 +6,6 @@ tags: ["ai-agents", "ai-assisted-coding", "safety", "human-in-the-loop", "oss", 
 canonicalURL: "https://herdingagents.substack.com/p/we-are-all-herding-agents"
 ---
 
-> Imported from [Substack](https://herdingagents.substack.com/p/we-are-all-herding-agents). Review before publishing — un-set `draft: true` when ready.
-
 We are all herding agents... are we thinking about the safest way to do that, or are we getting tempted and lost by the sheer speed of it all?
 
 Here’s what I believe.

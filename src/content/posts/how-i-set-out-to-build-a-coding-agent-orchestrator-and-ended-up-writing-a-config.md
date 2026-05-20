@@ -6,8 +6,6 @@ tags: ["coding-agents", "security", "config-management", "developer-tooling", "c
 canonicalURL: "https://herdingagents.substack.com/p/how-i-set-out-to-build-a-coding-agent"
 ---
 
-> Imported from [Substack](https://herdingagents.substack.com/p/how-i-set-out-to-build-a-coding-agent). Review before publishing — un-set `draft: true` when ready.
-
 Nowadays, like many software engineers, I don’t directly touch code much except for when I want to have some old-fashioned fun with Haskell.
 
 And because many of my projects are “researchy” and iterative in nature, I like having a conversation with the agents, rather than writing a big spec upfront (since I don’t even know the spec yet). Sometimes I have several conversations on the same project with several agents, since I value “hearing” different perspectives and thinking from different angles. Other times I’ll have several conversations in parallel on several projects.
