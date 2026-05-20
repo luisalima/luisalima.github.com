@@ -29,6 +29,11 @@ export default defineAstroPaperConfig({
   socials: [
     { name: "github", url: "https://github.com/luisalima" },
     { name: "linkedin", url: "https://www.linkedin.com/in/luisalima/" },
+    {
+      name: "substack",
+      url: "https://herdingagents.substack.com",
+      linkTitle: "Luisa Lima on Substack (Herding Agents)",
+    },
     { name: "mail", url: "mailto:luisa@nubia-labs.com" },
   ],
   shareLinks: [
