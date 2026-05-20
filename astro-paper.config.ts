@@ -4,8 +4,7 @@ export default defineAstroPaperConfig({
   site: {
     url: "https://luisalima.com/",
     title: "Luisa Lima",
-    description:
-      "Writing about software, AI-assisted development, and the work of building things.",
+    description: "Agentic AI systems, secure by design.",
     author: "Luisa Lima",
     profile: "https://luisalima.com/",
     ogImage: "default-og.jpg",
