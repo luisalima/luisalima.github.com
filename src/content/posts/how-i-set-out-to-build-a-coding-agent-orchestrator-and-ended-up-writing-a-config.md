@@ -2,7 +2,7 @@
 title: "How I set out to build a coding agent orchestrator and ended up writing a config auditor instead"
 pubDatetime: 2026-05-13T17:07:36.000Z
 description: "Building (almost) in public, coding agents, security, and breaking from platform lock-in"
-tags: ["substack"]
+tags: ["coding-agents", "security", "config-management", "developer-tooling", "claude-code", "oss"]
 canonicalURL: "https://herdingagents.substack.com/p/how-i-set-out-to-build-a-coding-agent"
 ---
 
