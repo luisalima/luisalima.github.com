@@ -3,7 +3,6 @@ title: "The most useful AI agents are dangerous by design"
 pubDatetime: 2026-05-04T10:22:26.000Z
 description: "The capabilities that make agents useful are the same ones that make them exploitable"
 tags: ["substack"]
-draft: true
 canonicalURL: "https://herdingagents.substack.com/p/the-most-useful-ai-agents-are-dangerous"
 ---
 

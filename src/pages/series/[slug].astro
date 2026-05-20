@@ -61,7 +61,7 @@ const statusLabel: Record<string, string> = {
                 {(post.data.seriesOrder ?? i + 1).toString().padStart(2, "0")}.
               </span>
               <a
-                href={getPostUrl(post.id, post.filePath)}
+                href={getPostUrl(post.data.kind, post.id, post.filePath)}
                 class="hover:text-accent font-medium"
               >
                 {post.data.title}

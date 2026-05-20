@@ -3,6 +3,12 @@ import { BLOG_PATH } from "@/content.config";
 import { slugifyStr } from "./slugify";
 import config from "@/config";
 
+export type PostKind = "note" | "essay";
+
+export function kindToCollection(kind: PostKind): "notes" | "essays" {
+  return kind === "note" ? "notes" : "essays";
+}
+
 function getPostPathSegments(filePath: string | undefined): string[] {
   return (
     filePath
@@ -31,22 +37,23 @@ function getPostSlugPath(id: string, filePath: string | undefined): string {
 /**
  * Returns the slug-only path for use as a route param in `getStaticPaths`.
  * No base prefix, no locale — Astro handles those at a higher level.
- * e.g. `/examples/my-post`
  */
 export function getPostSlug(id: string, filePath: string | undefined): string {
   return `/${getPostSlugPath(id, filePath)}`;
 }
 
 /**
- * Returns a fully navigable URL for use in `<a href>` and RSS links.
- * Applies both locale routing and the configured Astro base via
- * `getRelativeLocaleUrl`.
- * e.g. `/posts/my-post` or `/en/posts/my-post`
+ * Returns a fully navigable URL for a post: /essays/<slug> or /notes/<slug>.
  */
 export function getPostUrl(
+  kind: PostKind,
   id: string,
   filePath: string | undefined,
   locale: string | undefined = config.site.lang
 ): string {
-  return getRelativeLocaleUrl(locale, `posts/${getPostSlugPath(id, filePath)}`);
+  const collection = kindToCollection(kind);
+  return getRelativeLocaleUrl(
+    locale,
+    `${collection}/${getPostSlugPath(id, filePath)}`
+  );
 }

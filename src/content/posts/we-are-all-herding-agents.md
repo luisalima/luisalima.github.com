@@ -3,7 +3,6 @@ title: "We are all herding agents..."
 pubDatetime: 2026-04-13T15:19:38.000Z
 description: "Thoughts on doing it right"
 tags: ["substack"]
-draft: true
 canonicalURL: "https://herdingagents.substack.com/p/we-are-all-herding-agents"
 ---
 

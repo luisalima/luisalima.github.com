@@ -3,7 +3,6 @@ title: "How I set out to build a coding agent orchestrator and ended up writing 
 pubDatetime: 2026-05-13T17:07:36.000Z
 description: "Building (almost) in public, coding agents, security, and breaking from platform lock-in"
 tags: ["substack"]
-draft: true
 canonicalURL: "https://herdingagents.substack.com/p/how-i-set-out-to-build-a-coding-agent"
 ---
 
@@ -68,4 +67,3 @@ The next posts in this series go into layer 2 in detail: how to actually isolate
 
 sandshell is our answer at [Liwala](https://www.liwala.dev/) to the layer-1 piece. If you want to see what your own agents are configured to allow, the repo is [here](https://github.com/liwala/sandshell). The next posts will go up the stack.
 
-Thanks for reading! Subscribe for free to receive new posts and support my work.
