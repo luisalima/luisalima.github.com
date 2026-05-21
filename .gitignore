@@ -25,3 +25,8 @@ pnpm-debug.log*
 
 # pagefind
 public/pagefind
+
+# emacs backup and lock files
+*~
+\#*\#
+.\#*
