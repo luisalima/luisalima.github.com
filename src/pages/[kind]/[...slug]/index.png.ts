@@ -156,7 +156,7 @@ export const GET: APIRoute = async ({ props, url }) => {
                             type: "span",
                             props: {
                               style: { overflow: "hidden", fontWeight: "bold" },
-                              children: config.site.title,
+                              children: new URL(config.site.url).hostname,
                             },
                           },
                         ],
