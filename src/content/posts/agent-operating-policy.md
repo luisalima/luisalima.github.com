@@ -1,6 +1,6 @@
 ---
 title: "My Agent Operating Policy"
-pubDatetime: 2026-05-21T12:00:00.000Z
+pubDatetime: 2026-05-22T19:00:00.000Z
 description: "The brief I give agents I want operating with less supervision, under AGENTS.md."
 kind: note
 tags: ["ai-assisted-coding", "coding-agents", "tdd", "agent-operating-policy", "ai-autonomy"]
