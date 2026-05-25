@@ -1,6 +1,6 @@
 ---
 title: "There is no one-size-fits-all with AI"
-pubDatetime: 2026-05-24T08:00:00.000Z
+pubDatetime: 2026-05-25T08:00:00.000Z
 description: "There is no consensus yet on deploying AI into orgs, this is my bet on what the best practices should rest on."
 kind: note
 tags: ["ai-assisted-coding", "coding-agents", "ai-governance", "evals", "ai-best-practices"]
