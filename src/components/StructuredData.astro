@@ -1,0 +1,71 @@
+---
+// Emits schema.org JSON-LD for the site identity so search engines and agents
+// parse Luisa as an entity (with sameAs to her other profiles) rather than prose.
+//   type="website" → WebSite + Person graph (homepage)
+//   type="profile" → ProfilePage whose mainEntity is the Person (/about)
+import config from "@/config";
+
+const { site, socials } = config;
+
+type Props = { type: "website" | "profile" };
+const { type } = Astro.props;
+
+const abs = (path: string) => new URL(path, site.url).href;
+const PERSON_ID = abs("#person");
+
+// sameAs: profile-like socials from config + identities not surfaced in the UI.
+const sameAs = [
+  ...socials
+    .filter(s => ["github", "linkedin", "substack"].includes(s.name))
+    .map(s => s.url),
+  "https://x.com/__luisalima__",
+  "https://liwala.dev",
+];
+
+const person = {
+  "@type": "Person",
+  "@id": PERSON_ID,
+  name: site.author,
+  url: site.url,
+  image: abs("avatar.jpg"),
+  jobTitle: "Independent advisor on agentic AI systems",
+  description: site.description,
+  knowsAbout: [
+    "Agentic AI",
+    "AI agent security",
+    "AI-assisted software development",
+    "Secure software architecture",
+  ],
+  sameAs,
+};
+
+const data =
+  type === "profile"
+    ? {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "@id": abs("about/#profilepage"),
+        url: abs("about/"),
+        mainEntity: person,
+      }
+    : {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": abs("#website"),
+            url: site.url,
+            name: site.title,
+            description: site.description,
+            publisher: { "@id": PERSON_ID },
+          },
+          person,
+        ],
+      };
+---
+
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify(data)}
+/>

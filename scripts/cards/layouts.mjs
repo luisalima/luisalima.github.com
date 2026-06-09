@@ -2,7 +2,7 @@
 // the middle of the card; the frame, slide counter and footer chrome are added
 // by render.mjs. Plain object form (no JSX) to match src/pages/og.png.ts.
 
-import { COLORS, FONT } from "./theme.mjs";
+import { COLORS } from "./theme.mjs";
 
 // Satori has no auto-fit: pick a font size from text length so long slides don't
 // overflow. Buckets are tuned for the portrait preset; render.mjs scales them.

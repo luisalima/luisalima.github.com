@@ -8,6 +8,7 @@ import Footer from "@/components/Footer.astro";
 import Socials from "@/components/Socials.astro";
 import Card from "@/components/Card.astro";
 import LinkButton from "@/components/LinkButton.astro";
+import StructuredData from "@/components/StructuredData.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { postFilter } from "@/utils/postFilter";
 import { useTranslations } from "@/i18n";
@@ -45,6 +46,9 @@ const homePath = getRelativeLocaleUrl(locale, "");
 ---
 
 <Layout>
+  <Fragment slot="head">
+    <StructuredData type="website" />
+  </Fragment>
   <Header />
   <main
     id="main-content"
