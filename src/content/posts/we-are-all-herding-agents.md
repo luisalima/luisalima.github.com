@@ -3,7 +3,6 @@ title: "We are all herding agents..."
 pubDatetime: 2026-04-13T15:19:38.000Z
 description: "Thoughts on doing it right"
 tags: ["ai-agents", "ai-assisted-coding", "safety", "human-in-the-loop", "oss", "software-architecture"]
-canonicalURL: "https://herdingagents.substack.com/p/we-are-all-herding-agents"
 ---
 
 We are all herding agents... are we thinking about the safest way to do that, or are we getting tempted and lost by the sheer speed of it all?
