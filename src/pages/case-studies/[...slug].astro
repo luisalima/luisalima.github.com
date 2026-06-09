@@ -1,0 +1,122 @@
+---
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import CaseStudyLayout from "@/layouts/CaseStudyLayout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { getSortedCaseStudies, getCaseStudySlug } from "@/utils/getCaseStudies";
+import { slugifyStr } from "@/utils/slugify";
+import config from "@/config";
+
+export async function getStaticPaths() {
+  const studies = getSortedCaseStudies(await getCollection("caseStudies"));
+  return studies.map(cs => ({
+    params: { slug: getCaseStudySlug(cs.id) },
+    props: { cs },
+  }));
+}
+
+type Props = { cs: CollectionEntry<"caseStudies"> };
+
+const { cs } = Astro.props;
+const {
+  title,
+  description,
+  subject,
+  sector,
+  role,
+  timeframe,
+  stack,
+  results,
+  tags,
+  pubDatetime,
+  modDatetime,
+  canonicalURL,
+} = cs.data;
+
+const { Content } = await render(cs);
+
+const meta = [
+  { label: "Subject", value: subject },
+  { label: "Sector", value: sector },
+  { label: "Role", value: role },
+  { label: "When", value: timeframe },
+].filter(m => m.value);
+---
+
+<CaseStudyLayout
+  title={`${title} | ${config.site.title}`}
+  description={description}
+  canonicalURL={canonicalURL}
+  pubDatetime={pubDatetime}
+  modDatetime={modDatetime}
+  subject={subject}
+>
+  <Header />
+
+  <main id="main-content" class="app-layout" data-pagefind-body>
+    <p class="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+      Case study
+    </p>
+    <h1
+      style={{ viewTransitionName: slugifyStr(title.replaceAll(".", "-")) }}
+      class="text-accent mt-1 inline-block text-2xl font-bold sm:text-3xl"
+    >
+      {title}
+    </h1>
+    <p class="mt-2 text-lg">{description}</p>
+
+    <dl
+      class="border-border mt-6 grid grid-cols-2 gap-x-6 gap-y-3 border-y py-4 text-sm sm:grid-cols-4"
+    >
+      {
+        meta.map(m => (
+          <div>
+            <dt class="text-muted-foreground">{m.label}</dt>
+            <dd class="font-medium">{m.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    {
+      results.length > 0 && (
+        <section class="mt-6">
+          <h2 class="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+            Outcomes
+          </h2>
+          <ul class="mt-2 list-disc ps-5">
+            {results.map(r => (
+              <li class="font-medium">{r}</li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <article class="app-prose max-w-app mt-8 w-full">
+      <Content />
+    </article>
+
+    {
+      stack.length > 0 && (
+        <p class="text-muted-foreground mt-8 text-sm">
+          <span class="font-medium">Stack:</span> {stack.join(" · ")}
+        </p>
+      )
+    }
+
+    {
+      tags.length > 0 && (
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {tags.map(tag => (
+            <li class="border-border text-muted-foreground rounded border px-2 py-1 text-xs">
+              {tag}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </main>
+
+  <Footer />
+</CaseStudyLayout>

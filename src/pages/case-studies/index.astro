@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import { getSortedCaseStudies, getCaseStudyUrl } from "@/utils/getCaseStudies";
+import config from "@/config";
+
+const studies = getSortedCaseStudies(await getCollection("caseStudies"));
+
+const title = "Case studies";
+const desc =
+  "Selected client work and projects — building and securing agentic systems.";
+---
+
+<Layout title={`${title} | ${config.site.title}`} description={desc}>
+  <Header />
+  <Breadcrumb />
+  <Main pageTitle={title} pageDesc={desc}>
+    {
+      studies.length === 0 ? (
+        <p>Coming soon.</p>
+      ) : (
+        <ul>
+          {studies.map(cs => (
+            <li class="border-border my-6 border-b pb-6">
+              <a
+                href={getCaseStudyUrl(cs.id, Astro.currentLocale)}
+                class="text-accent inline-block text-lg font-medium decoration-dashed underline-offset-4 hover:underline"
+              >
+                <h2>{cs.data.title}</h2>
+              </a>
+              <p class="text-muted-foreground mt-1 text-sm">
+                {cs.data.subject}
+                {cs.data.sector && ` · ${cs.data.sector}`}
+              </p>
+              <p class="mt-2">{cs.data.description}</p>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </Main>
+  <Footer />
+</Layout>

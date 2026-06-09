@@ -52,4 +52,32 @@ const series = defineCollection({
     }),
 });
 
-export const collections = { posts, pages, series };
+const caseStudies = defineCollection({
+  loader: glob({
+    pattern: "**/[^_]*.{md,mdx}",
+    base: "./src/content/case-studies",
+  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      pubDatetime: z.date(),
+      modDatetime: z.date().optional().nullable(),
+      draft: z.boolean().optional(),
+      featured: z.boolean().optional(),
+      // "client" = customer engagement (anonymized by default); "project" = own work.
+      type: z.enum(["client", "project"]).default("client"),
+      // Display label: anonymized descriptor for clients, real name for own projects.
+      subject: z.string(),
+      sector: z.string().optional(),
+      role: z.string().optional(),
+      timeframe: z.string().optional(),
+      stack: z.array(z.string()).default([]),
+      results: z.array(z.string()).default([]),
+      tags: z.array(z.string()).default(["case-study"]),
+      ogImage: image().or(z.string()).optional(),
+      canonicalURL: z.string().optional(),
+    }),
+});
+
+export const collections = { posts, pages, series, caseStudies };

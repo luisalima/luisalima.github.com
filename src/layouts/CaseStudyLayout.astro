@@ -1,0 +1,69 @@
+---
+// Head + Article JSON-LD for a case study. The author/publisher reference the
+// site's #person entity (see StructuredData.astro) so each study reinforces the
+// same identity graph. Visual rendering lives in the detail page.
+import Layout from "./Layout.astro";
+import config from "@/config";
+
+type Props = {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalURL?: string;
+  pubDatetime?: Date;
+  modDatetime?: Date | null;
+  subject?: string;
+};
+
+const { site } = config;
+const {
+  title,
+  description,
+  ogImage,
+  canonicalURL,
+  pubDatetime,
+  modDatetime,
+  subject,
+} = Astro.props;
+
+const personRef = {
+  "@type": "Person",
+  "@id": new URL("#person", site.url).href,
+  name: site.author,
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title ?? site.title,
+  ...(description && { description }),
+  ...(ogImage && { image: ogImage }),
+  ...(canonicalURL && { url: canonicalURL, mainEntityOfPage: canonicalURL }),
+  ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
+  ...(modDatetime && { dateModified: modDatetime.toISOString() }),
+  ...(subject && { about: subject }),
+  author: { ...personRef, url: site.profile ?? site.url },
+  publisher: personRef,
+};
+---
+
+<Layout {title} {description} {ogImage} {canonicalURL}>
+  <Fragment slot="head">
+    <meta property="og:type" content="article" />
+    {
+      pubDatetime && (
+        <meta
+          property="article:published_time"
+          content={pubDatetime.toISOString()}
+        />
+      )
+    }
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(structuredData)}
+    />
+  </Fragment>
+
+  <slot />
+</Layout>

@@ -5,6 +5,10 @@ import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { getPostUrl } from "@/utils/getPostPaths";
+import {
+  getSortedCaseStudies,
+  getCaseStudyUrl,
+} from "@/utils/getCaseStudies";
 import config from "@/config";
 
 export const GET: APIRoute = async ({ site }) => {
@@ -18,6 +22,14 @@ export const GET: APIRoute = async ({ site }) => {
   const essays = posts.filter(p => p.data.kind === "essay").map(item);
   const notes = posts.filter(p => p.data.kind === "note").map(item);
 
+  const studies = getSortedCaseStudies(await getCollection("caseStudies")).map(
+    cs =>
+      `- [${cs.data.title}](${abs(getCaseStudyUrl(cs.id, config.site.lang))}): ${cs.data.description}`
+  );
+  const caseStudiesSection = studies.length
+    ? `\n## Case studies\n${studies.join("\n")}\n`
+    : "";
+
   const body = `# ${config.site.author}
 
 > ${config.site.description} Independent advisor on agentic AI systems — essays and notes on building and securing AI agents, and breaking from platform lock-in.
@@ -27,6 +39,7 @@ ${essays.join("\n")}
 
 ## Notes
 ${notes.join("\n")}
+${caseStudiesSection}
 
 ## Elsewhere
 - [Herding Agents — Substack newsletter](https://herdingagents.substack.com)
