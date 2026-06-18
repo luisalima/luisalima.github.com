@@ -4,6 +4,12 @@ on:
   push:
     branches: [master]
   workflow_dispatch:
+  # Hourly rebuild so posts with a future pubDatetime publish themselves.
+  # A static build evaluates the schedule only at build time, so without this
+  # a scheduled post stays invisible until the next push. GitHub may delay
+  # cron runs under load, so worst-case latency is ~1h + a few minutes.
+  schedule:
+    - cron: "0 * * * *"
 
 permissions:
   contents: read
