@@ -9,14 +9,16 @@ tags: ["coding-agents", "agentic-architecture", "ai-security", "developer-toolin
 ---
 
 Skills are the new agents. All you need to do to create a specialized
-agent nowadays is to use Claude Code/Codex, hand it a set of skills
-and let it run. 
+agent nowadays is to use a harness such as Claude Code, Codex, or even OpenClaw and Hermes,
+hand it a set of skills and let it run. 
 
-Skills are meant to enable agent capabilities. However, I would also argue that
+Skills were originally meant to enable agent capabilities. 
+However, I believe that with the sophisticated new harnesses,
 skills _are_ the new agents, and that all we need in order
-to develop an "agent" is a capable base model, a loop, and the right skills.
+to develop an "agent" is a capable base model, a good harness running the
+agent loop, and the right skills.
 
-## What are skills?
+## What are skills, and what is a harness?
 
 Skills are bundles of text files with specialized instructions for agents,
 and, occasionally, scripts that act as tools that can be called by the agent.
@@ -28,14 +30,17 @@ agent loads on demand, plus, occasionally, a script or two it can call. A plugin
 is essentially a packaged skill: the same idea, bundled with a little wiring so
 an agent can discover, install, and invoke it.
 
-## What is a harness and why that matters
+A harness is the software layer around an AI model; think of 
+a harness as an environment that provides the AI model with the tools
+and limits it needs to function, like an agent operating system.
 
-And, increasingly,
-people use coding agents as orchestrators of agents that base
-their capabilities on specialized skills. The coding agents
-such as Codex and Claude offer the loop/substrate on which
-these specialized agents (via skills) can easily run without
-extra investment in development.
+Harnesses enable AI models to become "agents". Claude Code, Codex, and even
+personal AI agents such as OpenClaw and Hermes put the "operating system" around
+the AI model.
+
+And, increasingly, people use these harnesses as orchestrators of agents whose
+capabilities come from specialized skills, running on top with no extra
+investment in development.
 
 
 ## Why do I think skills are the new agents?
@@ -44,7 +49,8 @@ For most of the last two years, building an "agent" meant building a system: a
 bespoke prompt, a hand-wired set of tools, an orchestration loop, an eval
 harness. The loop was the hard, expensive part.
 
-That part is now commodity. Claude Code, Codex, and the [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)
+That part is now commodity. Claude Code, Codex, 
+and the [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)
 hand you a capable base model and a production-grade loop for free; you can even
 use the SDK to wrap that loop into a deployable agent of your own. What's left,
 the thing that actually separates a security-review agent from a release-notes
@@ -66,8 +72,8 @@ software development workflows to agents.
 See the example of [gstack](https://github.com/garrytan/gstack) and my own example,
 my [agent policy kit](https://github.com/luisalima/agent-policy-kit).
 
-Skills are a way to create compound knowledge and give weaker models
-a structured process that you can give the weaker LLM to follow.
+Skills are a way to create compound knowledge and give weaker models a
+structured process to follow.
 
 But this goes beyond development. 
 
@@ -79,12 +85,11 @@ The [team at Meta built an AI second brain with skills](https://medium.com/@Anal
 Skills are spreading fast enough that distribution is becoming its own layer.
 The bigger entry points today:
 
-- [Vercel's skills directory](https://github.com/vercel-labs/skills) — a growing, browsable catalog.
-- [Claude plugins](https://claude.com/plugins) — Anthropic's own packaged-skill marketplace.
+- [Vercel's skills directory](https://www.skills.sh/): a growing, browsable catalog.
+- [Claude plugins](https://claude.com/plugins): Anthropic's own packaged-skill marketplace.
 
 …plus a long tail of GitHub repos and personal collections. Discovery is getting
-better fast. But discovery is the easy part: as we'll see, nobody has yet solved
-versioning, integrity, or trust.
+better fast. But discovery is only one side of the story.
 
 ## And yet...
 
