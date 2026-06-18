@@ -1,10 +1,10 @@
 ---
 title: "Skills are the new agents; an ode to skills, and the risks"
-pubDatetime: 2026-06-12T12:00:00.000Z
+pubDatetime: 2026-06-19T08:00:00.000Z
 description: "Coding agents are becoming orchestrators of specialized skills. 
 But the ecosystem is fragmented, unversioned, and largely unaudited."
 kind: essay
-draft: true
+draft: false
 tags: ["coding-agents", "agentic-architecture", "ai-security", "developer-tooling", "oss"]
 ---
 
@@ -47,7 +47,8 @@ investment in development.
 
 For most of the last two years, building an "agent" meant building a system: a
 bespoke prompt, a hand-wired set of tools, an orchestration loop, an eval
-harness, and so on. The loop was the hard, expensive part.
+harness, and so on. The loop wasn't the hardest part; but making
+sure it was reliable was indeed slow and expensive.
 
 That part is now commodity. Claude Code, Codex, 
 and the [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)

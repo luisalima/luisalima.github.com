@@ -1,9 +1,9 @@
 ---
 title: "Skills are just text files. So where's the lockfile?"
-pubDatetime: 2026-06-18T08:00:00.000Z
+pubDatetime: 2026-06-19T08:00:00.000Z
 description: "Skill distribution is a mess: no manifest, no version pinning, no lockfile. A skill is a prompt injected into a privileged agent, so it's a supply-chain problem. The boring fix already exists."
 kind: essay
-draft: true
+draft: false
 tags: ["coding-agents", "developer-tooling", "ai-security", "oss"]
 ---
 
