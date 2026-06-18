@@ -1,5 +1,5 @@
 ---
-title: "You inherited a developer's attack surface"
+title: "Are you using Claude Code? You inherited a developer's attack surface"
 pubDatetime: 2026-06-19T12:00:00.000Z
 description: "Coding agents hand non-developers a developer's full attack surface in an afternoon, without the years of instinct that normally come with it. The exposure is identical; the defenses are absent. The fix has to live in the defaults."
 kind: essay
