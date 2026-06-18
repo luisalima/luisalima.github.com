@@ -28,13 +28,13 @@ I won't bother you with the full anatomy of a skill in this post; the gist is
 simple. A skill is a folder of plain-text instructions (a `SKILL.md`) that an
 agent loads on demand, plus, occasionally, a script or two it can call. A plugin
 is essentially a packaged skill: the same idea, bundled with a little wiring so
-an agent can discover, install, and invoke it.
+an agent can discover, install, and invoke it directly while executing.
 
 A harness is the software layer around an AI model; think of 
 a harness as an environment that provides the AI model with the tools
 and limits it needs to function, like an agent operating system.
 
-Harnesses enable AI models to become "agents". Claude Code, Codex, and even
+Harnesses are what enable AI models to become "agents". Claude Code, Codex, and even
 personal AI agents such as OpenClaw and Hermes put the "operating system" around
 the AI model.
 
@@ -47,7 +47,7 @@ investment in development.
 
 For most of the last two years, building an "agent" meant building a system: a
 bespoke prompt, a hand-wired set of tools, an orchestration loop, an eval
-harness. The loop was the hard, expensive part.
+harness, and so on. The loop was the hard, expensive part.
 
 That part is now commodity. Claude Code, Codex, 
 and the [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)
@@ -57,7 +57,7 @@ the thing that actually separates a security-review agent from a release-notes
 agent, is the skills you give it.
 
 So I mean it fairly literally: the loop is substrate, and the skill is the part
-you're really authoring. It carries the process, the judgment, the intent. The
+you're really authoring. It carries the process, the judgment and the intent. The
 skill is the agent.
 
 ## Skills in development
@@ -80,27 +80,47 @@ But this goes beyond development.
 Many people are using skills to [build a second brain](https://github.com/coleam00/second-brain-skills). 
 The [team at Meta built an AI second brain with skills](https://medium.com/@AnalyticsAtMeta/how-we-built-an-ai-second-brain-for-60k-knowledge-workers-78c507dd795b).
 
-## Skill marketplaces
+I think that, in the future, we will see more and more "bundles" of skills
+being packaged as a business, and I see this as an amazing
+way for solopreneurs to scale themselves. David Arnoux, who I collaborate with, is
+[one such example](https://www.heyarnoux.com/gtm-brain/); he built a GTM Second Brain 
+where he essentially "cloned" his skills into a Claude Code package.
 
-Skills are spreading fast enough that distribution is becoming its own layer.
-The bigger entry points today:
+Skills are also spreading fast enough that distribution is becoming its own layer.
+The bigger entry points today for "single" skills are [Vercel's skills directory](https://www.skills.sh/),
+which is a growing, browsable catalog, and [Claude plugins](https://claude.com/plugins),
+which is Anthropic's own packaged-skill marketplace. But the market is spreading fast
+and there are several alternatives, each with its own CLIs and install methods.
 
-- [Vercel's skills directory](https://www.skills.sh/): a growing, browsable catalog.
-- [Claude plugins](https://claude.com/plugins): Anthropic's own packaged-skill marketplace.
+There is also a long tail of GitHub repos and personal collections,
+the preferred method for developers to publish their skills,
+sometimes also packaged as an npm package.
 
-…plus a long tail of GitHub repos and personal collections. Discovery is getting
-better fast. But discovery is only one side of the story.
+But discovery is only one side of the story.
 
-## And yet...
 
-- Skills are either discovered from github or the multiple (fragmented) ecosystem of skill marketplaces.
-- There is no package management system for bundling skills and making sure that versions are pinned 
+## But the infrastructure isn't ready yet
+
+We are seeing the first hints at a future where individuals
+publish (and perhaps sell) their packages of skills for several use cases:
+marketing, GTM, writing, development, etc.
+
+However, skills are either discovered from github or the multiple (fragmented) ecosystem of skill marketplaces.
+
+There is no package management system for bundling skills and making sure that versions are pinned 
 (although there are conversations on that in the vercel skills repo, to which I did my own contribution
 via [my skills-lock](https://github.com/luisalima/skills-lock) package.json approach for locking skill installs).
-- Skills also pose a threat because many skills package code, which is not audited.
+
+Skills also pose a threat: not only because many skills package code, which is not audited 
+(and, in many cases, unversioned), but also because they inject prompts into 
+privileged agents. And, if [all useful AI agents are dangerous](/essays/the-most-useful-ai-agents-are-dangerous-by-design/),
+useful AI agents with a myriad of skills coming from different sources are
+even more dangerous.
 
 If skills _are_ the new agents, then an unaudited skill is an unaudited agent
 running with your privileges, and we're shipping them through a channel with none
 of the controls we'd demand of code: no manifest, no pinning, no review. That's
-the gap I think matters most, and where I started pulling the thread, with
+the gap I think matters most, and the one where I started pulling the thread, with
 [skills-lock](https://github.com/luisalima/skills-lock) and [skills-need-a-lockfile](/essays/skills-need-a-lockfile/).
+
+Skills are not "just text files". Skills are the new agents, and they need to be secured.
