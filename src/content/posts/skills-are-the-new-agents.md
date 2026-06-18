@@ -10,22 +10,30 @@ tags: ["coding-agents", "agentic-architecture", "ai-security", "developer-toolin
 
 Skills are the new agents. All you need to do to create a specialized
 agent nowadays is to use Claude Code/Codex, hand it a set of skills
-and let it run. You can even use the [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)
-to wrap that loop into a deployable agent of your own.
+and let it run. 
 
-Skills enable agent capabilities. However, I would also argue that
+Skills are meant to enable agent capabilities. However, I would also argue that
 skills _are_ the new agents, and that all we need in order
 to develop an "agent" is a capable base model, a loop, and the right skills.
 
-## Going back to the basics
+## What are skills?
 
 Skills are bundles of text files with specialized instructions for agents,
-and, occasionally, shortcuts for capabilities that agents need. And, increasingly,
+and, occasionally, scripts that act as tools that can be called by the agent.
+They are, essentially, shortcuts for capabilities that agents need. 
+
+I am not going to bother you with the anatomy of a skill in this post.
+For this purpose, 
+A plugin is essentially a packaged skill.
+
+And, increasingly,
 people use coding agents as orchestrators of agents that base
 their capabilities on specialized skills. The coding agents
 such as Codex and Claude offer the loop/substrate on which
 these specialized agents (via skills) can easily run without
 extra investment in development.
+
+## Skills in development
 
 Many developers are publishing their "skill packages":
 
@@ -42,9 +50,15 @@ a structured process that you can give the weaker LLM to follow.
 
 But this goes beyond development. 
 
-Many people are using skills to [build a second brain](https://github.com/coleam00/second-brain-skills). The [team at Meta built an AI second brain with skills](https://medium.com/@AnalyticsAtMeta/how-we-built-an-ai-second-brain-for-60k-knowledge-workers-78c507dd795b).
+Many people are using skills to [build a second brain](https://github.com/coleam00/second-brain-skills). 
+The [team at Meta built an AI second brain with skills](https://medium.com/@AnalyticsAtMeta/how-we-built-an-ai-second-brain-for-60k-knowledge-workers-78c507dd795b).
 
-And yet...
+## Skill marketplaces
+
+- [Vercel's skills directory](https://github.com/vercel-labs/skills)
+- [Claude plugins](https://claude.com/plugins)
+
+## And yet...
 
 - Skills are either discovered from github or the multiple (fragmented) ecosystem of skill marketplaces.
 - There is no package management system for bundling skills and making sure that versions are pinned 
@@ -56,4 +70,9 @@ If skills _are_ the new agents, then an unaudited skill is an unaudited agent
 running with your privileges, and we're shipping them through a channel with none
 of the controls we'd demand of code: no manifest, no pinning, no review. That's
 the gap I think matters most, and where I started pulling the thread, with
-[skills-lock](https://github.com/luisalima/skills-lock).
+[skills-lock](https://github.com/luisalima/skills-lock) and [skills-need-a-lockfile](/essays/skills-need-a-lockfile/).
+
+## Why do I think skills are the new agents?
+
+You can even use the [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)
+to wrap that loop into a deployable agent of your own.
