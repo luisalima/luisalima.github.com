@@ -1,6 +1,6 @@
 ---
 title: "My agent policy kit"
-pubDatetime: 2026-06-15T08:00:00.000Z
+pubDatetime: 2026-06-18T09:00:00.000Z
 description: "I was maintaining the same operating rules in a different config 
 for every coding agent I run. So I built one shared policy and skill set
 that installs across all of them."
