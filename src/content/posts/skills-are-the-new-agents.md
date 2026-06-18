@@ -22,9 +22,11 @@ Skills are bundles of text files with specialized instructions for agents,
 and, occasionally, scripts that act as tools that can be called by the agent.
 They are, essentially, shortcuts for capabilities that agents need. 
 
-I am not going to bother you with the anatomy of a skill in this post.
-For this purpose, 
-A plugin is essentially a packaged skill.
+I won't bother you with the full anatomy of a skill in this post; the gist is
+simple. A skill is a folder of plain-text instructions (a `SKILL.md`) that an
+agent loads on demand, plus, occasionally, a script or two it can call. A plugin
+is essentially a packaged skill: the same idea, bundled with a little wiring so
+an agent can discover, install, and invoke it.
 
 And, increasingly,
 people use coding agents as orchestrators of agents that base
@@ -55,8 +57,15 @@ The [team at Meta built an AI second brain with skills](https://medium.com/@Anal
 
 ## Skill marketplaces
 
-- [Vercel's skills directory](https://github.com/vercel-labs/skills)
-- [Claude plugins](https://claude.com/plugins)
+Skills are spreading fast enough that distribution is becoming its own layer.
+The bigger entry points today:
+
+- [Vercel's skills directory](https://github.com/vercel-labs/skills) — a growing, browsable catalog.
+- [Claude plugins](https://claude.com/plugins) — Anthropic's own packaged-skill marketplace.
+
+…plus a long tail of GitHub repos and personal collections. Discovery is getting
+better fast. But discovery is the easy part: as we'll see, nobody has yet solved
+versioning, integrity, or trust.
 
 ## And yet...
 
@@ -74,5 +83,16 @@ the gap I think matters most, and where I started pulling the thread, with
 
 ## Why do I think skills are the new agents?
 
-You can even use the [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)
-to wrap that loop into a deployable agent of your own.
+For most of the last two years, building an "agent" meant building a system: a
+bespoke prompt, a hand-wired set of tools, an orchestration loop, an eval
+harness. The loop was the hard, expensive part.
+
+That part is now commodity. Claude Code, Codex, and the [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)
+hand you a capable base model and a production-grade loop for free; you can even
+use the SDK to wrap that loop into a deployable agent of your own. What's left,
+the thing that actually separates a security-review agent from a release-notes
+agent, is the skills you give it.
+
+So I mean it fairly literally: the loop is substrate, and the skill is the part
+you're really authoring. It carries the process, the judgment, the intent. The
+skill is the agent.
