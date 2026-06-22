@@ -69,7 +69,7 @@ The first one is **sheal**. Your AI agent keeps making the same mistakes, burnin
 
 ### Follow along
 
-This is Herding Agents. A newsletter about building safer AI systems, from first principles, and with intent. I’ll be writing about the tools we build, the problems we encounter, and the things I learn along the way.
+I publish a newsletter on these topics over on Substack, [Herding Agents](https://herdingagents.substack.com). It’s about building safer AI systems, from first principles, with intent. I’ll be writing about the tools we build, the problems we encounter, and the things I learn along the way.
 
 Building in public, imperfect and moving.
 
