@@ -13,8 +13,6 @@ This is a structural property of modern agentic AI systems. Actually, it is even
 
 But here is what I’ve been wondering about: do we, as companies and individuals, have the maturity to handle this? Do we know what is at stake?
 
-Thanks for reading! Subscribe for free to receive new posts and support my work.
-
 *
 
 ## The lethal trifecta
@@ -90,5 +88,3 @@ Once you accept that, the design question changes. It is not “how do I make th
 That is the same shift zero trust made for networks. From “is this connection trusted?” to “what does the architecture need to look like if all connections are to be untrusted?”. The threat model for zero trust networks, put simply, is that the attacker is already inside the network. And that’s the threat model that we need to assume if we are going to create “security by design” for agents.
 
 The compromised agent is already inside the network. Our job is to design as if we knew that from the start. Because if the most useful agents are dangerous by design, the systems around them have to be safe by design.
-
-Thanks for reading! Subscribe for free to receive new posts and support my work.

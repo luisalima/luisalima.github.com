@@ -74,5 +74,3 @@ This is Herding Agents. A newsletter about building safer AI systems, from first
 Building in public, imperfect and moving.
 
 Follow along if this resonates!
-
-Thanks for reading! Subscribe for free to receive new posts and support my work.
