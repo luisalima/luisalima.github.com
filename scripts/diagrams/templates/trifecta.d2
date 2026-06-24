@@ -1,0 +1,15 @@
+...@../assets/theme
+
+data:  Private data       { class: node }
+web:   Untrusted content  { class: danger }
+out:   External comms     { class: node }
+agent: Agent              { class: signal }
+
+data -> agent: reads
+web  -> agent: ingests
+agent -> out:  can send
+
+note: |md
+  All three present at once → an exfiltration path.
+  Remove any one leg and the trifecta breaks.
+| { class: muted }

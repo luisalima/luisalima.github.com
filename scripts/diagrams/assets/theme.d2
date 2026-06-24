@@ -1,0 +1,31 @@
+# Herding Agents — diagram brand tokens.
+# Pulled from the luisalima.com VISUAL identity (not the web-reading CSS):
+#   off-white + black frame + Google Sans Code  (src/pages/og.png.ts, scripts/cards/theme.mjs)
+#   one signal color = the site link accent      (--accent in src/styles/theme.css)
+# Edit the six hex values here; every diagram references them via classes.
+
+vars: {
+  d2-config: {
+    theme-id: 0          # neutral base; we override via classes
+    layout-engine: elk
+    pad: 28
+    sketch: false
+  }
+  ink:    "#000000"      # primary strokes + text (matches cards/og black frame)
+  paper:  "#fefbfb"      # background (off-white, matches cards/og)
+  line:   "#ecebeb"      # hairlines / grid (site --border)
+  muted:  "#6b6b6b"      # de-emphasized elements (matches cards muted)
+  accent: "#006cac"      # the ONE signal color (site link accent). Use sparingly.
+  danger: "#b23a2e"      # reserved strictly for danger states (untrusted, exfil)
+}
+
+# Diagram canvas background — match the site off-white, not pure white.
+style.fill: ${paper}
+
+classes: {
+  node:    { style: { fill: ${paper}; stroke: ${ink};    stroke-width: 2;   border-radius: 6; font-color: ${ink} } }
+  muted:   { style: { fill: ${paper}; stroke: ${muted};  stroke-width: 2;   border-radius: 6; font-color: ${muted} } }
+  signal:  { style: { fill: ${paper}; stroke: ${accent}; stroke-width: 2;   border-radius: 6; font-color: ${ink} } }
+  danger:  { style: { fill: ${paper}; stroke: ${danger}; stroke-width: 3;   border-radius: 6; font-color: ${danger}; bold: true } }
+  boundary:{ style: { fill: transparent; stroke: ${muted}; stroke-width: 1;   stroke-dash: 4; border-radius: 10; font-color: ${muted} } }
+}

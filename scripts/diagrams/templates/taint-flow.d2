@@ -1,0 +1,15 @@
+...@../assets/theme
+
+src: Untrusted input { class: danger }
+
+sandbox: Sandbox {
+  class: boundary
+  parse: Parse / validate { class: node }
+  tool:  Tool call        { class: node }
+}
+
+sink: External sink { class: signal }
+
+src -> sandbox.parse:          tainted        { style: { stroke: ${danger}; stroke-dash: 3 } }
+sandbox.parse -> sandbox.tool: checked
+sandbox.tool -> sink:          must be clean  { style: { stroke: ${danger} } }

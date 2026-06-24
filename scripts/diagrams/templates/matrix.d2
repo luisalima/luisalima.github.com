@@ -1,0 +1,10 @@
+...@../assets/theme
+
+# Small legend — hand-authored. For the real 14-probe × 6-config audit, GENERATE
+# this .d2 from the probe results (JSON/CSV) so the figure stays in sync with data.
+legend: Result {
+  grid-columns: 3
+  pass: pass { class: signal }
+  warn: warn { class: muted }
+  fail: fail { class: danger }
+}
