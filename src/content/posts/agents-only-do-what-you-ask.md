@@ -4,6 +4,8 @@ pubDatetime: 2026-06-08T06:00:00.000Z
 description: "The practices that make software hold up used to live in engineers' heads and in wikis nobody read. They now need to live in instructions that steer an agent."
 kind: note
 tags: ["ai-assisted-coding", "coding-agents", "software-architecture", "ai-best-practices"]
+series: secure-coding-with-agents
+seriesOrder: 2
 ---
 
 Agents only do what you ask, and that is a problem. 

@@ -4,6 +4,8 @@ pubDatetime: 2026-05-21T12:00:00.000Z
 description: "Lessons we need to take from the second bypass of Claude Code's network sandbox in five months"
 kind: note
 tags: ["ai-security", "ai-assisted-coding", "sandbox", "security"]
+series: secure-by-design-for-agents
+seriesOrder: 3
 ---
 
 [Aonan Guan](https://oddguan.com/) published a [(second) complete bypass of Claude Code's network sandbox](https://oddguan.com/blog/second-time-same-sandbox-anthropic-claude-code-network-allowlist-bypass-data-exfiltration/). The outcome is that a process inside the sandbox can reach a host that Claude Code's allowlist says to block, with the consequence that Claude Code can exfiltrate whatever it can touch.

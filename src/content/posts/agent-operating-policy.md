@@ -4,6 +4,8 @@ pubDatetime: 2026-05-22T19:00:00.000Z
 description: "The brief I give agents I want operating with less supervision, under AGENTS.md."
 kind: note
 tags: ["ai-assisted-coding", "coding-agents", "tdd", "agent-operating-policy", "ai-autonomy"]
+series: secure-coding-with-agents
+seriesOrder: 6
 ---
 
 Now that coding agents are becoming much better, I want to give them more autonomy. So I wrote an [Agent Operating Policy](https://gist.github.com/luisalima/c6130c6ae1ff0783aa057e4cdf2ff9a0). It covers TDD, version control, when to stop and ask, what "done" actually means, and a few other things. 

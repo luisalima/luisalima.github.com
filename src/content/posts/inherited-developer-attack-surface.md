@@ -5,6 +5,8 @@ description: "Coding agents hand non-developers a developer's full attack surfac
 kind: essay
 draft: true
 tags: ["ai-security", "vibe-coding", "coding-agents", "supply-chain", "ai-safety"]
+series: secure-by-design-for-agents
+seriesOrder: 4
 ---
 
 <!-- DRAFT — Luisa's draft, shaped from a 0-thinking note. The "By the numbers"

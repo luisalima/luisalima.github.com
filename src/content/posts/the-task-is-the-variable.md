@@ -5,6 +5,8 @@ description: "Safety in AI-assisted coding is not really a dial between fast and
 kind: note
 draft: false
 tags: ["ai-assisted-coding", "ai-security", "software-architecture"]
+series: secure-coding-with-agents
+seriesOrder: 1
 ---
 
 We don't talk enough about safety in AI-assisted coding. And when we do, we frame

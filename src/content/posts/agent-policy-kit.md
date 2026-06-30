@@ -7,6 +7,8 @@ that installs across all of them."
 kind: note
 draft: false
 tags: ["coding-agents", "agentic-architecture", "developer-tooling", "claude-code", "oss"]
+series: agentic-engineering
+seriesOrder: 3
 ---
 
 I run lots of coding agents. My favorite pick for brainstorming (and getting [grilled](/notes/grill-me/))

@@ -6,6 +6,8 @@ external dependencies, with a git-tracked audit system."
 kind: note
 draft: false
 tags: ["coding-agents", "ai-assisted-coding", "developer-tooling", "claude-code", "oss"]
+series: agentic-engineering
+seriesOrder: 4
 ---
 
 If you worked with coding agents for a while, you know

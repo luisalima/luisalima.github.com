@@ -5,6 +5,8 @@ description: "Vulnerability scanning fails like ergonomics: fine when you rememb
 kind: essay
 draft: true
 tags: ["ai-security", "supply-chain", "developer-tooling", "vulnerability-scanning", "oss"]
+series: secure-coding-with-agents
+seriesOrder: 4
 ---
 
 <!-- DRAFT — agent-drafted tool deep-dive for autoscan-kit, the concrete companion

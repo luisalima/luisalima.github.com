@@ -5,6 +5,8 @@ description: "Skill distribution is a mess: no manifest, no version pinning, no 
 kind: essay
 draft: false
 tags: ["coding-agents", "developer-tooling", "ai-security", "oss"]
+series: secure-coding-with-agents
+seriesOrder: 3
 ---
 
 I already wrote about [how skills are the new agents](/essays/skills-are-the-new-agents/).

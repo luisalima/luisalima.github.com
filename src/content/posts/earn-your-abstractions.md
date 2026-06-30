@@ -5,6 +5,8 @@ description: "I built a publishing system by hand with the agent first. Once it 
 kind: note
 draft: false
 tags: ["ai-assisted-coding", "agentic-architecture", "coding-agents", "ai-best-practices"]
+series: agentic-engineering
+seriesOrder: 2
 ---
 
 Today I shipped a website note, turned it into a LinkedIn post and an X thread, and scheduled both

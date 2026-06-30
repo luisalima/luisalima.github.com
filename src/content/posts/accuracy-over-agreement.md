@@ -4,6 +4,8 @@ pubDatetime: 2026-05-21T13:30:00.000Z
 description: "The custom instructions I've kept on every AI agent since Claude first supported them. Opus 4.7 is the first model that actually follows them."
 kind: note
 tags: ["ai-assisted-coding", "coding-agents", "ai-honesty", "sycophancy"]
+series: secure-coding-with-agents
+seriesOrder: 5
 ---
 
 A few people have asked me to share the custom instructions I keep on every AI agent I use. I've had them in place since Claude first supported user instructions, but Opus 4.7 is the first model that actually follows them. 

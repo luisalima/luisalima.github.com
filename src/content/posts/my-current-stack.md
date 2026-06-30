@@ -4,6 +4,8 @@ pubDatetime: 2026-06-05T08:00:00.000Z
 description: "I value diversity of agents and isolation, I live in the terminal."
 kind: note
 tags: ["ai-assisted-coding", "coding-agents", "software-architecture", "ai-best-practices"]
+series: agentic-engineering
+seriesOrder: 1
 ---
 
 Lots of people ask about my stack for AI coding. It evolves as new tools appear.
