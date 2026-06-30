@@ -123,6 +123,36 @@ const homePath = getRelativeLocaleUrl(locale, "");
     </section>
 
     {
+      seriesWithCount.length > 0 && (
+        <section id="home-series" class="border-border border-b pt-12 pb-6">
+          <h2 class="text-2xl font-semibold tracking-wide">Series</h2>
+          <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+            {seriesWithCount.map(s => (
+              <li class="border-border rounded-lg border p-4">
+                <a
+                  href={`/series/${s.id}/`}
+                  class="hover:text-accent font-medium"
+                >
+                  {s.data.title}
+                </a>
+                <div class="text-muted-foreground mt-1 text-sm">
+                  {statusLabel[s.data.status] ?? s.data.status} · {s.chapterCount}{" "}
+                  {s.chapterCount === 1 ? "chapter" : "chapters"}
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div class="mt-6">
+            <LinkButton href={getRelativeLocaleUrl(locale, "series")}>
+              All series
+              <IconArrowRight class="inline-block rtl:-rotate-180" />
+            </LinkButton>
+          </div>
+        </section>
+      )
+    }
+
+    {
       recentCaseStudies.length > 0 && (
         <section id="selected-work" class="border-border border-b pt-12 pb-6">
           <h2 class="text-2xl font-semibold tracking-wide">Selected work</h2>
@@ -195,36 +225,6 @@ const homePath = getRelativeLocaleUrl(locale, "");
       </div>
     </section>
 
-    {
-      seriesWithCount.length > 0 && (
-        <section id="home-series" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">Series</h2>
-          <ul class="mt-4 space-y-6">
-            {seriesWithCount.map(s => (
-              <li>
-                <a
-                  href={`/series/${s.id}/`}
-                  class="hover:text-accent text-lg font-medium"
-                >
-                  {s.data.title}
-                </a>
-                <div class="text-muted-foreground text-sm">
-                  {statusLabel[s.data.status] ?? s.data.status} · {s.chapterCount}{" "}
-                  {s.chapterCount === 1 ? "chapter" : "chapters"}
-                </div>
-                <p class="mt-1">{s.data.description}</p>
-              </li>
-            ))}
-          </ul>
-          <div class="mt-6">
-            <LinkButton href={getRelativeLocaleUrl(locale, "series")}>
-              All series
-              <IconArrowRight class="inline-block rtl:-rotate-180" />
-            </LinkButton>
-          </div>
-        </section>
-      )
-    }
   </main>
   <Footer />
 </Layout>
