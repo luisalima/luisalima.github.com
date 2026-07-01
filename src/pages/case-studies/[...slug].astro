@@ -3,6 +3,7 @@ import { type CollectionEntry, getCollection, render } from "astro:content";
 import CaseStudyLayout from "@/layouts/CaseStudyLayout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import PostCta from "@/components/PostCta.astro";
 import { getSortedCaseStudies, getCaseStudySlug } from "@/utils/getCaseStudies";
 import { slugifyStr } from "@/utils/slugify";
 import config from "@/config";
@@ -116,6 +117,8 @@ const meta = [
         </ul>
       )
     }
+
+    <PostCta context="work like this" />
   </main>
 
   <Footer />
