@@ -3,7 +3,7 @@ title: "Most people doing 'vibe-coding' inherited a developer's attack surface w
 pubDatetime: 2026-06-19T12:00:00.000Z
 description: "Coding agents hand non-developers a developer's full attack surface, without the years of instinct that usually come with being in the trenches doing software development. The exposure is identical, but the defense is absent. The fix must live in the defaults."
 kind: essay
-draft: true
+draft: false
 tags: ["ai-security", "vibe-coding", "coding-agents", "supply-chain", "ai-safety"]
 series: secure-by-design-for-agents
 seriesOrder: 4
@@ -14,7 +14,7 @@ software skills and development are collapsing. A product manager,
 a solo founder, and anyone can create their own software.
 
 I believe that is a good thing. It feels like being in the early Geocities days 
-([try searching for "Geocities" in Google](https://www.google.com/search?q=geocities&oq=geocities]),
+([try searching for "Geocities" in Google](https://www.google.com/search?q=geocities)),
 where people suddenly discovered the joys of creating with html and animated gifs.
 
 Creating more custom software is a good thing, for all of us. 
@@ -53,7 +53,7 @@ very boring: (1) isolate, (2) apply the principle of least privilege,
 (3) do aggressive credential rotation, and (4) always do observability.
 
 But this is a catch-22 problem. In order to know _this_, you also need to
-_know_ the security practices. And [agents only do what we ask them to]().
+_know_ the security practices. And [agents only do what we ask them to](/notes/agents-only-do-what-you-ask/).
 
 So the baseline cost of doing the work outside of an environment
 where these practices were set for you can include exposure to
@@ -100,7 +100,7 @@ down a credential they don't know exists; when they do, they don't know
 what a scoped down credential is. New builders cannot get suspicious of an
 injection they've never heard of. The exposure is identical to the developer's,
 but the defenses are absent, or rather, they are the ones handed by the 
-coding agent, and [they won't be there if you don't ask]().
+coding agent, and they won't be there if you don't ask.
 
 ## The problem by the numbers
 
@@ -140,12 +140,12 @@ That is gatekeeping dressed up as security, and it gets the causation backwards.
 
 The new builders are behaving exactly as the tools invite them to. 
 The tools ship with the dangerous capabilities live, because
-[the agents need them to be useful](), and people tend to
+[the agents need them to be useful](/essays/the-most-useful-ai-agents-are-dangerous-by-design/), and people tend to
 run the tools accepting changes and reads blindly.
 
-And while [Anthropic now has an "auto" mode]() and the main
+And while [Anthropic now has an "auto" mode](https://www.anthropic.com/engineering/claude-code-auto-mode) and the main
 coding assistants offer a [sandbox, although its defaults are usually
-not very strict](), we need to go beyond this. But how?
+not very strict](/notes/broken-sandbox-is-worse-than-no-sandbox/), we need to go beyond this. But how?
 
 We cannot fix this with a warning label or a "best practices" doc. 
 Asking a first-time builder to remember to scope their credentials is
@@ -155,7 +155,7 @@ fails everyone, and it fails hardest the person with no discipline to draw on in
 
 The fix must live in the (boring) defaults. Credentials scoped narrow by default,
 egress closed by default, execution sandboxed by default, dependency
-and secret scanning on by default.
+and secret scanning on by default (recently published a [tool to do just that](/essays/dependency-scanning-should-be-a-default/)).
 
 If we ship tools that grant a developer's attack surface to people who've never
 had one, then we need to make the surface safe to inherit. And (more) security is always a
