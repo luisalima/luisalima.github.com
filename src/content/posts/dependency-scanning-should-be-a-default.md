@@ -23,6 +23,8 @@ So I stopped treating it as a habit and made it a default. The trick is to push 
 
 **3. GitHub account and org defaults.** For the repos you cloned or forked instead of creating: turn on Dependabot alerts, security updates, and secret scanning as the default for new repos, and, for orgs, require the scan as a passing check before merge. A bundled script flips the org toggles, with a `--backfill` for existing repos.
 
+**4. A periodic audit.** Because things drift. A script walks your repos and flags the ones still missing the files, so the gaps surface on a schedule instead of during an incident.
+
 I didn't reinvent the wheel. I run it on `osv-scanner` (open source, on Google's vulnerability database), Dependabot, and GitHub's own security features, wired so they're on by default. No new vendor, no advisory-data lock-in, no dashboard to log into. Same instinct as [skills-lock](https://github.com/luisalima/skills-lock): the boring answer that reuses what already works beats the shiny new platform.
 
 I'm not pretending it catches everything. The pre-commit hook only scans lockfiles you actually stage, so a vulnerable transitive already sitting in the tree won't trip it until the lockfile moves (that's what layer 2's CI is for). OSV's database is broad but lags GitHub Advisory in some ecosystems. 
