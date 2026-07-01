@@ -3,15 +3,11 @@ title: "Are you using Claude Code? You inherited a developer's attack surface"
 pubDatetime: 2026-06-19T12:00:00.000Z
 description: "Coding agents hand non-developers a developer's full attack surface in an afternoon, without the years of instinct that normally come with it. The exposure is identical; the defenses are absent. The fix has to live in the defaults."
 kind: essay
-draft: true
+draft: false
 tags: ["ai-security", "vibe-coding", "coding-agents", "supply-chain", "ai-safety"]
 series: secure-by-design-for-agents
 seriesOrder: 4
 ---
-
-<!-- DRAFT — Luisa's draft, shaped from a 0-thinking note. The "By the numbers"
-     section is agent-drafted from a verified research pass; scrutinize the
-     framing and revoice. Then voice the rest and flip draft: false. -->
 
 You didn't just inherit a developer's productivity. You inherited their attack surface.
 

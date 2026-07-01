@@ -10,7 +10,7 @@ seriesOrder: 2
 ---
 
 I already wrote about why [the most useful AI agents are dangerous by
-design](/posts/the-most-useful-ai-agents-are-dangerous-by-design/): the agents
+design](/essays/the-most-useful-ai-agents-are-dangerous-by-design/): the agents
 worth building are the ones with access to your data, exposure to untrusted
 content, and a way to act on the outside world. That's the lethal trifecta, and
 most real agents have all three.
