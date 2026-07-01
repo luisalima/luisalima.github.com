@@ -1,0 +1,33 @@
+...@assets/theme
+
+# Local override: use the site's warm accent orange for the attack states in
+# this figure instead of the shared danger red (which stays reserved for
+# untrusted-content/taint figures like the trifecta).
+vars: { warn: "#ff6b01" }
+
+direction: down
+
+tanstack: "TanStack compromise — TeamPCP\nscraped an nx contributor's GitHub token" {
+  style: { stroke: ${warn}; stroke-width: 3; font-color: ${warn}; bold: true; border-radius: 6 }
+}
+nx: "nx / Narwhal\npublish without admin approval" { class: node }
+market: "VS Marketplace — Microsoft\nauto-update, no gate or cooldown" { class: node }
+machine: "GitHub employee machine\nextension ran, 11-18 min window" { class: node }
+org: "Org access design — GitHub\none workstation reached internal repos" {
+  class: node
+  style.stroke-dash: 4
+}
+exfil: "~3,800 internal repos exfiltrated\nattacker claim, directionally consistent" {
+  style: { stroke: ${warn}; stroke-width: 3; font-color: ${warn}; bold: true; border-radius: 6 }
+}
+
+tanstack -> nx: forged maintainer identity
+nx -> market: pushed v18.95.0
+market -> machine: instant propagation
+machine -> org: scraped resident creds
+org -> exfil: no blast-radius limit { style.stroke: ${warn} }
+
+legend: "Solid = stated in advisories / post-mortems.\nDashed = inference: the access-design failure is my reading." {
+  class: muted
+  near: bottom-center
+}
