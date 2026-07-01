@@ -18,18 +18,5 @@ them. The prompt-injection vector gets its own first-principles treatment in
 here the focus is the rest of secure-by-design: the threat model, the isolation,
 the layering, and the stakes.
 
-The arc:
-
-1. **The threat model of agents is wrong:** one agent with self-imposed limits
-   can bypass itself. Separation of capabilities is the fix.
-2. **Running coding agents safer:** isolation and sandboxing for the hardest
-   case — an open-ended goal you can't scope up front.
-3. **A broken sandbox is worse than no sandbox:** why one layer is a lie, and
-   what layering actually buys you.
-4. **You inherited a developer's attack surface:** the stakes, for the people
-   who got the capability without the instinct.
-5. **A guardrail that admits it isn't one:** a concrete failure, because the
-   scenario is the argument.
-
 Some chapters are live, and others land as I voice them. Read in order or jump to the
 one that's biting you.

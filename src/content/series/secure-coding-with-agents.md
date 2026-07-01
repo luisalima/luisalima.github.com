@@ -18,19 +18,4 @@ have to move into instructions, defaults, and checks that fire on their own.
 Discipline you have to remember is discipline you and the agents will skip when it
 matters.
 
-The arc:
-
-1. **The task is the variable:** safety isn't a fast/careful dial. Match your
-   posture to the task in front of you.
-2. **Agents only do what you ask:** which is the problem and the solution; you
-   encode the standards instead of hoping for them.
-3. **Skills are just text files. So where's the lockfile?** A skill is a
-   prompt injected into a privileged agent. That's a supply-chain problem.
-4. **Dependency scanning should be a default, not a discipline:** push the scan
-   into places that fire without you, so skipping it takes effort.
-5. **Accuracy over agreement:** the standing instructions that make an agent
-   tell you you're wrong instead of cheerfully shipping the mistake.
-6. **An agent operating policy:** TDD, version control, when to stop and ask,
-   and what "done" actually means, written down so the discipline survives.
-
 

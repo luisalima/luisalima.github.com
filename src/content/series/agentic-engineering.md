@@ -13,15 +13,4 @@ of increasing your technical debt.
 Everything here is something I run, and a ledger of my 
 agentic engineering practice as I go.
 
-The arc:
-
-1. **The stack:** my current agentic coding setup, end to end — diversity of
-   agents, isolation, terminal-first.
-2. **The method:** earn your abstractions — build by hand first, extract the
-   system only once it's battle-tested.
-3. **The tooling:** one shared policy and skill set that installs across every
-   agent, instead of re-maintaining the same config everywhere.
-4. **The task layer:** plaintext tasks that live in the diff, managed by a
-   skill, with a git-tracked audit trail.
-
 I'll be adding more as the practice evolves.
