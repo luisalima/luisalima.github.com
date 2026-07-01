@@ -95,7 +95,8 @@ something gets through.
 ---
 
 *This is part of [Defending against prompt
-injection](/series/defending-against-prompt-injection/), a learning guide built
-from the [agentic-security](https://github.com/luisalima/agentic-security) repo —
-where every attack and defense here has a runnable notebook. Next: detection, and
-why it's a first layer and never the layer.*
+injection](/series/defending-against-prompt-injection/), a learning guide: the
+full [Agentic Security guide](https://luisalima.com/agentic-security/), with a
+runnable notebook for every attack and defense in the
+[repo](https://github.com/luisalima/agentic-security). Next: detection, and why
+it's a first layer and never the layer.*

@@ -79,6 +79,8 @@ Then the supporting surfaces agents don't run without: MCP and memory.
 By the time you read this, some parts might already read outdated, 
 but the core principles stay the same.
 
-The full guide, with runnable notebooks for every attack and defense, lives in
-the [agentic-security repo](https://github.com/luisalima/agentic-security). These
-essays are the path through it.
+The full guide lives at
+[luisalima.com/agentic-security](https://luisalima.com/agentic-security/), with a
+runnable notebook for every attack and defense in the
+[repo](https://github.com/luisalima/agentic-security). These essays are the path
+through it.
