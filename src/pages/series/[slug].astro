@@ -5,6 +5,7 @@ import Header from "@/components/Header.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import Main from "@/components/Main.astro";
 import Footer from "@/components/Footer.astro";
+import PostCta from "@/components/PostCta.astro";
 import { postFilter } from "@/utils/postFilter";
 import { getPostUrl } from "@/utils/getPostPaths";
 import config from "@/config";
@@ -76,6 +77,8 @@ const statusLabel: Record<string, string> = {
         </ol>
       )
     }
+
+    <PostCta context="this series" />
   </Main>
   <Footer />
 </Layout>

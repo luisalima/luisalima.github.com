@@ -1,0 +1,20 @@
+---
+// Advisory footer — a quiet, specific offer, not a pitch. Copy is Luisa's.
+// Shown at the end of essays and series pages. `context` names the referent
+// ("this piece" for an essay, "this series" for a series landing).
+interface Props {
+  context?: string;
+}
+const { context = "this piece" } = Astro.props;
+---
+
+<aside class="border-border bg-muted mt-8 rounded-lg border p-4">
+  <p>
+    If your team is wrestling with the questions in {context}, that's what I
+    advise on. <a
+      href="mailto:luisa+blog@lambdalink.com"
+      class="text-accent decoration-dashed underline-offset-4 hover:underline"
+      >Get in touch</a
+    > (luisa+blog@lambdalink.com).
+  </p>
+</aside>
