@@ -1,0 +1,21 @@
+# Local preview:  docker compose up
+# Then open http://localhost:4321
+#
+# Source is bind-mounted so edits hot-reload. node_modules lives in a named
+# volume (not the host) so the container's Linux-built deps aren't clobbered
+# by a host mount — and so it works even if you've never run npm on the host.
+services:
+  dev:
+    build: .
+    ports:
+      - "4321:4321"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    # Astro's file watcher needs polling to see host edits through the mount
+    # on macOS/Windows Docker.
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+volumes:
+  node_modules:
