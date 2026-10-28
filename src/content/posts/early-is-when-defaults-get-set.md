@@ -10,7 +10,7 @@ There's no one-size-fits-all with AI. Same as there's no one-size-fits-all with 
 
 The difference is that for established disciplines we have best practices that we built over years. We don't have consensus on the best way for deploying AI and coding agents into an organization. There is no OWASP Top 10, no SOC 2, no shared playbook everyone points to. We're building the plane as we fly it, and we are flying faster and faster.
 
-I think a lot about [first-principles](/notes/we-are-all-herding-agents/) and trying to get to the "irreducible" set of practices that we should rely on when deploying AI. If we over-complicate things, we risk adding even more entropy and complexity into a field that is already increasingly complex.
+I think a lot about [first-principles](/essays/we-are-all-herding-agents/) and trying to get to the "irreducible" set of practices that we should rely on when deploying AI. If we over-complicate things, we risk adding even more entropy and complexity into a field that is already increasingly complex.
 
 So here's my take on what we need to take a bet on, the main questions we need to answer:
 
