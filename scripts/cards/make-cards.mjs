@@ -27,8 +27,11 @@
 //   - point two
 //
 // Slides are split on lines that are exactly `---`. The first line of a slide
-// is `:: <type>`. A `kicker: ...` line sets the slide kicker. `- ` lines are
-// list items; everything else is body text.
+// is `:: <type>`. A `kicker: ...` line sets the slide kicker; `context: ...`
+// sets a muted source/footnote line (stat, rows). `- ` lines are list items
+// (rows: `- label: value`); everything else is body text.
+// Types: title | quote | statement | list | stat | rows | outro.
+// Visual rules: write_publish/.claude/skills/cards/STYLE_GUIDE.md
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from "node:fs";
 import { resolve, dirname, isAbsolute } from "node:path";
@@ -74,12 +77,12 @@ function parseSpec(raw) {
     if (!tm) {
       throw new Error(`Slide ${i + 1}: first line must be ":: <type>", got "${typeLine}"`);
     }
-    const slide = { type: tm[1], kicker: null, body: "", items: [] };
+    const slide = { type: tm[1], kicker: null, context: null, body: "", items: [] };
     const bodyLines = [];
     for (const line of lines) {
-      const k = line.match(/^kicker:\s*(.*)$/);
+      const k = line.match(/^(kicker|context):\s*(.*)$/);
       if (k) {
-        slide.kicker = k[1].trim();
+        slide[k[1]] = k[2].trim();
         continue;
       }
       const li = line.match(/^[-*]\s+(.*)$/);
@@ -90,6 +93,25 @@ function parseSpec(raw) {
       bodyLines.push(line);
     }
     slide.body = bodyLines.join("\n").trim();
+    // Lint the data slides (warn, don't fail — the eyeball step decides).
+    if (slide.type === "rows" && (slide.items.length < 2 || slide.items.length > 6)) {
+      console.warn(`  ! slide ${i + 1} (:: rows) has ${slide.items.length} rows; use 2–6`);
+    }
+    if (slide.type === "rows") {
+      for (const item of slide.items) {
+        const at = item.lastIndexOf(": ");
+        const value = at === -1 ? "" : item.slice(at + 2).trim();
+        if (value.length > 12) {
+          console.warn(`  ! slide ${i + 1} (:: rows) value "${value}" is ${value.length} chars; keep values ≤12 (it will wrap)`);
+        }
+      }
+      if (meta.preset === "x-landscape" && slide.items.length > 4) {
+        console.warn(`  ! slide ${i + 1} (:: rows) has ${slide.items.length} rows at x-landscape; use ≤4 (rows will shrink)`);
+      }
+    }
+    if (slide.type === "stat" && !slide.body) {
+      console.warn(`  ! slide ${i + 1} (:: stat) has no number (first body line)`);
+    }
     return slide;
   });
 
@@ -110,7 +132,9 @@ async function main() {
   }
 
   const preset = resolvePreset(meta.preset);
-  const scale = (preset.fontScale ?? 1) * (preset.width / 1080);
+  // Type sizes are tuned for a 1080px canvas. Scale by the SHORTER side so a
+  // wide-but-short preset (x-landscape 1600×900) doesn't push text into the footer.
+  const scale = (preset.fontScale ?? 1) * Math.min(preset.width / 1080, preset.height / 1080);
   const stamp = { site: meta.site || STAMP.site, handle: meta.handle || STAMP.handle };
 
   const outDir = resolve(dirname(specPath), "slides");

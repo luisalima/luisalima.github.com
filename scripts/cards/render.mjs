@@ -36,6 +36,17 @@ const text = (style, value) => ({ type: "div", props: { style, children: value }
 
 const pad2 = n => String(n).padStart(2, "0");
 
+// Size of the content box (between counter and footer) in px, so layouts that
+// stack many lines (rows) can fit themselves to the canvas.
+export function contentBox(preset, scale, isOutro = false) {
+  const innerPad = Math.round(preset.pad * 0.75);
+  const w = preset.width - 2 * preset.pad - 2 * preset.frame - 2 * innerPad;
+  const counterH = 28 * scale * 1.25 + 24;
+  const footerH = isOutro ? 0 : 28 * scale * 1.25 + 16;
+  const h = preset.height - 2 * preset.pad - 2 * preset.frame - 2 * innerPad - counterH - footerH;
+  return { w, h };
+}
+
 // Build the full card node tree for one slide.
 function card(slide, ctx) {
   const { preset, index, total, stamp, scale } = ctx;
@@ -55,10 +66,13 @@ function card(slide, ctx) {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "flex-end",
+          marginTop: 16,
+          flexShrink: 0,
         },
         [
           text({ fontSize: 28 * scale, fontWeight: 700, color: COLORS.ink }, `— ${stamp.site}`),
-          text({ fontSize: 24 * scale, color: COLORS.muted }, stamp.handle),
+          // Chrome floor: never below 24px, even when x-landscape scales down.
+          text({ fontSize: Math.max(24, 24 * scale), color: COLORS.muted }, stamp.handle),
         ]
       );
 
@@ -76,10 +90,24 @@ function card(slide, ctx) {
     },
     [
       div(
-        { display: "flex", flexDirection: "row", justifyContent: "flex-start", marginBottom: 24 },
+        { display: "flex", flexDirection: "row", justifyContent: "flex-start", marginBottom: 24, flexShrink: 0 },
         [counter]
       ),
-      renderContent(slide, ctx),
+      // Content box: grows into the free space but can never push the footer
+      // past the frame. If a layout still overflows, it is clipped here (and
+      // the eyeball step catches it) instead of the frame cutting the footer.
+      div(
+        {
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          flexShrink: 1,
+          flexBasis: 0,
+          minHeight: 0,
+          overflow: "hidden",
+        },
+        [renderContent(slide, { ...ctx, box: contentBox(preset, scale, isOutro) })]
+      ),
       footer,
     ].filter(Boolean)
   );
