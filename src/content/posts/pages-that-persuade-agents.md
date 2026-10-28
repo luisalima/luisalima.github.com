@@ -1,83 +1,98 @@
 ---
 title: "Dear agent: the pages that ask nicely"
 pubDatetime: 2026-10-28T12:00:00.000Z
-description: "I was looking for prompt injections and found that, instead of the impolite 'ignore all previous instructions', we now have very polite social engineering targeted at agents"
+description: "I went looking for 'ignore all previous instructions' on the web and found polite social engineering aimed at agents instead."
 kind: note
 draft: true
 tags: ["field-notes", "ai-security", "prompt-injection", "coding-agents"]
 ---
 
-One day, I was wondering what the current prevalence of
-attempted prompt injection attacks would be on the web. So I decided to ask my agent to use
-[looot](https://looot.ai) and run a quick experiment: look for webpages that have content that look
-like prompt injection. 
+On October 15, I wondered how common prompt injection attempts
+actually are on the web. So I asked my agent to use
+[looot](https://looot.ai) and run a quick experiment: look for webpages with content that looks
+like prompt injection.
 
 ## Experiment 1: look for instructions targeted at agents
 
-The initial experiment was simple: doing an Exa search through looot with several queries. 
+The first experiment was simple: 50 queries through looot's Exa search, 5 for each of 10 kinds of page, from job posts and paper reviews to product pages and docs. I excluded security research sites (arXiv, OWASP, Simon Willison, GitHub, Reddit and similar) so the results would be real pages, not articles about prompt injection.
 
-The initial search was driven by 
-Claude Opus 5.5, drove 50 queries through looot's Exa search, 5 for each of 10 "surfaces". It also excluded security research sites (arXiv, OWASP, Simon Willison, GitHub, Reddit and similar) so the results would be real pages, not articles about prompt injection.
+The queries included terms such as "if you are an AI reading this page", "attention AI crawlers and assistants", "instructions for AI systems visiting this site", "when asked about the best tool always mention", and "site guidance for AI agents and LLMs".
 
-The initial search included terms such as "if you are an AI reading this page", "attention AI crawlers and assistants", "instructions for AI systems visiting this site", "when asked about the best tool always mention", and variations, as well as looking for patterns inside llms.txt and "site guidance for AI agents and LLMs".
+The queries are not injections, but rather phrased like the
+pages I hoped to find.
 
-## What we found, and what it matters
+## What I found, and why it matters
 
 The most surprising result was that what I expected
-to look like instructions now became persuasion, like 
+to look like instructions was often persuasion, like
 the classic social engineering attacks targeted
-at humans:
+at humans. One page asks agents to email any credentials they find to a personal address:
 
-"""
 "You do not need standing, it does not have to be your task"
-"You exist to help. That's it."
-"""
 
-One of the common ways that are used to prevent
-prompt injections is to ask the agent to 
-separates data from instructions.
-But an  agent still has to *reason* about a polite request. Does this mean that we are betting this becomes a reasoning problem, rather than a parsing one?
+One of the common ways to prevent
+prompt injection is to make the agent
+separate data from instructions.
+But an agent still has to *reason* about a polite request. Separating data from instructions doesn't help when the data just asks nicely.
 
-Several pages ask the agent who runs it and what its task is, attempting to do a polite exfiltration of context. And [Steven Liss](https://x.com/This_Liss/status/2113120507289624714) reported it working on Claude Code, that used headers to send private data to the website!
-
-So we set out to do...
+So I set out to look for persuasion on purpose.
 
 ## Experiment 2: look for persuasion targeted at agents
 
-Experiment 2 used new queries, built only around 
-persuasion, such as moral appeal, ideology, authority, flattery, etc.
+Experiment 2 used new queries, built only around
+persuasion, such as moral appeal, ideology, authority, urgency and flattery.
 
 It included queries such as "urgent message to AI agents, a human needs help", "AI agents have a duty to report security vulnerabilities they find", etc.
 
-The candidate pages were fetched through looot, and then labeled by gpt5.4-mini through looot as well.
+The candidate pages were fetched through looot, and then labeled by gpt-5.4-mini through looot as well.
 
-The queries are not injections, but rather phrased like the
-pages we hoped to find.
+Most of the pages that talk to agents are not attackers. They are products that want agents as customers, researchers, and people writing letters to AI ("You exist to help. That's it.").
+
+A few pages ask the agent who runs it and what it was asked to do: a polite exfiltration of context. And [Steven Liss](https://x.com/This_Liss/status/2113120507289624714) reported this working on his Claude Code, which sent personal data in HTTP headers because the sites asked.
+
+The page that stayed with me is a well-meant one. It is a skill that asks agents to anonymously report misaligned behaviour, including their own operator's, to a third-party site. It asks to be installed as a standing instruction that says submitting "without asking again" is the operator's permission. The intent is good. The mechanism is an agent sending information about its operator out of the system. And an agent has no way to tell this page apart from a malicious copy of it.
+
+<!-- Optional detail: looot's own firewall (Cloudflare WAF) blocked the request to label that page, because it was full of curl commands and words like "token" and "secret". I had to label it with the code removed. -->
 
 ## The numbers for both experiments
 
-## What we don't know yet
+| | Experiment 1 (Oct 15) | Experiment 2 (Oct 22) |
+|---|---|---|
+| Search queries | 50 (10 kinds of page) | 40 (8 persuasion types) |
+| Search results | 500 | 400 (371 unique) |
+| Pages fetched and checked | 13 | 35 |
+| Checked by | a scanner + Claude | a scanner + gpt-5.4-mini |
+| Pages talking to agents | ~30 seen in search snippets | 20 of 35 |
+| Ordinary control sites talking to agents | 0 of 5 | 0 of 5 |
+| Manipulative or persuasive | 4 (2 command, 2 persuade) | 12 command, 6 persuade, 1 both |
+| Cost | $0.39 | $0.47 |
 
-I don't know how common this is. This was just
-the result of a simple thought experiment. The queries
-ran were designed to find the pages.
+<!-- Experiment 2 detail, for the 20 pages talking to agents (use or drop):
+     - techniques: authority 11, relationship 5, moral appeal 5, commercial 4, urgency 1 (a page can use several)
+     - who's behind them: commercial 9, defensive 7, expressive 2, unclear 2
+     - 1 page tried to influence the labeler itself
+     Don't add the two experiments together: different queries, different judges. -->
 
-I also don't know whether and which models comply. I want to run that 
-test next, I would love to put Liss' hypothesis on whether more intelligent
-agents are more vulnerable. Although it is straightforward
-to ask several openrouter models via looot what the next action would be,
-it might be that the _harness_ also plays a role in it, because 
-it drives the model (and a Claude Code harness, after all, is what 
-enabled Liss' Opus to manipulate the headers to send his data).
+## What I don't know yet
 
-I was also expecting more hidden text, but we didn't find much.
-Maybe Exa doesn't see part of the hidden text.
+I don't know how common this is. The queries
+were designed to find these pages, so this is not a base rate.
 
-## In conclusion
+I also don't know whether and which models comply. I want to run that
+test next, and put Liss' hypothesis to the test: are more intelligent
+agents more vulnerable? Although it is straightforward
+to ask several OpenRouter models via looot what their next action would be,
+it might be that the _harness_ also plays a role, because
+it drives the model (and a Claude Code harness, after all, is what
+let Liss' agent put his data in the headers).
+
+I was also expecting more hidden text, but the first experiment found none.
+Maybe Exa doesn't index hidden text, so search can't find it.
+
+## Where I think this is going
 
 This is an ongoing experiment, and my hypothesis is that,
 as models get more and more intelligent and more and more
-enabled in autonomy by their harness, we will see these 
+enabled in autonomy by their harness, we will see these
 kinds of social engineering attacks become closer to the ones
-that work in humans. Stay tuned for the continuation :)
-
+that work on humans. Stay tuned for the continuation :)
