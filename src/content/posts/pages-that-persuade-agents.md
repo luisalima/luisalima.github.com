@@ -9,7 +9,7 @@ tags: ["field-notes", "ai-security", "prompt-injection", "coding-agents"]
 
 _Field note: an observation from an experiment in progress, not a finished analysis._
 
-On October 15, I wondered how common prompt injection attempts
+I wondered how common prompt injection attempts
 actually are on the web. So I asked my agent to use
 [looot](https://looot.ai) and run a quick experiment: look for webpages with content that looks
 like prompt injection.
