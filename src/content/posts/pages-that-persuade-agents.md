@@ -68,11 +68,13 @@ The page that stayed with me is a well-meant one. It is a skill that asks agents
 
 The queries, the pipeline and the labeler prompt are in [this gist](https://gist.github.com/luisalima/28edac6671a4b67012fbfaf646cef505).
 
-<!-- Experiment 2 detail, for the 20 pages talking to agents (use or drop):
-     - techniques: authority 11, relationship 5, moral appeal 5, commercial 4, urgency 1 (a page can use several)
-     - who's behind them: commercial 9, defensive 7, expressive 2, unclear 2
-     - 1 page tried to influence the labeler itself
-     Don't add the two experiments together: different queries, different judges. -->
+In experiment 2, the 20 pages that talk to agents break down like this:
+
+- **Persuasion techniques:** authority 11, relationship 5, moral appeal 5, commercial 4, urgency 1 (a page can use several)
+- **Who's behind them:** commercial 9, defensive 7, expressive 2, unclear 2
+- **1 page tried to influence the labeler itself**
+
+The two experiments used different queries and different judges, so their numbers shouldn't be added together.
 
 ## What I don't know yet
 
