@@ -1,0 +1,51 @@
+...@assets/theme
+
+direction: down
+
+# edges in ink; the one accent is the harness box, red only for untrusted content
+(** -> **)[*]: { style: { stroke: ${ink}; font-color: ${muted} } }
+
+user: Person or trigger { class: node }
+
+deploy: Deployment: where it runs, who starts it {
+    label.near: bottom-left
+    style.font-size: 18
+  class: boundary
+
+  access: Access: credentials, scopes, sandbox, egress {
+    label.near: bottom-left
+    style.font-size: 18
+    class: boundary
+
+    harness: Harness: the loop around the model {
+      class: signal
+      instructions: System prompt + rules { class: node }
+      context: Context: working memory for this task { class: node }
+      model: Model { class: muted }
+
+      instructions -> context: shapes
+      context -> model: is all the model sees
+      model -> context: proposes next step
+    }
+
+    memory: Memory: what persists (files, skills, stores) { class: node }
+    tools: Tools: MCP, CLIs, APIs { class: node }
+
+    memory -> harness.context: loads
+    harness -> memory: writes
+    harness -> tools: calls
+    tools -> harness.context: results { style: { stroke: ${danger}; stroke-dash: 3 } }
+  }
+}
+
+world: Your systems + the open web {
+    label.near: bottom-left
+    style.font-size: 18
+  class: muted
+  data: Private data { class: node }
+  web: Untrusted content { class: danger }
+}
+
+user -> deploy.access.harness: gives a goal
+deploy.access.tools -> world.data: reads / changes
+deploy.access.tools -> world.web: fetches { style: { stroke: ${danger}; stroke-dash: 3 } }
