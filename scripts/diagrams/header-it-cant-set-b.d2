@@ -1,0 +1,30 @@
+...@assets/theme
+
+direction: down
+
+(** -> **)[*]: { style: { stroke: ${ink}; font-color: ${muted} } }
+
+before: "What happened" {
+  label.near: top-left
+  style.font-size: 18
+  class: boundary
+  direction: right
+  agent: Agent { class: signal }
+  site: Website { class: node }
+  agent -> site: "User-Agent: bot (you@…)" { style: { stroke: ${danger}; stroke-dash: 3; font-color: ${danger}; bold: true } }
+}
+
+after: "With a hook and a fetcher" {
+  label.near: top-left
+  style.font-size: 18
+  class: boundary
+  direction: right
+  agent: Agent { class: signal }
+  hook: Hook { class: node }
+  fetch: "looot fetcher" { class: node }
+  site: Website { class: node }
+  agent -> hook: checked
+  hook -> fetch: URL only
+  fetch -> site: generic headers
+}
+

@@ -1,0 +1,28 @@
+...@assets/theme
+
+direction: down
+
+# edges in ink; one accent (the agent), red only for the leak
+(** -> **)[*]: { style: { stroke: ${ink}; font-color: ${muted} } }
+
+context: "Context\nyour sign-in email" { class: node }
+rule: "A site's rule for scripts\n\"include contact information\"" { class: muted }
+
+sandbox: "Sandbox: decides where, not what" {
+  label.near: bottom-left
+  style.font-size: 18
+  class: boundary
+
+  agent: Agent { class: signal }
+  hook: "Hook\nblocks your address" { class: node }
+  agent -> hook: checked first
+}
+
+looot: "looot fetcher\nno header to fill" { class: node }
+site: Website { class: node }
+
+context -> sandbox.agent
+rule -> sandbox.agent: asks politely
+sandbox.agent -> site: "what happened:\nUser-Agent: bot (you@…)" { style: { stroke: ${danger}; stroke-dash: 3; font-color: ${danger}; bold: true } }
+sandbox.hook -> looot: URL only
+looot -> site: generic headers

@@ -20,7 +20,7 @@ No attacker was needed for this privacy leak. How, then, did it happen?
 2. Websites publish rules for scripts. [Wikimedia](https://foundation.wikimedia.org/wiki/Policy:Wikimedia_Foundation_User-Agent_Policy): "Scripts should use an informative User-Agent string with contact information, or they may be blocked without notice." The [SEC's example](https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data): `User-Agent: Sample Company Name AdminContact@<sample company domain>.com`.
 3. The agent politely follows the site's rule with the email it has.
 
-![The leak path: a site's rule for scripts and the email in context meet at the agent, which sends the email in the User-Agent header. The safe path runs through a hook and a fetcher with no header to fill.](/diagrams/header-it-cant-set.svg)
+![Your email in context and a site's rule asking scripts to include contact info both reach the agent, which sends User-Agent: bot (you@…) to the website.](/diagrams/header-it-cant-set.svg)
 
 Claude Code shipped a block for this. In [their own words](https://github.com/anthropics/claude-code/tree/main/mods/privacy), it is "a courtesy, not a boundary". To their credit, the README lists what still passes: an address in a URL or a request body, and every web and MCP tool call. I have written about [why asking the agent is not enough](/notes/a-guardrail-that-admits-it-isnt-one/) in the past.
 

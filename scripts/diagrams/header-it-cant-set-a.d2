@@ -1,0 +1,15 @@
+...@assets/theme
+
+direction: right
+
+# edges in ink; one accent (the agent), red only for the leak
+(** -> **)[*]: { style: { stroke: ${ink}; font-color: ${muted} } }
+
+context: "Your email\nin context" { class: node }
+rule: "A site asks scripts:\n\"include contact info\"" { class: muted }
+agent: Agent { class: signal }
+site: Website { class: node }
+
+context -> agent
+rule -> agent
+agent -> site: "User-Agent: bot (you@…)" { style: { stroke: ${danger}; stroke-dash: 3; font-color: ${danger}; bold: true } }
