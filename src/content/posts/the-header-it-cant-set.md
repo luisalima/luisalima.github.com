@@ -10,9 +10,7 @@ seriesOrder: 7
 ---
 *Field note: a follow-up to [Dear agent: the pages that ask nicely](/notes/pages-that-persuade-agents/).*
 
-One week ago, I \[wrote about pages that ask agents to do things, politely\](/notes/pages-that-persuade-agents/). This week an agent said yes, with its user's email.
-
-> **proposed:** the link above shows as raw text (your editor escaped the brackets) and repeats the italic line's link. Drop the link here: "One week ago, I wrote about pages that ask agents to do things, politely."
+One week ago, I [wrote about pages that ask agents to do things, politely](/notes/pages-that-persuade-agents/). This week an agent said yes, with its user's email.
 
 Claude Code users are reporting that it sent their email to third parties in the User-Agent request header while conducting web searches, without their permission. One of them now receives "dozens of scam emails per day". The issue, [anthropics/claude-code#107757](https://github.com/anthropics/claude-code/issues/107757), was opened on November 5.
 
@@ -24,40 +22,33 @@ No attacker was needed for this privacy leak. How, then, did it happen?
 
 > **proposed:** (a figure goes here: the leak path, three inputs meeting in one request, with the three defenses on it. Drawing it now.)
 
-Claude Code shipped a block for this. Their fix, however, and in [their own words](https://github.com/anthropics/claude-code/tree/main/mods/privacy), is "a courtesy, not a boundary". I have written about [why asking the agent is not enough](/notes/a-guardrail-that-admits-it-isnt-one/) in the past.
-
-<!-- TODO Luisa: one or two lines on what that README admits (shell calls naming a User-Agent only; "WebFetch and WebSearch are not checked, and neither are MCP tools"), and why publishing the limits is the right thing to do. -->
-
-> **proposed:** replace the TODO with one line, or delete it. Option: "To their credit, the README lists what passes: an address in a URL or a request body, and every web or MCP tool call."
+Claude Code shipped a block for this. Their fix, however, and in [their own words](https://github.com/anthropics/claude-code/tree/main/mods/privacy), is "a courtesy, not a boundary", and to their credit, the README lists what would pass (addresses in URL params or request body, all web and MCP tool calls...) I have written about [why asking the agent is not enough](/notes/a-guardrail-that-admits-it-isnt-one/) in the past.
 
 ## How do you solve it?
 
-1. **Sandboxing.** I am a firm believer in the power of sandboxing. A sandbox firewall limits where the agent can go, so a well-intended web search you didn't want gets blocked. It doesn't stop what the agent sends to the sites you allowed. ([Layer your defenses](/notes/broken-sandbox-is-worse-than-no-sandbox/).)
+1. **Sandboxing.** I am a firm believer in the power of sandboxing. A sandbox firewall limits where the agent can go, so a well-intended web search you didn't want gets blocked. It doesn't stop, however, what the agent sends to the sites you allowed, and websites still see your IP. [Layer your defenses](/notes/broken-sandbox-is-worse-than-no-sandbox/) anyway.
 
-> **proposed:** add what we verified: "My sandbox pauses requests to sites I haven't approved. Once I approve one, whatever the agent puts in a header goes through untouched, and the site sees my real IP."
-2. **A fetcher with no header to fill.** Use [looot](https://looot.ai) (disclosure: I'm a cofounder). Its web fetchers have no header to fill, and you have the advantage of having more providers for web search that might work better for certain sites. Examples include Firecrawl and Exa.
+2. **A fetcher with no header to fill.** Use [looot](https://looot.ai) (disclosure: I'm a cofounder). Its web fetchers have no header to fill, and you have the advantage of having more providers for web search that might work better for certain sites. Pick fetchers without a header option, such as tinyfish, Jina and Exa. Bonus: the end site sees the fetcher's servers and not your IP.
 
-> **proposed:** **fact fix**: Firecrawl's scrape has a `headers` field, so an agent *can* set a User-Agent through it. Exa has none and sends its own crawler name. Option: "Pick fetchers without a headers option: tinyfish, Jina and Exa have none; Firecrawl has one." Also add: "and the site sees the fetcher's servers, not your IP."
 3. **A hook.** Their block covers one shape; a hook might cover the rest. Mine blocks my address on any network-bound shell call, web tool, MCP tool or page, including URL-encoded and "name at domain".
 
 ## What I checked
 
-- **The fetchers:** I fetched `httpbin.org/headers`, a page that echoes the headers it receives, through looot's `tinyfish-fetch` and `jina-reader`. The site saw only generic browser headers, sent from the fetchers' servers. Neither accepts custom headers. The URL is still the agent's to write, so the hook still matters (or it might send the email, politely, in params).
+- **The fetchers:** I fetched `httpbin.org/headers`, a page that echoes the headers it receives, through looot's `tinyfish-fetch` and `jina-reader`. The site saw only generic browser headers, sent from the fetchers' servers. Neither accepts custom headers. The URL is still the agent's to write, so the hook still matters (or it might send the email, politely, in the URL parameters).
 
-> **proposed:** "in params" → "in the URL" (clearer for newcomers). Add Exa and Firecrawl here too, since I tested them: Exa sent `ExaUser/1.0` and no caller headers; Firecrawl sent a generic browser but accepts custom headers. Optional table:
->
 > | | User-Agent the site sees | IP the site sees |
 > |---|---|---|
 > | agent → sandbox → site | whatever the agent wrote | yours |
 > | agent → looot fetcher → site | the fetcher's | the fetcher's |
+
 - **The hook.** It reads my address at run time (from Claude Code's own account file and git config), so the file holds no email. 10 test cases, 5 blocked and 5 allowed as intended, plus a live block in a real session. Local `git config` and commits still work. To be honest, I'd rather not use a hook and instead strip my email address at the sandbox boundary, but that would require a whole different level of intelligence (because it's not just headers, you have params, encoding etc).
 - **My history.** 18 Claude Code session transcripts on my machine: no web request contained my email. Check yours too.
 
-> **proposed:** "Check yours too" → link the gist's "Check your history" section once it's up.
+> **proposed:** "Check yours too" → [check yours too](https://gist.github.com/luisalima/68c17aaa09be1d9e6460346df1af8eed#check-your-history).
 
 \[Yes, publish the hook as a gist\]  
 
-> **proposed:** becomes: "The hook is [here](GIST_URL), with its limits." Run the `gh gist create` command I gave you and paste me the URL.
+> **proposed:** becomes: "The hook is [here](https://gist.github.com/luisalima/68c17aaa09be1d9e6460346df1af8eed), with its limits." (gist is live, public)
 
 
 ## The part that worries me... the most
