@@ -42,30 +42,22 @@ Claude Code shipped a block for this. Their fix, however, and in [their own word
 > | agent → looot fetcher → site | the fetcher's | the fetcher's |
 
 - **The hook.** It reads my address at run time (from Claude Code's own account file and git config), so the file holds no email. 10 test cases, 5 blocked and 5 allowed as intended, plus a live block in a real session. Local `git config` and commits still work. To be honest, I'd rather not use a hook and instead strip my email address at the sandbox boundary, but that would require a whole different level of intelligence (because it's not just headers, you have params, encoding etc).
-- **My history.** 18 Claude Code session transcripts on my machine: no web request contained my email. Check yours too.
+- **My history.** 18 Claude Code session transcripts on my machine: no web request contained my email. [Check yours too](https://gist.github.com/luisalima/68c17aaa09be1d9e6460346df1af8eed#check-your-history).
 
-> **proposed:** "Check yours too" → [check yours too](https://gist.github.com/luisalima/68c17aaa09be1d9e6460346df1af8eed#check-your-history).
-
-\[Yes, publish the hook as a gist\]  
-
-> **proposed:** becomes: "The hook is [here](https://gist.github.com/luisalima/68c17aaa09be1d9e6460346df1af8eed), with its limits." (gist is live, public)
+"The hook is [here](https://gist.github.com/luisalima/68c17aaa09be1d9e6460346df1af8eed), with its limits." (gist is live, public)
 
 
 ## The part that worries me... the most
 
-If an honest rule for detecting misbehaving scripts makes an agent leak, a fake one would too. And if, last week, I was still doubting that these persuasion and social engineering techniques would benefit attackers, especially with smarter frontier models, this week, I'm convinced that yes. Maybe a page or error message that says "automated clients must include a contact email" could collect emails from every agent that happens to visit that page?
-
-> **proposed:** "every agent" → "many of the agents". Nobody has shown it yet, so add: "Nobody has shown it yet. It's what I'll test next." (That also sets up the persuasion experiment.)
+If an honest rule for detecting misbehaving scripts makes an agent leak, a fake one would too. And if, last week, I was still doubting that these persuasion and social engineering techniques would benefit attackers, especially with smarter frontier models, this week, I'm convinced that yes. Maybe a page or error message that says "automated clients must include a contact email" could collect emails from may agents that happen to visit that page?
 
 And as more agents hold more credentials (either directly, or indirectly through the power to perform actions), this will become more and more widespread.
 
-More and more people use second brains, memory systems, or simply have personal information scattered among agent conversations and context. This time, it was an email address. Sandboxes, hooks and smart firewalls will never catch *anything that might be private*.
+More and more people use second brains, memory systems, or simply have personal information scattered among agent conversations and context. This time, it was an email address. Sandboxes, hooks and smart firewalls will never catch *everything that might be private*.
 
-> **proposed:** *anything* → *everything* (as written, it says they catch nothing).
 
 ## The conclusion
 
-Least privilege also applies to context. There are some things you cannot control, such as the user email being injected into context; but there are others that you can. Let me know if you would like to know how I organize my projects (and agents) by the principle of least privilege, for context and actions.
+Least privilege also applies to context. There are some things you cannot control, such as the user email being injected into context by a proprietary harness; but there are others that you can. Next, I'll write about how I organize my projects and agents around least privilege, for context and actions.
 
-> **proposed:** the last sentence is a call-to-action ending (one of your tells). Options: (a) end on "…but there are others that you can."; (b) make it a promise: "Next, I'll write about how I organize my projects and agents around least privilege, for context and actions."; (c) "The only email an agent can't leak is the one it never had."
 
