@@ -379,7 +379,31 @@ function rows(slide, { scale, box }) {
   );
 }
 
-export const LAYOUTS = { title, quote, statement, list, stat, rows, outro };
+// --- figure ---------------------------------------------------------------
+// A short title (body) over one image (`image:` in the spec, relative to card.md).
+// The image is scaled to fit the space left below the title, keeping its ratio.
+function figure(slide, { scale, box }) {
+  const size = fitSize(slide.body, { max: 64, min: 40, longAt: 50 }) * scale;
+  const maxW = (box?.width ?? 900);
+  const maxH = (box?.height ?? 1000) - size * 3.4 - (slide.kicker ? 70 * scale : 0);
+  const r = Math.min(maxW / slide.imageW, maxH / slide.imageH, 1);
+  return div(
+    { display: "flex", flexDirection: "column", flexGrow: 1 },
+    [
+      slide.kicker ? kickerNode(slide, scale, 20 * scale) : null,
+      text(
+        { fontSize: size, fontWeight: 700, lineHeight: 1.1, color: COLORS.ink, marginBottom: 24 * scale },
+        slide.body
+      ),
+      div(
+        { flexGrow: 1, alignItems: "center", justifyContent: "center" },
+        [{ type: "img", props: { src: slide.imageData, width: Math.round(slide.imageW * r), height: Math.round(slide.imageH * r) } }]
+      ),
+    ].filter(Boolean)
+  );
+}
+
+export const LAYOUTS = { title, quote, statement, list, stat, rows, outro, figure };
 
 export function renderContent(slide, ctx) {
   const layout = LAYOUTS[slide.type];

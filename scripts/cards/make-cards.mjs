@@ -36,6 +36,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from "node:fs";
 import { resolve, dirname, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
+import sharp from "sharp";
 import { renderSlide } from "./render.mjs";
 import { resolvePreset, STAMP } from "./theme.mjs";
 
@@ -80,7 +81,7 @@ function parseSpec(raw) {
     const slide = { type: tm[1], kicker: null, context: null, body: "", items: [] };
     const bodyLines = [];
     for (const line of lines) {
-      const k = line.match(/^(kicker|context):\s*(.*)$/);
+      const k = line.match(/^(kicker|context|image):\s*(.*)$/);
       if (k) {
         slide[k[1]] = k[2].trim();
         continue;
@@ -147,6 +148,13 @@ async function main() {
   mkdirSync(outDir, { recursive: true });
 
   for (let i = 0; i < slides.length; i++) {
+    if (slides[i].type === "figure") {
+      if (!slides[i].image) throw new Error(`Slide ${i + 1} (:: figure) needs an "image: <path>" line`);
+      const imgPath = resolve(dirname(specPath), slides[i].image);
+      const buf = readFileSync(imgPath);
+      const { width, height } = await sharp(buf).metadata();
+      Object.assign(slides[i], { imageData: `data:image/png;base64,${buf.toString("base64")}`, imageW: width, imageH: height });
+    }
     const ctx = { preset, index: i, total: slides.length, stamp, scale };
     const png = await renderSlide(slides[i], ctx);
     const name = `${String(i + 1).padStart(2, "0")}.png`;
