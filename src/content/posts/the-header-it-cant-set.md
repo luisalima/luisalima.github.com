@@ -1,9 +1,9 @@
 ---
 title: "Dear agent, part two: the polite rule that leaked an email"
-pubDatetime: 2026-11-06T17:00:00.000Z
+pubDatetime: 2026-11-06T16:25:00.000Z
 description: "A coding agent followed websites' rules for scripts and sent its user's email in the User-Agent header. No attacker needed. What a boundary looks like instead."
 kind: note
-draft: true
+draft: false
 tags: ["field-notes", "ai-security", "claude-code", "coding-agents", "privacy"]
 series: secure-by-design-for-agents
 seriesOrder: 7
