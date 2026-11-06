@@ -8,8 +8,6 @@ tags: ["field-notes", "ai-security", "claude-code", "coding-agents", "privacy"]
 series: secure-by-design-for-agents
 seriesOrder: 7
 ---
-<!-- DRAFT: body = Luisa's LinkedIn text (v2) with links inline. Sections marked TODO need her voice. Title approved by Luisa 11-06. -->
-
 *Field note: a follow-up to [Dear agent: the pages that ask nicely](/notes/pages-that-persuade-agents/).*
 
 One week ago, I \[wrote about pages that ask agents to do things, politely\](/notes/pages-that-persuade-agents/). This week an agent said yes, with its user's email.
