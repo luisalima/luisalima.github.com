@@ -9,7 +9,7 @@ series: secure-by-design-for-agents
 seriesOrder: 7
 ---
 
-<!-- DRAFT: body = Luisa's LinkedIn text (v2) with links inline. Sections marked TODO need her voice. Title is a placeholder. -->
+<!-- DRAFT: body = Luisa's LinkedIn text (v2) with links inline. Sections marked TODO need her voice. Title approved by Luisa 11-06. -->
 
 _Field note: a follow-up to [Dear agent: the pages that ask nicely](/notes/pages-that-persuade-agents/)._
 
