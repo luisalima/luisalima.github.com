@@ -1,9 +1,9 @@
 ---
 title: "Ask before you install"
-pubDatetime: 2026-11-09T17:00:00.000Z
+pubDatetime: 2026-11-09T18:15:00.000Z
 description: "Slopsquatting, persuasion, malicious packages: does your agent check before installing?"
 kind: note
-draft: true
+draft: false
 tags: ["ai-security", "supply-chain", "coding-agents", "secure-coding"]
 series: secure-coding-with-agents
 seriesOrder: 7
@@ -107,7 +107,7 @@ On July 31, GitHub's advisory database, the one `npm audit` reads, had nothing o
 
 Some teams only install versions that have been public for a few days. npm (`min-release-age`, from npm 11.10), pnpm (`minimumReleaseAge`) and Yarn (`npmMinimalAgeGate`) all support it now. It's a good default against a hijacked release of a popular package.
 
-But it wouldn't have helped with these two. `vfat-tools` 2.0.1 turned 7 days old on May 26 and stayed installable until November 6. `plain-lang` turned 7 days old on June 19 and had no advisory until November 5. And a slopsquatted name can be registered weeks before an agent suggests it. Age tells you a version isn't brand new, not that it's safe: keep the gate, and check first. 【/Claude】
+But it wouldn't have helped with these two. `vfat-tools` 2.0.1 turned 7 days old on May 26 and stayed installable until November 6. `plain-lang` turned 7 days old on June 19 and had no advisory until November 5. And a slopsquatted name can be registered weeks before an agent suggests it. Age tells you a version isn't brand new, not that it's safe: keep the gate, and check first.
 
 ## Food for thought
 
@@ -118,7 +118,7 @@ Please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-sc
 1. An install script runs during `npm install`, before any audit.
 2. A package registered last week has no advisory yet, so existence, downloads, maintainers and install scripts are the signals to look at.
 3.  The agent that picks a package isn't always the one that installs it. A chat assistant suggests one, an agent writes it into `package.json`, and CI installs it later. The check needs to happen where the name is chosen. 
-4. 【Claude】 And CI usually holds more credentials than any laptop. 【/Claude】 So you can still get a big mess out of a small mishap...!
+4. And CI usually holds more credentials than any laptop. So you can still get a big mess out of a small mishap...!
 
 ## The skill
 
