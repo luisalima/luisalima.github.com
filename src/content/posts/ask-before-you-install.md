@@ -1,7 +1,7 @@
 ---
 title: "Ask before you install"
 pubDatetime: 2026-11-09T17:00:00.000Z
-description: "Slopsquatting and persuasion: does your agent check before installing?"
+description: "Slopsquatting, persuasion, malicious packages: does your agent check before installing?"
 kind: note
 draft: true
 tags: ["ai-security", "supply-chain", "coding-agents", "secure-coding"]
