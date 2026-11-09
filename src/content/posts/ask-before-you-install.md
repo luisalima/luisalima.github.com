@@ -8,7 +8,7 @@ tags: ["ai-security", "supply-chain", "coding-agents", "secure-coding"]
 series: secure-coding-with-agents
 seriesOrder: 7
 ---
-Most agents already know how to run osv-scanner, npm audit and other tools to check whether there are vulnerabilities in installed packages (I even published [an OSS tool to enable these checks on github](https://github.com/luisalima/autoscan-kit)).
+Many coding agents, \[especially when asked\](), already know how to run osv-scanner, npm audit and other tools to check whether there are vulnerabilities in installed packages (I also published [an OSS tool to enable these checks by default, on github](https://github.com/luisalima/autoscan-kit)).
 
 But what happens if an agent, for some reason (or [persuasion...](/notes/pages-that-persuade-agents/)) hallucinates package names? And attackers register those plausible package names, in case someone or some agent installs them? That is an attack technique called [slopsquatting](https://www.theregister.com/2025/04/12/ai_code_suggestions_sabotage_supply_chain/). Although most recent and advanced models such as Opus 5.5 are already pretty careful (and of course, you're [sandboxing agents, right?](/notes/broken-sandbox-is-worse-than-no-sandbox/)), nowadays, with the proliferation of tools such as [omp](https://omp.sh/) and [command code](https://commandcode.ai/), that mix and match models from several providers and that might route to different LLMs depending on the difficulty of the task or your set rules, sometimes... we might get an unpleasant surprise.
 
@@ -18,7 +18,7 @@ And tools such as npm audit check your *installed* packages, so that comes afte
 
 Run checks *first*. But which checks, given that we do not want to install the package?
 
-First, check that the package is real, used by people, and clean. You can do it directly via websearch, or even quicker by asking your agent to use [looot](https://looot.ai). For example, for npm packages, you can do the following:  
+Good signals include checking that the package is real, used by people, and clean. You can do it directly via websearch, or even quicker by asking your agent to use [looot](https://looot.ai). For example, for npm packages, you can do the following:  
 
 ```
 Before installing any npm package, check it with looot:
