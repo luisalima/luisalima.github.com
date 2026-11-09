@@ -8,7 +8,7 @@ tags: ["ai-security", "supply-chain", "coding-agents", "secure-coding"]
 series: secure-coding-with-agents
 seriesOrder: 7
 ---
-Slopsquatting and persuasion: does your agent check before installing?
+# Slopsquatting and persuasion: does your agent check before installing?
 
 Most agents already know how to run OSV scanner, npm audit and other tools to check whether there are vulnerabilities in installed packages (I even provided [an OSS tool to enable these checks](https://github.com/luisalima/autoscan-kit)).
 
@@ -16,7 +16,9 @@ But what happens if an agent, for some reason (or [persuasion...](/notes/pages-t
 
 And tools such as npm audit check your *installed* packages, so that comes after the fact.  
 
-So, what can we do? Run checks *first*. Which checks? 
+## So, what can we do? 
+
+Run checks *first*. But which checks? 
 
 Check that the package is real, used by people, and clean. You can do it very quickly by asking your agent to use [looot](https://looot.ai). Do the following:  
 
@@ -62,21 +64,25 @@ vfat-tools   0.0.1-security, "security holding package" · OSV: MAL-2026-4179
 
 **`vfat-tools`: OSV knew within 26 minutes. npm served it for almost six months.**
 
-| When (UTC) | What happened | What a check before install says |
-|---|---|---|
-| May 19, 03:50 | v2.0.0 published on npm | exists, brand new, no downloads, no advisory: new and unused, ask first |
-| May 19, 04:16 | OpenSSF's scanner flags it; it reaches OSV | `MAL-2026-4179`: stop |
-| May 19, 11:46 | v2.0.1 published, after the flag | still flagged (the advisory covers every version) |
-| May 20 – Nov 5 | still installable on npm: 3,346 downloads | flagged, every day |
-| Nov 6, 05:43 | GitHub's advisory database gets it; npm replaces it a minute later | flagged, plus npm's placeholder package |
+
+| When (UTC)     | What happened                                                      | What a check before install says                                        |
+| -------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| May 19, 03:50  | v2.0.0 published on npm                                            | exists, brand new, no downloads, no advisory: new and unused, ask first |
+| May 19, 04:16  | OpenSSF's scanner flags it; it reaches OSV                         | `MAL-2026-4179`: stop                                                   |
+| May 19, 11:46  | v2.0.1 published, after the flag                                   | still flagged (the advisory covers every version)                       |
+| May 20 – Nov 5 | still installable on npm: 3,346 downloads                          | flagged, every day                                                      |
+| Nov 6, 05:43   | GitHub's advisory database gets it; npm replaces it a minute later | flagged, plus npm's placeholder package                                 |
+
 
 **`plain-lang`: no advisory anywhere for 146 days.**
 
-| When (UTC) | What happened | What a check before install says |
-|---|---|---|
-| Jun 12 | v1.0.0 and v1.0.1 published, 11 minutes apart | exists, no advisory, almost no downloads |
-| Jun 12 – Nov 4 | 357 downloads in 146 days | no advisory, so only the signals catch it: tiny usage, no history |
-| Nov 5, 22:23 | GitHub flags it; npm replaces it the same minute; OSV gets it an hour later | `MAL-2026-18714`: stop |
+
+| When (UTC)     | What happened                                                               | What a check before install says                                  |
+| -------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Jun 12         | v1.0.0 and v1.0.1 published, 11 minutes apart                               | exists, no advisory, almost no downloads                          |
+| Jun 12 – Nov 4 | 357 downloads in 146 days                                                   | no advisory, so only the signals catch it: tiny usage, no history |
+| Nov 5, 22:23   | GitHub flags it; npm replaces it the same minute; OSV gets it an hour later | `MAL-2026-18714`: stop                                            |
+
 
 *Sources: npm registry publish times, OSV advisories and their origins, npm daily downloads, all through looot on November 9. Download counts include mirrors and scanners, not only installs. The original malicious code is gone, so I couldn't inspect it.*
 
