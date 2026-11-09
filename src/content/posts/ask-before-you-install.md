@@ -28,10 +28,6 @@ Before installing any npm package, check it with looot:
 Stop and ask me if it doesn't exist, has few downloads, has install scripts or has any advisory.
 ```
 
-【Claude】 I packaged this as a skill: [check-before-install](https://gist.github.com/luisalima/03c55e71231b0929bc46a50105726982). It uses looot if you have it, and the public registry APIs if you don't. 【/Claude】
-
-【Claude】 Why I use looot for this (disclosure: I'm a cofounder): my sandbox only needs to allow one address instead of one per registry, the answers come back in the same shape for npm, PyPI and OSV, and each check is logged. The trade-off: looot sees which packages you check. With open network, the public APIs work just as well, and the skill falls back to them. 【/Claude】
-
 If everything looks ok, you can go the extra mile and then ask your agent to check for the install script contents (and ultimately, run a mini audit on the code).
 
 ## An example of a legit package
@@ -75,7 +71,6 @@ advisories: none
 
 Now, let's take two malicious ones: `plain-lang` and `vfat-tools`. [OSV](https://osv.dev) flags both as malware, and npm has replaced them with empty placeholder packages. However, `plain-lang` was only flagged on November 5, so a lockfile audit last week, before November 5th, would have passed it. OSV's advice to anyone who installed them is to consider the computer fully compromised and rotate every secret on it. Even if you run your agents and installs in sandboxes, this would be real work.
 
-  
 Here's what the check says today:
 
 ```
@@ -121,8 +116,14 @@ Please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-sc
 
 1. An install script runs during `npm install`, before any audit.
 2. A package registered last week has no advisory yet, so existence, downloads, maintainers and install scripts are the signals to look at.
-【Claude】 3. The agent that picks a package isn't always the one that installs it. A chat assistant suggests one, an agent writes it into `package.json`, and CI installs it later. The check has to happen where the name is chosen. 【/Claude】
-【Claude】 4. Not every agent has a shell. 【/Claude】 You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*. So you can still get a big mess out of a small mishap...!
+3.  The agent that picks a package isn't always the one that installs it. A chat assistant suggests one, an agent writes it into `package.json`, and CI installs it later. The check needs to happen where the name is chosen. 
+4. Not every agent has a shell. You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*. So you can still get a big mess out of a small mishap...!
+
+## The skill
+
+I packaged this as a skill: [check-before-install](https://gist.github.com/luisalima/03c55e71231b0929bc46a50105726982). It uses looot if you have it, and the public registry APIs if you don't.
+
+TLDR, why do I use looot for this? (disclosure: I'm a cofounder): my sandbox only needs to allow one address instead of one per registry, the answers come back in the same shape for npm, PyPI and OSV, and each check is logged. With open network, the public APIs work just as well, and the skill falls back to them.
 
 ## Addendum: the timelines
 
