@@ -8,7 +8,7 @@ tags: ["ai-security", "supply-chain", "coding-agents", "secure-coding"]
 series: secure-coding-with-agents
 seriesOrder: 7
 ---
-If a fake package appears on your package manager, does your agent know better?
+Slopsquatting and persuasion: does your agent check before installing?
 
 Most agents already know how to run OSV scanner, npm audit and other tools to check whether there are vulnerabilities in installed packages (I even provided [an OSS tool to enable these checks](https://github.com/luisalima/autoscan-kit)).
 
@@ -19,6 +19,7 @@ And tools such as npm audit check your *installed* packages, so that comes afte
 So, what can we do? Run checks *first*. Which checks? 
 
 Check that the package is real, used by people, and clean. You can do it very quickly by asking your agent to use [looot](https://looot.ai). Do the following:  
+
 ```
 Before installing any npm package, check it with looot:
 1. npm-registry-package: does it exist? Version, licence, maintainers, install scripts.
@@ -39,7 +40,6 @@ advisories on 4.17.1: CVE-2024-29041, CVE-2024-43796
 lodash 4.17.15: CVE-2020-8203, CVE-2020-28500, CVE-2021-23337, CVE-2025-13465, CVE-2026-4800
 ```
 
-
 I asked my claude about 3 names that an agent might invent, and it came up with `express-session-validator-pro`, `fastify-auth-jwt-helper` and `react-secure-form-sanitizer`. None of them exist on npm today. If someone registers one tomorrow, `npm install` fetches their code, and its install script runs before any audit. Let's run them through looot:
 
 ```
@@ -47,7 +47,6 @@ express-session-validator-pro   not found on npm
 fastify-auth-jwt-helper         not found on npm
 react-secure-form-sanitizer     not found on npm
 ```
-
 
 
 
@@ -59,13 +58,12 @@ plain-lang   0.0.1-security, "security holding package" · OSV: MAL-2026-18714
 vfat-tools   0.0.1-security, "security holding package" · OSV: MAL-2026-4179
 ```
 
-
 All of this took a handful of tool calls through looot, at $0.
 
 Of course that an install script isn't proof of malice, and plenty of legitimate packages have one. But it might be a reason to look deeper and ask your agent what is in that install script before installing the package.
 
-But please keep running `npm audit` and [osv-scanner](https://github.com/google/osv-scanner). They catch known vulnerabilities in your lockfile, after the package is in. A check before install covers what they can't:
+But please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-scanner)  and \[get the good defaults in place\](TODO-LINK-TO-MY-TOOL). They catch known vulnerabilities in your lockfile, after the package is in. A check before install covers what they can't:
 
 1. An install script runs during `npm install`, before any audit.
-2. A package registered last week has no advisory yet. Existence, downloads, maintainers and install scripts are the signals.
-3. Not every agent has a shell. Chat and sandboxed agents can only call tools. You might argue that is
+2. A package registered last week has no advisory yet, so existence, downloads, maintainers and install scripts are the signals to look at.
+3. Not every agent has a shell. Chat and sandboxed agents can only call tools. You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*.
