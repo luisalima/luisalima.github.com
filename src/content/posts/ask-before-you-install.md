@@ -28,6 +28,10 @@ Before installing any npm package, check it with looot:
 Stop and ask me if it doesn't exist, has few downloads, has install scripts or has any advisory.
 ```
 
+I packaged this as a skill: [check-before-install](https://gist.github.com/luisalima/03c55e71231b0929bc46a50105726982). It uses looot if you have it, and the public registry APIs if you don't.
+
+Why I prefer looot here (disclosure: I'm a cofounder): npm, PyPI and OSV are three different APIs, each with its own shape, and looot gives your agent one way to call all of them, with one key. It also works from a sandbox that blocks the registries. While writing this, my sandbox blocked npm's downloads API and OSV, and the same calls through looot went through.
+
 If everything looks ok, you can go the extra mile and then ask your agent to check for the install script contents (and ultimately, run a mini audit on the code).
 
 ## An example of a legit package
