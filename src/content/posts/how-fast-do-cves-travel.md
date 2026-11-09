@@ -62,6 +62,8 @@ SCAFFOLD (Claude, 2026-11-09). Structure + facts + figure + links. Luisa writes 
 
 Ideas, pick or replace:
 - For your dependencies, the advisory is late by design: the fix is already out. Update on releases, not only on advisories.
+- **(Luisa, 11-09) Automated unit and integration tests in CI, so updating is fast.** If the fix ships weeks before the advisory, the teams that win are the ones who can take an update the day it lands: a bot opens the PR, the tests say it's safe, it merges. Without tests, every update is a manual risk, so people wait for the advisory (or longer: seroval's 35%).
+  → link the pipeline gist here (draft: `gists/fast-dependency-updates/`, not public yet).
 - For exploited bugs, watch more than the CVE feed: vendor bulletins, KEV, and where security people post.
 - An agent can do this watching for you: a daily check of KEV + your dependencies' releases is a few cheap tool calls.
 - What I'd do next: a bigger sample (~100 KEV CVEs, about $1), vendor-bulletin times as the real zero, and a weekly fix-adoption curve.
