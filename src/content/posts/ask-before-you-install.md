@@ -65,7 +65,7 @@ advisories: none
 → ask first: brand new, nobody uses it, runs code on install
 ```
 
-【Claude】 No advisory yet, so nothing in it says "malware". The signals are what make your agent stop and ask. `plain-lang` looked much the same for 146 days (below). 【/Claude】
+No advisory yet, so nothing in it would say "malware". The signals are what make your agent stop and ask. `plain-lang` looked much the same for 146 days (below). 
 
 ## Examples of actual malicious packages
 
@@ -78,7 +78,7 @@ plain-lang   0.0.1-security, "security holding package" · OSV: MAL-2026-18714
 vfat-tools   0.0.1-security, "security holding package" · OSV: MAL-2026-4179
 ```
 
-【Claude】 And here's what the same check would have said while they were still on npm: 【/Claude】
+And here's what the same check would have said while they were still on npm: 
 
 ```
 checked Jul 31, 2026
@@ -89,7 +89,7 @@ advisories on 2.0.0: MAL-2026-4179, malicious code (in OSV since May 20)
 → stop: this package shipped malware
 ```
 
-【Claude】 Look at the 2.0.1 line. Until November 6, the advisory only covered 2.0.0, and the attacker published 2.0.1 seven hours after the flag. A check by version alone would have let it through; a check by package stops it. 【/Claude】
+Look at the 2.0.1 line. Until November 6, the advisory only covered 2.0.0, and the attacker published 2.0.1 seven hours after the flag. A check by version alone would have let it through; a check by package stops it. 
 
 ```
 checked Oct 1, 2026
@@ -101,9 +101,7 @@ advisories: none
 
 You might think that this is being too careful. However, malicious packages keep appearing, and they don't always reach advisory databases quickly.
 
-【Claude】 On July 31, GitHub's advisory database, the one `npm audit` reads, had nothing on `vfat-tools`. It only got it on November 6 【/Claude】 (the full timelines are in the [addendum](#addendum-the-timelines)).
-
-【Claude: section drafted by Claude, with your edits】
+On July 31, GitHub's advisory database, the one `npm audit` reads, had nothing on `vfat-tools`. It only got it on November 6  (the full timelines are in the [addendum](#addendum-the-timelines)).
 
 ## What about only installing packages older than X days?
 
@@ -126,11 +124,11 @@ Please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-sc
 
 I packaged this as a skill: [check-before-install](https://gist.github.com/luisalima/03c55e71231b0929bc46a50105726982). It uses looot if you have it, and the public registry APIs if you don't.
 
-【Claude】 Why I use looot for this (disclosure: I'm a cofounder): 【/Claude】 my sandbox only needs to allow one address instead of one per registry, the answers come back in the same shape for npm, PyPI and OSV, and each check is logged. 【Claude】 The trade-off: looot sees which packages you check. 【/Claude】 With open network, the public APIs work just as well, and the skill falls back to them.
+Why I use looot for this (disclosure: I'm a cofounder):  (1) my sandbox only needs to allow one address instead of one per registry, (2) the answers come back in the same shape for npm, PyPI and OSV, and (3) each check is logged.  The trade-off is that looot sees which packages you check. With open network (or if you'd rather not use looot), the public APIs also work, and the skill falls back to them.
 
 ## Addendum: the timelines
 
-**`vfat-tools`: 【Claude】 OSV knew within a day, for one version. 【/Claude】 npm served it for almost six months.**
+`vfat-tools`**:  OSV knew within a day, for one version, but npm served it for almost six months.**
 
 
 | When (UTC)     | What happened                                                      | What a check before install says                                        |
