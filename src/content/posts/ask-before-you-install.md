@@ -8,7 +8,7 @@ tags: ["ai-security", "supply-chain", "coding-agents", "secure-coding"]
 series: secure-coding-with-agents
 seriesOrder: 7
 ---
-Many coding agents, \[especially when asked\](), already know how to run osv-scanner, npm audit and other tools to check whether there are vulnerabilities in installed packages (I also published [an OSS tool to enable these checks by default, on github](https://github.com/luisalima/autoscan-kit)).
+Many coding agents, [especially when asked](/notes/agents-only-do-what-you-ask/), already know how to run osv-scanner, npm audit and other tools to check whether there are vulnerabilities in installed packages (I also published [an OSS tool to enable these checks by default, on github](https://github.com/luisalima/autoscan-kit)).
 
 But what happens if an agent, for some reason (or [persuasion...](/notes/pages-that-persuade-agents/)) hallucinates package names? And attackers register those plausible package names, in case someone or some agent installs them? That is an attack technique called [slopsquatting](https://www.theregister.com/2025/04/12/ai_code_suggestions_sabotage_supply_chain/). Although most recent and advanced models such as Opus 5.5 are already pretty careful (and of course, you're [sandboxing agents, right?](/notes/broken-sandbox-is-worse-than-no-sandbox/)), nowadays, with the proliferation of tools such as [omp](https://omp.sh/) and [command code](https://commandcode.ai/), that mix and match models from several providers and that might route to different LLMs depending on the difficulty of the task or your set rules, sometimes... we might get an unpleasant surprise.
 
@@ -18,13 +18,13 @@ And tools such as npm audit check your *installed* packages, so that comes afte
 
 Run checks *first*. But which checks, given that we do not want to install the package?
 
-Good signals include checking that the package is real, used by people, and clean. You can do it directly via the several registries, websearch, or even quicker by asking your agent to use [looot](https://looot.ai). For example, for npm packages, you can do the following:  
+Good signals include checking that the package is real, used by people, and clean. You can do it directly through each registry, a web search, or even quicker by asking your agent to use [looot](https://looot.ai). For example, for npm packages, you can do the following:  
 
 ```
 Before installing any npm package, check it with looot:
 1. npm-registry-package: does it exist? Version, licence, maintainers, install scripts.
 2. npm-registry-downloads: downloads last week.
-3. osv-package-advisories: known advisories for that version (MAL- means malware).
+3. osv-package-advisories: known advisories for that package, any version (MAL- on any version means malware).
 Stop and ask me if it doesn't exist, has few downloads, has install scripts or has any advisory.
 ```
 
@@ -65,7 +65,7 @@ advisories: none
 → ask first: brand new, nobody uses it, runs code on install
 ```
 
-【Claude】 No advisory yet, so nothing in it says "malware". The signals are what make your agent stop and ask. That's exactly what `plain-lang` looked like for 146 days (below). 【/Claude】
+【Claude】 No advisory yet, so nothing in it says "malware". The signals are what make your agent stop and ask. `plain-lang` looked much the same for 146 days (below). 【/Claude】
 
 ## Examples of actual malicious packages
 
@@ -84,9 +84,12 @@ vfat-tools   0.0.1-security, "security holding package" · OSV: MAL-2026-4179
 checked Jul 31, 2026
 vfat-tools 2.0.1 · published May 19
 downloads (Jul 24–30): 150
-advisories: MAL-2026-4179, malicious code (in OSV since May 19)
-→ stop: known malware
+advisories on 2.0.1: none
+advisories on 2.0.0: MAL-2026-4179, malicious code (in OSV since May 20)
+→ stop: this package shipped malware
 ```
+
+【Claude】 Look at the 2.0.1 line. Until November 6, the advisory only covered 2.0.0, and the attacker published 2.0.1 seven hours after the flag. A check by version alone would have let it through; a check by package stops it. 【/Claude】
 
 ```
 checked Oct 1, 2026
@@ -104,7 +107,7 @@ You might think that this is being too careful. However, malicious packages keep
 
 ## What about only installing packages older than X days?
 
-Some teams only install versions that have been public for a few days. npm (`min-release-age`, from npm 11.10), pnpm (`minimumReleaseAge`) and Yarn (`npmMinimalAgeGate`) all support it now. It's a good default against a hijacked release of a popular package, which often gets caught within days.
+Some teams only install versions that have been public for a few days. npm (`min-release-age`, from npm 11.10), pnpm (`minimumReleaseAge`) and Yarn (`npmMinimalAgeGate`) all support it now. It's a good default against a hijacked release of a popular package.
 
 But it wouldn't have helped with these two. `vfat-tools` 2.0.1 turned 7 days old on May 26 and stayed installable until November 6. `plain-lang` turned 7 days old on June 19 and had no advisory until November 5. And a slopsquatted name can be registered weeks before an agent suggests it. Age tells you a version isn't brand new, not that it's safe: keep the gate, and check first. 【/Claude】
 
@@ -117,26 +120,27 @@ Please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-sc
 1. An install script runs during `npm install`, before any audit.
 2. A package registered last week has no advisory yet, so existence, downloads, maintainers and install scripts are the signals to look at.
 3.  The agent that picks a package isn't always the one that installs it. A chat assistant suggests one, an agent writes it into `package.json`, and CI installs it later. The check needs to happen where the name is chosen. 
-4. The install often happens in CI, which often holds more credentials than any laptop. So you can still get a big mess out of a small mishap...!
+4. 【Claude】 And CI usually holds more credentials than any laptop. 【/Claude】 So you can still get a big mess out of a small mishap...!
 
 ## The skill
 
 I packaged this as a skill: [check-before-install](https://gist.github.com/luisalima/03c55e71231b0929bc46a50105726982). It uses looot if you have it, and the public registry APIs if you don't.
 
-TLDR, why do I use looot for this? (disclosure: I'm a cofounder): my sandbox only needs to allow one address instead of one per registry, the answers come back in the same shape for npm, PyPI and OSV, and each check is logged. With open network, the public APIs work just as well, and the skill falls back to them.
+【Claude】 Why I use looot for this (disclosure: I'm a cofounder): 【/Claude】 my sandbox only needs to allow one address instead of one per registry, the answers come back in the same shape for npm, PyPI and OSV, and each check is logged. 【Claude】 The trade-off: looot sees which packages you check. 【/Claude】 With open network, the public APIs work just as well, and the skill falls back to them.
 
 ## Addendum: the timelines
 
-**`vfat-tools`: OSV knew within 26 minutes. npm served it for almost six months.**
+**`vfat-tools`: 【Claude】 OSV knew within a day, for one version. 【/Claude】 npm served it for almost six months.**
 
 
 | When (UTC)     | What happened                                                      | What a check before install says                                        |
 | -------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| May 19, 03:50  | v2.0.0 published on npm                                            | exists, brand new, no downloads, no advisory: new and unused, ask first |
-| May 19, 04:16  | OpenSSF's scanner flags it; it reaches OSV                         | `MAL-2026-4179`: stop                                                   |
-| May 19, 11:46  | v2.0.1 published, after the flag                                   | still flagged (the advisory covers every version)                       |
-| May 20 – Nov 5 | still installable on npm: 3,346 downloads                          | flagged, every day                                                      |
-| Nov 6, 05:43   | GitHub's advisory database gets it; npm replaces it a minute later | flagged, plus npm's placeholder package                                 |
+| May 19, 03:50  | v2.0.0 published on npm | exists, brand new, no downloads, no advisory: ask first |
+| May 19, 04:16  | OpenSSF's scanner flags v2.0.0 | not in OSV yet: still ask first |
+| May 19, 11:46  | v2.0.1 published, after the flag | not in OSV yet: still ask first |
+| May 20, 00:57  | OSV imports the flag, for v2.0.0 only | by version (2.0.1): none; by package: `MAL-2026-4179`, stop |
+| May 20 – Nov 5 | still installable on npm: 3,346 downloads | only a check by package catches it |
+| Nov 6, 05:43   | GitHub's advisory database gets it, for every version; npm replaces it a minute later | flagged on every version, plus npm's placeholder package |
 
 
 **`plain-lang`: no advisory anywhere for 146 days.**
