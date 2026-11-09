@@ -30,7 +30,7 @@ Stop and ask me if it doesn't exist, has few downloads, has install scripts or h
 
 I packaged this as a skill: [check-before-install](https://gist.github.com/luisalima/03c55e71231b0929bc46a50105726982). It uses looot if you have it, and the public registry APIs if you don't.
 
-Why I prefer looot here (disclosure: I'm a cofounder): npm, PyPI and OSV are three different APIs, each with its own shape, and looot gives your agent one way to call all of them, with one key. It also works from a sandbox that blocks the registries. While writing this, my sandbox blocked npm's downloads API and OSV, and the same calls through looot went through.
+Why I use looot for this (disclosure: I'm a cofounder): my sandbox only needs to allow one address instead of one per registry, the answers come back in the same shape for npm, PyPI and OSV, and each check is logged. The trade-off: looot sees which packages you check. With open network, the public APIs work just as well, and the skill falls back to them.
 
 If everything looks ok, you can go the extra mile and then ask your agent to check for the install script contents (and ultimately, run a mini audit on the code).
 
@@ -119,7 +119,8 @@ Please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-sc
 
 1. An install script runs during `npm install`, before any audit.
 2. A package registered last week has no advisory yet, so existence, downloads, maintainers and install scripts are the signals to look at.
-3. Not every agent has a shell. Chat agents and many hosted agents can only call tools. You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*. So you can still get a big mess out of a small mishap...!
+3. The agent that picks a package isn't always the one that installs it. A chat assistant suggests one, an agent writes it into `package.json`, and CI installs it later. The check has to happen where the name is chosen.
+4. Not every agent has a shell. You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*. So you can still get a big mess out of a small mishap...!
 
 ## Addendum: the timelines
 
