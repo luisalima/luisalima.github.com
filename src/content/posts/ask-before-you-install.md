@@ -10,17 +10,17 @@ seriesOrder: 7
 ---
 # Slopsquatting and persuasion: does your agent check before installing?
 
-Most agents already know how to run OSV scanner, npm audit and other tools to check whether there are vulnerabilities in installed packages (I even provided [an OSS tool to enable these checks](https://github.com/luisalima/autoscan-kit)).
+Most agents already know how to run OSV scanner, npm audit and other tools to check whether there are vulnerabilities in installed packages (I even published [an OSS tool to enable these checks on github](https://github.com/luisalima/autoscan-kit)).
 
-But what happens if an agent, for some reason (or [persuasion...](/notes/pages-that-persuade-agents/)) hallucinates package names? And attackers register those plausible package names, in case someone or some agent install them? That is an attack technique called [slopsquatting](https://www.theregister.com/2025/04/12/ai_code_suggestions_sabotage_supply_chain/). Although better most recent models such as Opus 5.5 are already pretty careful (and of course, you're [sandboxing agents](/notes/broken-sandbox-is-worse-than-no-sandbox/)), nowadays, with the proliferation of tools such as [omp](https://omp.sh/) and [command code](https://commandcode.ai/)), that might route to different LLMs depending on the difficulty of the task, sometimes... we might get an unpleasant surprise.
+But what happens if an agent, for some reason (or [persuasion...](/notes/pages-that-persuade-agents/)) hallucinates package names? And attackers register those plausible package names, in case someone or some agent install them? That is an attack technique called [slopsquatting](https://www.theregister.com/2025/04/12/ai_code_suggestions_sabotage_supply_chain/). Although most recent and advanced models such as Opus 5.5 are already pretty careful (and of course, you're [sandboxing agents, right?](/notes/broken-sandbox-is-worse-than-no-sandbox/)), nowadays, with the proliferation of tools such as [omp](https://omp.sh/) and [command code](https://commandcode.ai/), that mix and match models from several providers and that might route to different LLMs depending on the difficulty of the task or your set rules, sometimes... we might get an unpleasant surprise.
 
 And tools such as npm audit check your *installed* packages, so that comes after the fact.  
 
-## So, what can we do? 
+## So, what can we do?
 
-Run checks *first*. But which checks? 
+Run checks *first*. But which checks, given that we do not want to install the package?
 
-Check that the package is real, used by people, and clean. You can do it very quickly by asking your agent to use [looot](https://looot.ai). Do the following:  
+First, check that the package is real, used by people, and clean. You can do it directly via websearch, or even quicker by asking your agent to use [looot](https://looot.ai). For example, for npm packages, you can do the following:  
 
 ```
 Before installing any npm package, check it with looot:
@@ -29,6 +29,10 @@ Before installing any npm package, check it with looot:
 3. osv-package-advisories: known advisories for that version (MAL- means malware).
 Stop and ask me if it doesn't exist, has few downloads, has install scripts or has any advisory.
 ```
+
+If everything looks ok, you can go the extra mile and then ask your agent to check for the install script contents (and ultimately, run a mini audit on the code).
+
+## An example of a legit package
 
 Now let's take a real package, such as `express`, as an example. 
 
@@ -42,7 +46,9 @@ advisories on 4.17.1: CVE-2024-29041, CVE-2024-43796
 lodash 4.17.15: CVE-2020-8203, CVE-2020-28500, CVE-2021-23337, CVE-2025-13465, CVE-2026-4800
 ```
 
-I asked my claude about 3 names that an agent might invent, and it came up with `express-session-validator-pro`, `fastify-auth-jwt-helper` and `react-secure-form-sanitizer`. None of them exist on npm today. If someone registers one tomorrow, `npm install` fetches their code, and its install script runs before any audit. Let's run them through looot:
+## An example of potential slopsquatting
+
+I asked my claude about 3 names that an agent might invent, and it came up with `express-session-validator-pro`, `fastify-auth-jwt-helper` and `react-secure-form-sanitizer`. None of them exist on npm today. If someone registers one tomorrow, `npm install` fetches their code, and its install script runs before any audit. If we run them through looot, of course they wouldn't be found right now:
 
 ```
 express-session-validator-pro   not found on npm
@@ -50,10 +56,16 @@ fastify-auth-jwt-helper         not found on npm
 react-secure-form-sanitizer     not found on npm
 ```
 
+But suppose someone actually registers it. Here is what your agent could say if we used the prompt above:
 
+TODO-CLAUDE
 
-Now, let's take two malicious ones: `plain-lang` and `vfat-tools`. [OSV](https://osv.dev) flags both as malware, and npm has replaced them with empty placeholder packages. However, `plain-lang` was flagged on November 5, so a lockfile audit last week, before November 5th, would have passed it. OSV's advice to anyone who installed them: consider the computer fully compromised and rotate every secret on it. Even if you run your agents and installs in sandboxes, this would be real work.  
-Here's what would have been shown if you had asked your agent to use looot to check the package:
+## Examples of actual malicious packages
+
+Now, let's take two malicious ones: `plain-lang` and `vfat-tools`. [OSV](https://osv.dev) flags both as malware, and npm has replaced them with empty placeholder packages. However, `plain-lang` was only flagged on November 5, so a lockfile audit last week, before November 5th, would have passed it. OSV's advice to anyone who installed them is to consider the computer fully compromised and rotate every secret on it. Even if you run your agents and installs in sandboxes, this would be real work.
+
+  
+Now, here's what would have been shown if you had asked your agent to use looot to check the package beforehand:
 
 ```
 plain-lang   0.0.1-security, "security holding package" · OSV: MAL-2026-18714
@@ -78,17 +90,21 @@ advisories: none
 → ask first: almost nobody uses it
 ```
 
-On July 31, GitHub's advisory database, the one `npm audit` reads, had nothing on `vfat-tools`. It got it on November 6. The full timelines are in the addendum.
+You might think that this is being too careful. However, slopsquatting is becoming more and more widespread and the vulnerabilities don't always enter advisory databases quickly.
+
+On July 31, GitHub's advisory database, the one `npm audit` reads, had nothing on `vfat-tools`. It only got it on November 6 (the full timelines are in the \[addendum\]()).
 
 All of this took a handful of tool calls through looot, at $0.
 
+### Food for thought
+
 Of course that an install script isn't proof of malice, and plenty of legitimate packages have one. But it might be a reason to look deeper and ask your agent what is in that install script before installing the package.
 
-But please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-scanner)  and [get the good defaults in place](https://github.com/luisalima/autoscan-kit). They catch known vulnerabilities in your lockfile, after the package is in. A check before install covers what they can't:
+Please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-scanner)  and [get the good defaults in place](https://github.com/luisalima/autoscan-kit). They catch known vulnerabilities in your lockfile, after the package is in. A check before install covers what they won't:
 
 1. An install script runs during `npm install`, before any audit.
 2. A package registered last week has no advisory yet, so existence, downloads, maintainers and install scripts are the signals to look at.
-3. Not every agent has a shell. Chat and sandboxed agents can only call tools. You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*.
+3. Not every agent has a shell. Chat and sandboxed agents can only call tools. You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*. So you can still get a big mess out of a small mishap...!
 
 ## Addendum: the timelines
 
@@ -114,4 +130,4 @@ But please keep running `npm audit`, [osv-scanner](https://github.com/google/os
 | Nov 5, 22:23   | GitHub flags it; npm replaces it the same minute; OSV gets it an hour later | `MAL-2026-18714`: stop                                            |
 
 
-*Sources: npm registry publish times, OSV advisories and their origins, npm daily downloads, all through looot on November 9. Download counts include mirrors and scanners, not only installs. The original malicious code is gone, so I couldn't inspect it.*
+*Sources: npm registry publish times, OSV advisories and their origins, npm daily downloads, all through looot on November 9. Download counts include mirrors and scanners. The original malicious code is gone, so I couldn't inspect it.*
