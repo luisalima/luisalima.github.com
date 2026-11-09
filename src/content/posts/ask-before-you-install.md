@@ -60,7 +60,37 @@ plain-lang   0.0.1-security, "security holding package" · OSV: MAL-2026-18714
 vfat-tools   0.0.1-security, "security holding package" · OSV: MAL-2026-4179
 ```
 
-## Before and after the advisory
+And here's what the same check would have said while they were still on npm:
+
+```
+checked Jul 31, 2026
+vfat-tools 2.0.1 · published May 19
+downloads (Jul 24–30): 150
+advisories: MAL-2026-4179, malicious code (in OSV since May 19)
+→ stop: known malware
+```
+
+```
+checked Oct 1, 2026
+plain-lang 1.0.1 · published Jun 12, no release since
+downloads (Sep 24–30): 0
+advisories: none
+→ ask first: almost nobody uses it
+```
+
+On July 31, GitHub's advisory database, the one `npm audit` reads, had nothing on `vfat-tools`. It got it on November 6. The full timelines are in the addendum.
+
+All of this took a handful of tool calls through looot, at $0.
+
+Of course that an install script isn't proof of malice, and plenty of legitimate packages have one. But it might be a reason to look deeper and ask your agent what is in that install script before installing the package.
+
+But please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-scanner)  and [get the good defaults in place](https://github.com/luisalima/autoscan-kit). They catch known vulnerabilities in your lockfile, after the package is in. A check before install covers what they can't:
+
+1. An install script runs during `npm install`, before any audit.
+2. A package registered last week has no advisory yet, so existence, downloads, maintainers and install scripts are the signals to look at.
+3. Not every agent has a shell. Chat and sandboxed agents can only call tools. You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*.
+
+## Addendum: the timelines
 
 **`vfat-tools`: OSV knew within 26 minutes. npm served it for almost six months.**
 
@@ -85,13 +115,3 @@ vfat-tools   0.0.1-security, "security holding package" · OSV: MAL-2026-4179
 
 
 *Sources: npm registry publish times, OSV advisories and their origins, npm daily downloads, all through looot on November 9. Download counts include mirrors and scanners, not only installs. The original malicious code is gone, so I couldn't inspect it.*
-
-All of this took a handful of tool calls through looot, at $0.
-
-Of course that an install script isn't proof of malice, and plenty of legitimate packages have one. But it might be a reason to look deeper and ask your agent what is in that install script before installing the package.
-
-But please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-scanner)  and [get the good defaults in place](https://github.com/luisalima/autoscan-kit). They catch known vulnerabilities in your lockfile, after the package is in. A check before install covers what they can't:
-
-1. An install script runs during `npm install`, before any audit.
-2. A package registered last week has no advisory yet, so existence, downloads, maintainers and install scripts are the signals to look at.
-3. Not every agent has a shell. Chat and sandboxed agents can only call tools. You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*.
