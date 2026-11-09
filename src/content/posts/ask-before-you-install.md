@@ -117,7 +117,7 @@ Please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-sc
 1. An install script runs during `npm install`, before any audit.
 2. A package registered last week has no advisory yet, so existence, downloads, maintainers and install scripts are the signals to look at.
 3.  The agent that picks a package isn't always the one that installs it. A chat assistant suggests one, an agent writes it into `package.json`, and CI installs it later. The check needs to happen where the name is chosen. 
-4. Not every agent has a shell. You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*. So you can still get a big mess out of a small mishap...!
+4. 【Claude】 The install often happens in CI, which holds more credentials than any laptop. 【/Claude】 So you can still get a big mess out of a small mishap...!
 
 ## The skill
 
