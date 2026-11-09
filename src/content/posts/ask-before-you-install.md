@@ -28,9 +28,9 @@ Before installing any npm package, check it with looot:
 Stop and ask me if it doesn't exist, has few downloads, has install scripts or has any advisory.
 ```
 
-I packaged this as a skill: [check-before-install](https://gist.github.com/luisalima/03c55e71231b0929bc46a50105726982). It uses looot if you have it, and the public registry APIs if you don't.
+【Claude】 I packaged this as a skill: [check-before-install](https://gist.github.com/luisalima/03c55e71231b0929bc46a50105726982). It uses looot if you have it, and the public registry APIs if you don't. 【/Claude】
 
-Why I use looot for this (disclosure: I'm a cofounder): my sandbox only needs to allow one address instead of one per registry, the answers come back in the same shape for npm, PyPI and OSV, and each check is logged. The trade-off: looot sees which packages you check. With open network, the public APIs work just as well, and the skill falls back to them.
+【Claude】 Why I use looot for this (disclosure: I'm a cofounder): my sandbox only needs to allow one address instead of one per registry, the answers come back in the same shape for npm, PyPI and OSV, and each check is logged. The trade-off: looot sees which packages you check. With open network, the public APIs work just as well, and the skill falls back to them. 【/Claude】
 
 If everything looks ok, you can go the extra mile and then ask your agent to check for the install script contents (and ultimately, run a mini audit on the code).
 
@@ -69,7 +69,7 @@ advisories: none
 → ask first: brand new, nobody uses it, runs code on install
 ```
 
-No advisory yet, so nothing in it says "malware". The signals are what make your agent stop and ask. That's exactly what `plain-lang` looked like for 146 days (below).
+【Claude】 No advisory yet, so nothing in it says "malware". The signals are what make your agent stop and ask. That's exactly what `plain-lang` looked like for 146 days (below). 【/Claude】
 
 ## Examples of actual malicious packages
 
@@ -83,7 +83,7 @@ plain-lang   0.0.1-security, "security holding package" · OSV: MAL-2026-18714
 vfat-tools   0.0.1-security, "security holding package" · OSV: MAL-2026-4179
 ```
 
-And here's what the same check would have said while they were still on npm:
+【Claude】 And here's what the same check would have said while they were still on npm: 【/Claude】
 
 ```
 checked Jul 31, 2026
@@ -103,13 +103,15 @@ advisories: none
 
 You might think that this is being too careful. However, malicious packages keep appearing, and they don't always reach advisory databases quickly.
 
-On July 31, GitHub's advisory database, the one `npm audit` reads, had nothing on `vfat-tools`. It only got it on November 6 (the full timelines are in the [addendum](#addendum-the-timelines)).
+【Claude】 On July 31, GitHub's advisory database, the one `npm audit` reads, had nothing on `vfat-tools`. It only got it on November 6 【/Claude】 (the full timelines are in the [addendum](#addendum-the-timelines)).
+
+【Claude: section drafted by Claude, with your edits】
 
 ## What about only installing packages older than X days?
 
 Some teams only install versions that have been public for a few days. npm (`min-release-age`, from npm 11.10), pnpm (`minimumReleaseAge`) and Yarn (`npmMinimalAgeGate`) all support it now. It's a good default against a hijacked release of a popular package, which often gets caught within days.
 
-But it wouldn't have helped with these two. `vfat-tools` 2.0.1 turned 7 days old on May 26 and stayed installable until November 6. `plain-lang` turned 7 days old on June 19 and had no advisory until November 5. And a slopsquatted name can be registered weeks before an agent suggests it. Age tells you a version isn't brand new, not that it's safe: keep the gate, and check first.
+But it wouldn't have helped with these two. `vfat-tools` 2.0.1 turned 7 days old on May 26 and stayed installable until November 6. `plain-lang` turned 7 days old on June 19 and had no advisory until November 5. And a slopsquatted name can be registered weeks before an agent suggests it. Age tells you a version isn't brand new, not that it's safe: keep the gate, and check first. 【/Claude】
 
 ## Food for thought
 
@@ -119,8 +121,8 @@ Please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-sc
 
 1. An install script runs during `npm install`, before any audit.
 2. A package registered last week has no advisory yet, so existence, downloads, maintainers and install scripts are the signals to look at.
-3. The agent that picks a package isn't always the one that installs it. A chat assistant suggests one, an agent writes it into `package.json`, and CI installs it later. The check has to happen where the name is chosen.
-4. Not every agent has a shell. You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*. So you can still get a big mess out of a small mishap...!
+【Claude】 3. The agent that picks a package isn't always the one that installs it. A chat assistant suggests one, an agent writes it into `package.json`, and CI installs it later. The check has to happen where the name is chosen. 【/Claude】
+【Claude】 4. Not every agent has a shell. 【/Claude】 You might argue that is good, *but* those sandboxes can hold credentials, and, most importantly, *access*. So you can still get a big mess out of a small mishap...!
 
 ## Addendum: the timelines
 
