@@ -101,6 +101,12 @@ You might think that this is being too careful. However, malicious packages keep
 
 On July 31, GitHub's advisory database, the one `npm audit` reads, had nothing on `vfat-tools`. It only got it on November 6 (the full timelines are in the [addendum](#addendum-the-timelines)).
 
+## What about only installing packages older than 7 days?
+
+Some teams only install versions that have been public for a few days. npm (`min-release-age`, from npm 11.10), pnpm (`minimumReleaseAge`) and Yarn (`npmMinimalAgeGate`) all support it now. It's a good default against a hijacked release of a popular package, which often gets caught within days.
+
+It wouldn't have helped with these two. `vfat-tools` 2.0.1 turned 7 days old on May 26 and stayed installable until November 6. `plain-lang` turned 7 days old on June 19 and had no advisory until November 5. And a slopsquatted name can be registered weeks before an agent suggests it. Age tells you a version isn't brand new, not that it's safe: keep the gate, and check first.
+
 All of this took a handful of tool calls through looot, at $0.
 
 ## Food for thought
