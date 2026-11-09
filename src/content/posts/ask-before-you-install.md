@@ -58,7 +58,16 @@ react-secure-form-sanitizer     not found on npm
 
 But suppose someone actually registers it. Here is what your agent could say if we used the prompt above:
 
-TODO-CLAUDE
+```
+checked the day after someone registers it (hypothetical)
+react-secure-form-sanitizer 1.0.0 · published yesterday · 1 maintainer
+downloads (last week): 0
+install scripts: postinstall
+advisories: none
+→ ask first: brand new, nobody uses it, runs code on install
+```
+
+No advisory yet, so nothing in it says "malware". The signals are what make your agent stop and ask. That's exactly what `plain-lang` looked like for 146 days (below).
 
 ## Examples of actual malicious packages
 
@@ -92,7 +101,7 @@ advisories: none
 
 You might think that this is being too careful. However, slopsquatting is becoming more and more widespread and the vulnerabilities don't always enter advisory databases quickly.
 
-On July 31, GitHub's advisory database, the one `npm audit` reads, had nothing on `vfat-tools`. It only got it on November 6 (the full timelines are in the \[addendum\]()).
+On July 31, GitHub's advisory database, the one `npm audit` reads, had nothing on `vfat-tools`. It only got it on November 6 (the full timelines are in the [addendum](#addendum-the-timelines)).
 
 All of this took a handful of tool calls through looot, at $0.
 
