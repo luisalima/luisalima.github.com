@@ -58,11 +58,33 @@ plain-lang   0.0.1-security, "security holding package" · OSV: MAL-2026-18714
 vfat-tools   0.0.1-security, "security holding package" · OSV: MAL-2026-4179
 ```
 
+## Before and after the advisory
+
+**`vfat-tools`: OSV knew within 26 minutes. npm served it for almost six months.**
+
+| When (UTC) | What happened | What a check before install says |
+|---|---|---|
+| May 19, 03:50 | v2.0.0 published on npm | exists, brand new, no downloads, no advisory: new and unused, ask first |
+| May 19, 04:16 | OpenSSF's scanner flags it; it reaches OSV | `MAL-2026-4179`: stop |
+| May 19, 11:46 | v2.0.1 published, after the flag | still flagged (the advisory covers every version) |
+| May 20 – Nov 5 | still installable on npm: 3,346 downloads | flagged, every day |
+| Nov 6, 05:43 | GitHub's advisory database gets it; npm replaces it a minute later | flagged, plus npm's placeholder package |
+
+**`plain-lang`: no advisory anywhere for 146 days.**
+
+| When (UTC) | What happened | What a check before install says |
+|---|---|---|
+| Jun 12 | v1.0.0 and v1.0.1 published, 11 minutes apart | exists, no advisory, almost no downloads |
+| Jun 12 – Nov 4 | 357 downloads in 146 days | no advisory, so only the signals catch it: tiny usage, no history |
+| Nov 5, 22:23 | GitHub flags it; npm replaces it the same minute; OSV gets it an hour later | `MAL-2026-18714`: stop |
+
+*Sources: npm registry publish times, OSV advisories and their origins, npm daily downloads, all through looot on November 9. Download counts include mirrors and scanners, not only installs. The original malicious code is gone, so I couldn't inspect it.*
+
 All of this took a handful of tool calls through looot, at $0.
 
 Of course that an install script isn't proof of malice, and plenty of legitimate packages have one. But it might be a reason to look deeper and ask your agent what is in that install script before installing the package.
 
-But please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-scanner)  and \[get the good defaults in place\](TODO-LINK-TO-MY-TOOL). They catch known vulnerabilities in your lockfile, after the package is in. A check before install covers what they can't:
+But please keep running `npm audit`, [osv-scanner](https://github.com/google/osv-scanner)  and [get the good defaults in place](https://github.com/luisalima/autoscan-kit). They catch known vulnerabilities in your lockfile, after the package is in. A check before install covers what they can't:
 
 1. An install script runs during `npm install`, before any audit.
 2. A package registered last week has no advisory yet, so existence, downloads, maintainers and install scripts are the signals to look at.
