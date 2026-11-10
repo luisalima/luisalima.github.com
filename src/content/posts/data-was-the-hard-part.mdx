@@ -1,0 +1,37 @@
+---
+title: "Data science with looot: the data was the hard part"
+pubDatetime: 2026-11-12T18:00:00.000Z
+description: "When I managed data scientists at Barracuda, most of a project went into getting the data. Guess how much, then see how long the data for my last note took."
+kind: note
+draft: true
+tags: ["data-science", "looot", "agents"]
+---
+
+import GuessReveal from "@/components/GuessReveal.astro";
+
+{/* SCAFFOLD (Claude, 2026-11-10). Format chosen by Luisa: guess first, then reveal. Barracuda: named (Luisa).
+✍️ = your words. Facts under each are checked; delete them as you write.
+TODO Luisa: your own estimate for Barracuda in the GuessReveal below (the `value: null` line), plus one story. */}
+
+✍️ **Opening scene.** A project at Barracuda (Barracuda Networks), where you were a data-science manager: the question was simple, getting the data wasn't. One concrete moment (no internal details, no names of colleagues or customers).
+
+<GuessReveal
+  id="share-getting-data"
+  question="How much of a data-science project goes into just getting the data ready?"
+  start={30}
+  answers={[
+    { label: "Me, at Barracuda", value: null, text: "✍️ your estimate, e.g. ~70%", source: "my estimate, not a measurement", kind: "you" },
+    { label: "CrowdFlower survey, 2016", value: 79, text: "collecting 19% + cleaning 60%", source: "self-reported, data scientists", href: "https://www.kdnuggets.com/2016/04/crowdflower-2016-data-science-repost.html", kind: "survey" },
+    { label: "Anaconda survey, 2020", value: 45, text: "loading 19% + cleaning 26%", source: "self-reported, data scientists", href: "https://www.hpcwire.com/bigdatawire/2020/07/06/data-prep-still-dominates-data-scientists-time-survey-finds/", kind: "survey" },
+    { label: "My last note, with looot", value: null, text: "all the data in 23 minutes · 251 calls · $0.22", source: "measured: receipts, 6 Nov 2026", href: "/notes/how-fast-do-cves-travel/", kind: "now" },
+  ]}
+  note="Surveys are self-reported and define the tasks differently, so treat them as a range, not one number. Anaconda's later reports put it at about 38–39%."
+/>
+
+✍️ **Why it took so long then.** Facts to use or drop: every source had its own access (API keys, paid tiers, scrapers, rate limits), its own format, and broke on its own schedule.
+
+✍️ **What changed.** The CVE note pulled X, Reddit, Google News, GitHub, OSV, CVE.org, NVD and CISA KEV: 251 calls between 12:00:55 and 12:24:02 UTC on 6 Nov 2026, $0.22 in total (receipts in data-experiments/2026-11-06-cve-travel/raw/receipts.jsonl). Disclosure: I'm a looot cofounder.
+
+✍️ **So what.** Where the freed time goes (asking better questions, checking the data, the charts).
+
+{/* FOOTER (same pattern as the CVE note): method + disclosure. */}
