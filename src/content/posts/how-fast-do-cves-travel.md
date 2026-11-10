@@ -10,42 +10,28 @@ seriesOrder: 8
 ---
 
 
-\[While writing yesterday's note\](), I realized that some malware sat on npm for six months before the advisory database most tools read caught up. So, I wondered... how fast does the news about a *vulnerability* travel? 
-
-So I picked 20 CVEs at random and split them up into two groups of 10:
-
-- **"loud":** exploited in the wild (on CISA's Known Exploited Vulnerabilities list, KEV), added Aug–Nov 2026, one per vendor
-- **"quiet":** ordinary npm and PyPI advisories reviewed by GitHub, with a CVE, not on KEV
-
-- For each one, the first time it showed up: fixed version, Reddit, X, news, a GitHub repo, KEV, a public exploit repo.
-- All through [looot](https://looot.ai) (disclosure: I'm a cofounder). Total cost: $0.22.
-
-
+[While writing yesterday's note](/notes/ask-before-you-install/), I realized that some malware sat on npm for six months before the advisory database most tools read caught up. So, I wondered... how fast does the news about a *vulnerability* travel? I picked 20 CVEs at random and split them up into two groups of 10: the "loud" ones (exploited in the wild: attackers are already using them) and the "quiet" ones (ordinary bugs in npm and PyPI packages).
 
 ## Scrolly cards
 
-<!-- The scrolly IS the story (layout (a), Luisa 11-10). One numbered item = one card, in order; the chart
-state for each card is fixed (see the note after each). Rewrite every card in your voice.
-**bold** and *italics* work; {x} {news} {reddit} {github} {kev} {poc} {fix} insert the coloured icon.
-Numbers are checked against the data: if you change one, I re-check it. Build: data-experiments/2026-11-06-cve-travel/scrolly/build.py -->
+1. A CVE is an entry in a public catalog of known security bugs. Most of us start paying attention to a bug the day its CVE is published.
+2. But let's take **Acronis** (CVE-2026-87886) as an example. The first post about it on X {x} came out... **45 hours before** its CVE record! <!-- chart: Acronis, X only -->
 
-1. Every CVE has a public start: the day its **CVE record** is published. Most of us start the clock there. Call it zero. <!-- chart: empty timeline. ✍️ Explain what a CVE is here (facts in the next section). -->
-2. Take **Acronis** (CVE-2026-87886). The first post on X {x} came **45 hours before** its CVE record. <!-- chart: Acronis, X only -->
-3. News {news} followed, 16 hours before the record. And CISA {kev} had already listed it as **exploited in the wild**, the day before the record existed. <!-- chart: Acronis, X + news + KEV -->
-4. Only then did the CVE record land. <!-- chart: the record line pulses -->
-5. Acronis isn't alone. Of 10 bugs exploited in the wild, **5 were public somewhere before their CVE record**: on X, Reddit, in the news, on GitHub or on CISA's list. <!-- chart: all 10 exploited, "before" glows -->
-6. Public exploit code {poc} came later: **15 hours to 22 days** after the first mention. Attackers didn't wait for it: for 4 of those 6, CISA {kev} had already listed the bug as exploited. <!-- chart: exploit routes -->
-7. Now 10 ordinary bugs in npm and PyPI packages. Before their CVE record: **nothing**. After it: a handful of posts and some aggregator news. <!-- chart: the 10 ordinary bugs -->
-8. But look left. Every one of them was **fixed before its CVE** {fix}: 25 days earlier for the typical bug, up to 73. The fix was public weeks before the record said why. <!-- chart: fix diamonds slide back -->
-9. So the CVE record is late twice: **after the attackers** for the loud bugs, and **weeks after the fix** for the quiet ones. <!-- chart: same; ✍️ your line -->
-10. What this means: for most bugs, the fix is out **weeks before** the CVE record that your tools are waiting for. So take fixes when they ship. Here's the flow. <!-- chart: the update flow appears -->
-11. Fast doesn't mean blind (that was yesterday's note). The bot waits a few days, the checks look for install scripts, known bugs and malware, and the tests decide. Even with a 7-day wait, all 10 fixes would have landed before their CVE record. <!-- chart: steps 2-4 lit -->
-12. Sometimes tests can't tell you if an update is safe, and the people who could check are overwhelmed. Then **an agent can click through the change and record a walkthrough video**, so a person approves in minutes instead of reading the whole diff. <!-- chart: walkthrough step lit -->
-13. **Have the systems in place so you can update fast.** <!-- chart: the whole flow; your line, Luisa -->
+1. News {news} followed, 16 hours **before** the CVE record! And CISA {kev} (the US government's cybersecurity agency) had already listed it as **exploited in the wild**... the day before the record existed. <!-- chart: Acronis, X + news + KEV -->
+2. Only then did the CVE record land. <!-- chart: the record line pulses -->
+3. Is this unusual? No. Of 10 bugs exploited in the wild, **5 were public somewhere before their CVE record**: on X, Reddit, in the news, on GitHub or on CISA's list. <!-- chart: all 10 exploited, "before" glows -->
+4. Public exploit code {poc} came later, **15 hours to 22 days** after the first mention on socials and news. But attackers didn't wait for public exploit code: for 4 of those 6, CISA {kev} had already listed the bug as exploited in the wild. <!-- chart: exploit routes -->
+5. Then I looked at 10 ordinary bugs in npm and PyPI packages. Before their CVE record, there was **nothing**. After it, there was a handful of posts and some aggregator news. <!-- chart: the 10 ordinary bugs -->
+6. But... look left. Every one of them was **fixed before its CVE** {fix}: 25 days earlier for the typical bug, up to 73. So, the fix was public weeks before the record appeared. This is what we like ;) <!-- chart: fix diamonds slide back -->
+7. So the CVE record appeared **after the attackers** for the loud bugs, and **weeks after the fix** for the quiet ones. <!-- chart: same; ✍️ your line -->
+8. What does this mean for you? For most bugs, the fix is out **weeks before** the CVE record that your tools are waiting for. So, how can we take fixes when they ship and not wait? <!-- chart: the update flow appears -->
+9. Being fast doesn't mean being careless (remember yesterday's note?). The update bot can wait a few days, CI can block install scripts, the scanners can check the lists (usually late, but always check) and the tests decide whether to merge. Even with a 7-day wait before updating, all 10 fixes would have landed before their CVE record. <!-- chart: steps 2-4 lit -->
+10. Sometimes tests can't tell you if an update will break your app in unexpected ways, and the people who could check are overwhelmed. Use the agents! **Agents can click through the change and record a walkthrough video**, so a person approves in minutes instead of reading the whole diff. For backend, they can use curl and other tools and do the same thing. <!-- chart: walkthrough step lit -->
+11. **What's the conclusion? Have the systems in place so you can update fast, and remember that defense is always in depth, a combination of different measures to make your systems as safe as possible.** <!-- chart: the whole flow; your line, Luisa -->
 
 ## What is a CVE? (for readers outside security)
 
-- A CVE is an entry in a public catalogue of known security bugs: an ID like `CVE-2026-87886` plus a short public record (what's affected, which versions).
+- A CVE is : an ID like `CVE-2026-87886` plus a short public record (what's affected, which versions).
 - The catalogue is the CVE Program, run by MITRE. IDs are assigned by authorised organisations ("CNAs"): vendors such as Microsoft or GitHub, and security companies.
 - Most security tooling works from it, directly or through databases built on it (GitHub's advisory database, OSV, NVD): `npm audit`, Dependabot, scanners, the "vulnerable dependency" email.
 - So for most teams the CVE record is the moment they find out. That's why it matters when it's late.
@@ -85,15 +71,21 @@ Numbers are checked against the data: if you change one, I re-check it. Build: d
 ## What this means for you, and for your agents
 
 - For your dependencies, many times the advisory is late by design and the fix is already out. Update on releases, not on dependencies
--  **Automated unit and integration tests in CI, so updating is fast.** If the fix ships weeks before the advisory, the teams that win are the ones who can take an update the day it lands: a bot opens the PR, the tests say it's safe, it merges. Without tests, every update is a manual risk, so people wait for the advisory (or longer: seroval's 35%).
+- **Automated unit and integration tests in CI, so updating is fast.** If the fix ships weeks before the advisory, the teams that win are the ones who can take an update the day it lands: a bot opens the PR, the tests say it's safe, it merges. Without tests, every update is a manual risk, so people wait for the advisory (or longer: seroval's 35%).
 → link the pipeline gist here (draft: `gists/fast-dependency-updates/`, not public yet).
 - (Luisa, 11-10) **Doesn't "update fast" contradict yesterday's note?** No: fast, but checked. Yesterday: an age gate is good but it isn't a check, so check the package before you install it. Today: fixes land weeks before the CVE, so be able to take them quickly. Same lesson: put the checks in the pipeline, not in waiting.
   - The earliest fix in the 10 came **8 days** (183 h) before its CVE record, so even a **7-day age gate** would have had all 10 fixes in before the record.
   - The pipeline gist uses a 3-day cooldown + check-before-install style checks + CI tests. Link [Ask before you install](/notes/ask-before-you-install/) here as the "checked" half.
 - (Luisa, 11-10) **When integration tests aren't enough**, and because humans are overwhelmed: have the agents do a walkthrough video for a human to approve. (In the scrolly as optional step 5, between Tests and Auto-merge. Not in the pipeline gist yet.)
+- (Luisa, 11-10: (a)) ✍️ **Even when it all goes right: php2shell.** Facts (data-experiments/2026-10-22-php2shell/NOTES.md, checked 10-22):
+  - Coordinated disclosure: PHP tagged the fixed releases under embargo on 10-19; advisory + fix public together on 10-21 (the CVE IDs leaked a day early).
+  - Upstream was fast: official Docker image ~5.5 h after the advisory; Ubuntu and Debian fixes within about a day.
+  - The slow link is the last mile: someone has to run `apt upgrade` or rebuild the container. 35.8% of WordPress installs run PHP 8.1 or older, which gets no release from the PHP project (source patches only); old Ubuntu gets the fix only with paid Ubuntu Pro.
+  - Not in the 20 (not picked at random, and neither group). One paragraph; the full story is the follow-up note (link it when it's out).
 - For exploited bugs, watch more than the CVE feed: vendor bulletins, KEV, and where security people post.
 - An agent can do this watching for you: a daily check of KEV + your dependencies' releases is a few cheap tool calls.
-- What I'd do next: a bigger sample (\~100 KEV CVEs, about $1), vendor-bulletin times as the real zero, and a weekly fix-adoption curve.
+- What I'd do next: a bigger sample (~100 KEV CVEs, about $1), vendor-bulletin times as the real zero, and a weekly fix-adoption curve.
+- All through [looot](https://looot.ai) (disclosure: I'm a cofounder). Total cost: $0.22.
 
 ## Addendum: method and caveats
 
