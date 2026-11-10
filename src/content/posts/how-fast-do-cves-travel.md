@@ -22,6 +22,27 @@ So I picked 20 CVEs at random and split them up into two groups of 10:
 
 
 
+## Scrolly cards
+
+<!-- The scrolly IS the story (layout (a), Luisa 11-10). One numbered item = one card, in order; the chart
+state for each card is fixed (see the note after each). Rewrite every card in your voice.
+**bold** and *italics* work; {x} {news} {reddit} {github} {kev} {poc} {fix} insert the coloured icon.
+Numbers are checked against the data: if you change one, I re-check it. Build: data-experiments/2026-11-06-cve-travel/scrolly/build.py -->
+
+1. Every CVE has a public start: the day its **CVE record** is published. Most of us start the clock there. Call it zero. <!-- chart: empty timeline. ✍️ Explain what a CVE is here (facts in the next section). -->
+2. Take **Acronis** (CVE-2026-87886). The first post on X {x} came **45 hours before** its CVE record. <!-- chart: Acronis, X only -->
+3. News {news} followed, 16 hours before the record. And CISA {kev} had already listed it as **exploited in the wild**, the day before the record existed. <!-- chart: Acronis, X + news + KEV -->
+4. Only then did the CVE record land. <!-- chart: the record line pulses -->
+5. Acronis isn't alone. Of 10 bugs exploited in the wild, **5 were public somewhere before their CVE record**: on X, Reddit, in the news, on GitHub or on CISA's list. <!-- chart: all 10 exploited, "before" glows -->
+6. Public exploit code {poc} came later: **15 hours to 22 days** after the first mention. Attackers didn't wait for it: for 4 of those 6, CISA {kev} had already listed the bug as exploited. <!-- chart: exploit routes -->
+7. Now 10 ordinary bugs in npm and PyPI packages. Before their CVE record: **nothing**. After it: a handful of posts and some aggregator news. <!-- chart: the 10 ordinary bugs -->
+8. But look left. Every one of them was **fixed before its CVE** {fix}: 25 days earlier for the typical bug, up to 73. The fix was public weeks before the record said why. <!-- chart: fix diamonds slide back -->
+9. So the CVE record is late twice: **after the attackers** for the loud bugs, and **weeks after the fix** for the quiet ones. <!-- chart: same; ✍️ your line -->
+10. What this means: for most bugs, the fix is out **weeks before** the CVE record that your tools are waiting for. So take fixes when they ship. Here's the flow. <!-- chart: the update flow appears -->
+11. Fast doesn't mean blind (that was yesterday's note). The bot waits a few days, the checks look for install scripts, known bugs and malware, and the tests decide. Even with a 7-day wait, all 10 fixes would have landed before their CVE record. <!-- chart: steps 2-4 lit -->
+12. Sometimes tests can't tell you if an update is safe, and the people who could check are overwhelmed. Then **an agent can click through the change and record a walkthrough video**, so a person approves in minutes instead of reading the whole diff. <!-- chart: walkthrough step lit -->
+13. **Have the systems in place so you can update fast.** <!-- chart: the whole flow; your line, Luisa -->
+
 ## What is a CVE? (for readers outside security)
 
 - A CVE is an entry in a public catalogue of known security bugs: an ID like `CVE-2026-87886` plus a short public record (what's affected, which versions).
