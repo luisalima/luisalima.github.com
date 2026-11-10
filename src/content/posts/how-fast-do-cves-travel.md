@@ -8,19 +8,11 @@ tags: ["ai-security", "supply-chain", "vulnerabilities", "secure-coding"]
 series: secure-coding-with-agents
 seriesOrder: 8
 ---
-<!--
-SCAFFOLD (Claude, 2026-11-09). Structure + facts + figure + links. Luisa writes the prose.
-- ✍️ = write this in your voice. The bullets under it are the facts to use (all from
-  data-experiments/2026-11-06-cve-travel/NOTES.md, run 1, checked 11-09). Delete the bullets when done.
-- The addendum (method, caveats, cost) is factual and can stay mostly as is; reword freely.
-- Title / description / series are proposals: change them.
-- (Luisa, 11-10) Layout (a): the scrollytelling chart opens the note as the hero; the five claim figures go in
-  their sections; the explorer goes last. Files will move to .mdx when the prose is in.
--->
+
 
 \[While writing yesterday's note\](), I realized that some malware sat on npm for six months before the advisory database most tools read caught up. So, I wondered... how fast does the news about a *vulnerability* travel? 
 
-So I did some detective work... I picked 20 CVEs at random and split them up into two groups of 10:
+So I picked 20 CVEs at random and split them up into two groups of 10:
 
 - **"loud":** exploited in the wild (on CISA's Known Exploited Vulnerabilities list, KEV), added Aug–Nov 2026, one per vendor
 - **"quiet":** ordinary npm and PyPI advisories reviewed by GitHub, with a CVE, not on KEV
@@ -31,8 +23,6 @@ So I did some detective work... I picked 20 CVEs at random and split them up int
 
 
 ## What is a CVE? (for readers outside security)
-
-✍️ **Your take on it (Luisa, 11-10: explain it for non-security people).** Facts:
 
 - A CVE is an entry in a public catalogue of known security bugs: an ID like `CVE-2026-87886` plus a short public record (what's affected, which versions).
 - The catalogue is the CVE Program, run by MITRE. IDs are assigned by authorised organisations ("CNAs"): vendors such as Microsoft or GitHub, and security companies.
@@ -79,6 +69,7 @@ So I did some detective work... I picked 20 CVEs at random and split them up int
 - (Luisa, 11-10) **Doesn't "update fast" contradict yesterday's note?** No: fast, but checked. Yesterday: an age gate is good but it isn't a check, so check the package before you install it. Today: fixes land weeks before the CVE, so be able to take them quickly. Same lesson: put the checks in the pipeline, not in waiting.
   - The earliest fix in the 10 came **8 days** (183 h) before its CVE record, so even a **7-day age gate** would have had all 10 fixes in before the record.
   - The pipeline gist uses a 3-day cooldown + check-before-install style checks + CI tests. Link [Ask before you install](/notes/ask-before-you-install/) here as the "checked" half.
+- (Luisa, 11-10) **When integration tests aren't enough**, and because humans are overwhelmed: have the agents do a walkthrough video for a human to approve. (In the scrolly as optional step 5, between Tests and Auto-merge. Not in the pipeline gist yet.)
 - For exploited bugs, watch more than the CVE feed: vendor bulletins, KEV, and where security people post.
 - An agent can do this watching for you: a daily check of KEV + your dependencies' releases is a few cheap tool calls.
 - What I'd do next: a bigger sample (\~100 KEV CVEs, about $1), vendor-bulletin times as the real zero, and a weekly fix-adoption curve.
