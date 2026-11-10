@@ -34,3 +34,14 @@ After editing: python3 -I data-experiments/2026-11-06-cve-travel/scrolly/build.p
 10. Sometimes tests can't tell you if an update will break your app in unexpected ways, and the people who could check are overwhelmed. Use the agents! **Agents can click through the change and record a walkthrough video**, so a person approves in minutes instead of reading the whole diff. For backend, they can use curl and other tools and do the same thing. <!-- chart: walkthrough step lit -->
 11. **So, have the systems in place so you can update fast, and remember that no single measure keeps your code and apps safe: it's defense in depth.** <!-- chart: the whole flow; your line, Luisa -->
 */}
+
+{/* FOOTER: the small text under the chart. Edit freely; keep the looot disclosure and that it's a small sample (n = 20).
+Blank line = new paragraph. **bold**, *italics* and [links](https://...) work.
+After editing: python3 -I data-experiments/2026-11-06-cve-travel/scrolly/build.py --site
+
+**How I did it.** 20 CVEs from 2026, picked before looking at any spread data (random seed 20261106). Loud: 10 bugs added to CISA's list of exploited bugs (KEV) between August and November, one per vendor. Quiet: 5 npm + 5 PyPI advisories reviewed by GitHub, not on KEV. For each, the first time it showed up on X, Reddit, Google News, GitHub, CISA's list, plus the fixed version and public exploit repos ("poc", "exploit" or "rce" in the name; I didn't open them, and fake ones that ship malware are common).
+
+**Caveats.** n = 20: an anecdote with a method, not a base rate. "First seen" is the earliest result a search API returned, so the real first post may be earlier. CISA and many news dates are by day. The time axis stretches the first hours and squeezes the weeks.
+
+Data via [looot](https://looot.ai) (disclosure: I'm a cofounder): X, Reddit, Google News, GitHub, OSV, CVE.org, NVD, CISA KEV. Total cost: $0.22.
+*/}
