@@ -8,7 +8,6 @@ tags: ["ai-security", "supply-chain", "vulnerabilities", "secure-coding"]
 series: secure-coding-with-agents
 seriesOrder: 8
 ---
-
 import CveTravelScrolly from "@/components/CveTravelScrolly.astro";
 
 [While writing yesterday's note](/notes/ask-before-you-install/), I realized that some malware sat on npm for six months before the advisory database most tools read caught up. So, I wondered... how fast does the news about a *vulnerability* travel? I picked 20 CVEs at random and split them up into two groups of 10: the "loud" ones (exploited in the wild: attackers are already using them) and the "quiet" ones (ordinary bugs in npm and PyPI packages).
@@ -21,27 +20,27 @@ After editing: python3 -I data-experiments/2026-11-06-cve-travel/scrolly/build.p
 
 1. A CVE is an entry in a public catalog of known security bugs. Most of us start paying attention to a bug the day its CVE is published.
 2. But let's take **Acronis** (CVE-2026-87886) as an example. The first post about it on X {x} came out... **45 hours before** its CVE record! <!-- chart: Acronis, X only -->
-
-1. News {news} followed, 16 hours **before** the CVE record. And CISA {kev} (the US government's cybersecurity agency) had already listed it as **exploited in the wild**, the day before the record existed. <!-- chart: Acronis, X + news + KEV -->
-2. Only then did the CVE record land. <!-- chart: the record line pulses -->
-3. Is this unusual? No. Of 10 bugs exploited in the wild, **5 were public somewhere before their CVE record**: on X, Reddit, in the news, on GitHub or on CISA's list. <!-- chart: all 10 exploited, "before" glows -->
-4. Public exploit code {poc} came later, **15 hours to 22 days** after the first mention on socials and news. But attackers didn't wait for public exploit code: for 4 of those 6, CISA {kev} had already listed the bug as exploited in the wild. <!-- chart: exploit routes -->
-5. Then I looked at 10 ordinary bugs in npm and PyPI packages. Before their CVE record, there was **nothing**. After it, there was a handful of posts and some aggregator news. <!-- chart: the 10 ordinary bugs -->
-6. But... look left. Every one of them was **fixed before its CVE** {fix}: 25 days earlier for the typical bug, up to 73. So, the fix was public weeks before the record appeared. This is what we like ;) <!-- chart: fix diamonds slide back -->
-7. So the CVE record appeared **after the attackers** for the loud bugs, and **weeks after the fix** for the quiet ones. <!-- chart: same; ✍️ your line -->
-8. What does this mean for you? For many bugs, the fix is out **weeks before** the CVE record that your tools are waiting for. So, how can we take fixes when they ship and not wait? <!-- chart: the update flow appears -->
-9. Being fast doesn't mean being careless (remember yesterday's note?). The update bot can wait a few days, CI can block install scripts, the scanners can check the lists (can be late, but always check) and the tests decide whether to merge. Even with a 7-day wait before updating, all 10 fixes would have landed before their CVE record. <!-- chart: steps 2-4 lit -->
-10. Sometimes tests can't tell you if an update will break your app in unexpected ways, and the people who could check are overwhelmed. Use the agents! **Agents can click through the change and record a walkthrough video**, so a person approves in minutes instead of reading the whole diff. For backend, they can use curl and other tools and do the same thing. <!-- chart: walkthrough step lit -->
-11. **So, have the systems in place so you can update fast, and remember that no single measure keeps your code and apps safe: it's defense in depth.** <!-- chart: the whole flow; your line, Luisa -->
+3. News {news} followed, 16 hours **before** the CVE record. And CISA {kev} (the US government's cybersecurity agency) had already listed it as **exploited in the wild**, the day before the record existed. <!-- chart: Acronis, X + news + KEV -->
+4. Only then did the CVE record land. <!-- chart: the record line pulses -->
+5. Is this unusual? No. Of 10 bugs exploited in the wild, **5 were public somewhere before their CVE record**: on X, Reddit, in the news, on GitHub or on CISA's list. <!-- chart: all 10 exploited, "before" glows -->
+6. Public exploit code {poc} came later, **15 hours to 22 days** after the first mention on socials and news. But attackers didn't wait for public exploit code: for 4 of those 6, CISA {kev} had already listed the bug as exploited in the wild. <!-- chart: exploit routes -->
+7. Then I looked at 10 ordinary bugs in npm and PyPI packages. Before their CVE record, there was **nothing**. After it, there was a handful of posts and some aggregator news. <!-- chart: the 10 ordinary bugs -->
+8. But... look left. Every one of them was **fixed before its CVE** {fix}: 25 days earlier for the typical bug, up to 73. So, the fix was public weeks before the record appeared. This is what we like ;) <!-- chart: fix diamonds slide back -->
+9. So the CVE record appeared **after the attackers** for the loud bugs, and **weeks after the fix** for the quiet ones. <!-- chart: same; ✍️ your line -->
+10. What does this mean for you? For many bugs, the fix is out **weeks before** the CVE record that your tools are waiting for. So, how can we take fixes when they ship and not wait? <!-- chart: the update flow appears -->
+11. Being fast doesn't mean being careless (remember yesterday's note?). The update bot can wait a few days, CI can block install scripts, the scanners can check the lists (can be late, but always check) and the tests decide whether to merge. Even with a 7-day wait before updating, all 10 fixes would have landed before their CVE record. <!-- chart: steps 2-4 lit -->
+12. Sometimes tests can't tell you if an update will break your app in unexpected ways, and the people who could check are overwhelmed. Use the agents! **Agents can click through the change and record a walkthrough video**, so a person approves in minutes instead of reading the whole diff. For backend, they can use curl and other tools and do the same thing. <!-- chart: walkthrough step lit -->
+13. **So, have the systems in place so you can update fast, and remember that no single measure keeps your code and apps safe: it's defense in depth.** <!-- chart: the whole flow; your line, Luisa -->
 */}
 
 {/* FOOTER: the small text under the chart. Edit freely; keep the looot disclosure and that it's a small sample (n = 20).
 Blank line = new paragraph. **bold**, *italics* and [links](https://...) work.
 After editing: python3 -I data-experiments/2026-11-06-cve-travel/scrolly/build.py --site
 
-**How I did it.** 20 CVEs from 2026, picked before looking at any spread data (random seed 20261106). Loud: 10 bugs added to CISA's list of exploited bugs (KEV) between August and November, one per vendor. Quiet: 5 npm + 5 PyPI advisories reviewed by GitHub, not on KEV. For each, the first time it showed up on X, Reddit, Google News, GitHub, CISA's list, plus the fixed version and public exploit repos ("poc", "exploit" or "rce" in the name; I didn't open them, and fake ones that ship malware are common).
 
-**Caveats.** n = 20: an anecdote with a method, not a base rate. "First seen" is the earliest result a search API returned, so the real first post may be earlier. CISA and many news dates are by day. The time axis stretches the first hours and squeezes the weeks.
 
-Data via [looot](https://looot.ai) (disclosure: I'm a cofounder): X, Reddit, Google News, GitHub, OSV, CVE.org, NVD, CISA KEV. Total cost: $0.22.
-*/}
+**My methodology:** 20 CVEs from 2026, picked before looking at any spread data. Loud: 10 bugs added to CISA's list of exploited bugs (KEV) between August and November, one per vendor. Quiet: 5 npm + 5 PyPI advisories reviewed by GitHub, not on KEV. For each, the first time it showed up on X, Reddit, Google News, GitHub, CISA's list, plus the fixed version and public exploit repos ("poc", "exploit" or "rce" in the name; I didn't open them, and fake ones that ship malware are common).
+
+**Caveats:** n = 20: this is a field note. "First seen" is the earliest result a search API returned, so the real first post may be even earlier. CISA and many news dates are by day. The time axis stretches the first hours and squeezes the weeks.
+
+Data via [looot](https://looot.ai) (disclosure: I'm a cofounder): X, Reddit, Google News, GitHub, OSV, CVE.org, NVD, CISA KEV. */}
