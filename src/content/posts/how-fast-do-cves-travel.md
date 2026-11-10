@@ -8,32 +8,43 @@ tags: ["ai-security", "supply-chain", "vulnerabilities", "secure-coding"]
 series: secure-coding-with-agents
 seriesOrder: 8
 ---
-
 <!--
 SCAFFOLD (Claude, 2026-11-09). Structure + facts + figure + links. Luisa writes the prose.
 - ✍️ = write this in your voice. The bullets under it are the facts to use (all from
   data-experiments/2026-11-06-cve-travel/NOTES.md, run 1, checked 11-09). Delete the bullets when done.
 - The addendum (method, caveats, cost) is factual and can stay mostly as is; reword freely.
 - Title / description / series are proposals: change them.
+- (Luisa, 11-10) Layout (a): the scrollytelling chart opens the note as the hero; the five claim figures go in
+  their sections; the explorer goes last. Files will move to .mdx when the prose is in.
 -->
 
-✍️ **Opening: a concrete scene, not a claim.** Options:
-- (a) Yesterday's note: malware sat on npm for six months before the advisory database most tools read caught up. So how fast does the news about a *vulnerability* travel? → [Ask before you install](/notes/ask-before-you-install/)
-- (b) The seroval scene: a fix ships on September 29. The advisory comes out on October 26. A week ago, a third of its ~36 million weekly downloads were still on a vulnerable version, and nobody had posted about it anywhere.
-- (c) The Acronis scene: ten posts on X and news coverage about 45 hours *before* the CVE record existed, and CISA listed it as exploited the day before the record went public.
+\[While writing yesterday's note\](), I realized that some malware sat on npm for six months before the advisory database most tools read caught up. So, I wondered... how fast does the news about a *vulnerability* travel? 
 
-✍️ **What I did, in two or three sentences.**
-- 20 CVEs, two groups of 10, picked at random before looking at any spread data:
-  - **loud:** exploited in the wild (on CISA's Known Exploited Vulnerabilities list, KEV), added Aug–Nov 2026, one per vendor
-  - **quiet:** ordinary npm and PyPI advisories reviewed by GitHub, with a CVE, not on KEV
+So I did some detective work... I picked 20 CVEs at random and split them up into two groups of 10:
+
+- **"loud":** exploited in the wild (on CISA's Known Exploited Vulnerabilities list, KEV), added Aug–Nov 2026, one per vendor
+- **"quiet":** ordinary npm and PyPI advisories reviewed by GitHub, with a CVE, not on KEV
+
 - For each one, the first time it showed up: fixed version, Reddit, X, news, a GitHub repo, KEV, a public exploit repo.
 - All through [looot](https://looot.ai) (disclosure: I'm a cofounder). Total cost: $0.22.
 
-![The route of a CVE: time from advisory to fix, Reddit, X, news, GitHub, CISA KEV and public exploit repos, for 10 exploited CVEs and 10 ordinary npm/PyPI advisories](/diagrams/cve-travel-route.svg)
+
+
+## What is a CVE? (for readers outside security)
+
+✍️ **Your take on it (Luisa, 11-10: explain it for non-security people).** Facts:
+
+- A CVE is an entry in a public catalogue of known security bugs: an ID like `CVE-2026-87886` plus a short public record (what's affected, which versions).
+- The catalogue is the CVE Program, run by MITRE. IDs are assigned by authorised organisations ("CNAs"): vendors such as Microsoft or GitHub, and security companies.
+- Most security tooling works from it, directly or through databases built on it (GitHub's advisory database, OSV, NVD): `npm audit`, Dependabot, scanners, the "vulnerable dependency" email.
+- So for most teams the CVE record is the moment they find out. That's why it matters when it's late.
+- Possible one-liner to rewrite: "a CVE is a bug's public ID card: the record your scanner is waiting for."
+- In the scrolly this is step 1 ("day zero").
 
 ## The quiet ones: fixed weeks before anyone says a word
 
 ✍️ **Your take on it.** Facts:
+
 - All 10 quiet packages released the fix **before** the advisory. Median: **~25 days** (605 h) before.
 - After the advisory: 0 X posts, 0 news, 0 repos (medians). X found 3 of 10 at all, all from accounts under 1k followers.
 - Fix adoption, npm, share of last week's downloads still on a vulnerable version:
@@ -44,29 +55,33 @@ SCAFFOLD (Claude, 2026-11-09). Structure + facts + figure + links. Luisa writes 
 ## The loud ones: the CVE record is not the starting gun
 
 ✍️ **Your take on it.** Facts:
+
 - For **5 of 10** exploited CVEs, something showed up *before* the CVE record (X, Reddit, news, a repo or KEV itself). For the quiet ones: 0 of 10.
 - Acronis (CVE-2026-87886): 10 X posts + news ~45 h before the record; KEV listed it the day before the record.
 - VMware vCenter (CVE-2026-59310): X, Reddit and news all about a day before the record.
 - Likely reason: vendor bulletins and researchers go first, the record follows.
 - Medians after the record: first X post **3.6 h**, first news **4.8 h**, first GitHub repo 18.9 h, KEV **36 h** (3 same day, 1 the day before).
-- Who posts first on X: 8 of 10 from accounts with >10k followers.
+- Who posts first on X: 8 of 10 from accounts with &gt;10k followers.
 - Odd one out: Linux kernel (CVE-2026-53362). Record on July 4, first X post ~10 days later, no news until CISA added it to KEV 54 days later. The news followed KEV, not the other way round.
 
 ## From talk to exploit: days
 
 ✍️ **Your take on it.** Facts:
+
 - First X post: median 3.6 h. First public exploit repo: median **~13 days** (308 h), 6 of 10. Fastest: **25 h** (MLflow, CVE-2026-64849).
 - "Public exploit repo" = a repo whose name or description says poc/exploit/rce. I didn't open them; fake PoC repos that ship malware are common.
 
-## ✍️ What this means for you (and your agents)
+## What this means for you, and for your agents
 
-Ideas, pick or replace:
-- For your dependencies, the advisory is late by design: the fix is already out. Update on releases, not only on advisories.
-- **(Luisa, 11-09) Automated unit and integration tests in CI, so updating is fast.** If the fix ships weeks before the advisory, the teams that win are the ones who can take an update the day it lands: a bot opens the PR, the tests say it's safe, it merges. Without tests, every update is a manual risk, so people wait for the advisory (or longer: seroval's 35%).
-  → link the pipeline gist here (draft: `gists/fast-dependency-updates/`, not public yet).
+- For your dependencies, many times the advisory is late by design and the fix is already out. Update on releases, not on dependencies
+-  **Automated unit and integration tests in CI, so updating is fast.** If the fix ships weeks before the advisory, the teams that win are the ones who can take an update the day it lands: a bot opens the PR, the tests say it's safe, it merges. Without tests, every update is a manual risk, so people wait for the advisory (or longer: seroval's 35%).
+→ link the pipeline gist here (draft: `gists/fast-dependency-updates/`, not public yet).
+- (Luisa, 11-10) **Doesn't "update fast" contradict yesterday's note?** No: fast, but checked. Yesterday: an age gate is good but it isn't a check, so check the package before you install it. Today: fixes land weeks before the CVE, so be able to take them quickly. Same lesson: put the checks in the pipeline, not in waiting.
+  - The earliest fix in the 10 came **8 days** (183 h) before its CVE record, so even a **7-day age gate** would have had all 10 fixes in before the record.
+  - The pipeline gist uses a 3-day cooldown + check-before-install style checks + CI tests. Link [Ask before you install](/notes/ask-before-you-install/) here as the "checked" half.
 - For exploited bugs, watch more than the CVE feed: vendor bulletins, KEV, and where security people post.
 - An agent can do this watching for you: a daily check of KEV + your dependencies' releases is a few cheap tool calls.
-- What I'd do next: a bigger sample (~100 KEV CVEs, about $1), vendor-bulletin times as the real zero, and a weekly fix-adoption curve.
+- What I'd do next: a bigger sample (\~100 KEV CVEs, about $1), vendor-bulletin times as the real zero, and a weekly fix-adoption curve.
 
 ## Addendum: method and caveats
 
