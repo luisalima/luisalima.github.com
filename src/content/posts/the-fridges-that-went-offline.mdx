@@ -1,0 +1,46 @@
+---
+title: "The fridges that went offline"
+pubDatetime: 2026-11-17T18:00:00.000Z
+description: "After the attacks on Europe's supermarket fridges, 57% of the exposed fridge controls went offline within a month. The VPNs and firewalls barely moved."
+kind: note
+draft: true
+tags: ["security", "data", "infrastructure"]
+---
+import FridgeFigure from "@/components/FridgeFigure.astro";
+
+{/* SCAFFOLD (Claude, 2026-11-12). ✍️ = Luisa writes. Title, description, figure titles and notes are hers to reword.
+Facts and sources: data-experiments/2026-11-10-eu-perimeter/NOTES.md. Every number below is checked against it. */}
+
+✍️ **Opening scene.** A supermarket fridge in France on 12 October, a thermostat pushed above 50 °C from far away, and nobody in the shop touched it. Why this caught your eye (the attacks on EU infrastructure lately).
+
+<FridgeFigure part="temp" title="From 3 °C to 50 °C, and nobody touched the fridge" note="Illustration: the shape of the curve is sketched; the peak, above 50 °C, was reported (Guardian, 9 Nov 2026)." />
+
+✍️ **What happened.** Four short beats, in your words: France on 12 Oct, 9–11 countries on 2 Nov, French blood banks right after, attribution on 9 Nov (Iran denies it).
+
+<FridgeFigure part="map" title="Europe's fridges, attacked country by country" note="Dates and countries from press reports: Guardian, Euronews/AFP, AP, Deutsches Ärzteblatt. Tile map, not to scale." />
+
+✍️ **The way in.** Not a classic hack of the company network: remote access to the fridge controls themselves, the kind technicians use for maintenance. Then ask the reader.
+
+<FridgeFigure part="guess" title="Guess: how many fridge controls in Europe could anyone reach online?" note="Data: The Shadowserver Foundation, IoT device statistics, vendors Danfoss, Copeland and Carel, Europe, 11 Oct 2026." />
+
+✍️ **The scale.** One line before the dots.
+
+<FridgeFigure part="dots" title="Every dot is one fridge control anyone could reach" note="Data: The Shadowserver Foundation, 11 Oct vs 11 Nov 2026. Vendor fingerprints may include some non-fridge devices from the same makers." />
+
+✍️ **Who reacted.** France, Belgium and Romania pulled the plug fast; Spain didn't move. Facts to use or drop: France 1,865 → 436; Romania 586 → 49; Belgium 337 → 48; Spain 166 → 162. Meanwhile the "old perimeter" (Fortinet VPN and firewall login pages) went from 263,653 to 255,447 (−3%).
+
+<FridgeFigure part="race" title="Who unplugged after the attacks?" note="Data: The Shadowserver Foundation, daily, Aug–Nov 2026; countries with 150+ controls on 11 Oct. The late-September dip hits every country at once: a gap in scanning, not people unplugging." />
+
+✍️ **The fix.** The blood banks lost no blood because monitoring still worked. Unplugging is the emergency brake, not the design.
+
+<FridgeFigure part="sep" title="Separate seeing from controlling" note="Quote: Jeff Lander, Moderna, in Healthcare Packaging, 9 Nov 2026." />
+
+✍️ **So what.** What you'd tell a CTO or a shop owner on Monday.
+
+{/* FOOTER
+✍️ **Method:** counts from the Shadowserver Foundation's public IoT dashboard (Europe, by country, daily, 14 Aug–11 Nov 2026), vendors Danfoss, Copeland and Carel; Fortinet for comparison. News found with [looot](https://looot.ai) (disclosure: I'm a cofounder).
+
+✍️ **Caveats:** a vendor match can include other devices from the same makers; a device going offline can mean unplugged, firewalled or just not answering that day; the Netherlands' Fortinet count is likely cloud hosting.
+
+**Data:** The Shadowserver Foundation ([dashboard](https://dashboard.shadowserver.org/)). Sources: Guardian, Euronews/AFP, AP, Healthcare Packaging, Deutsches Ärzteblatt (links to add).
+*/}
