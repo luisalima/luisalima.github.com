@@ -35,17 +35,17 @@ France, Belgium and Romania reacted fast to the attacks and disconnected the fri
 
 <FridgeFigure part="race" title="Who unplugged after the attacks?" note="Data: The Shadowserver Foundation, daily, late Sep–Nov 2026; countries with 150+ controls on 11 Oct." />
 
-So, did the "old perimeter" go up? I set out to
+So did the old perimeter (VPNs and firewalls) go up? Did controls for other types of industrial equipment get affected too? I set out to try to understand the consequences of the fridge attack.
 
 <FridgeFigure part="cats" title="So, what did the attacks move after all?" note="Data: The Shadowserver Foundation, Europe, daily, late Sep–Nov 2026; 39 vendors grouped by what they mostly make. A vendor isn't a category, so the groups are rough." />
 
 <FridgeFigure part="hyp" title="What we looked for, and what we found" note="Sources: The Shadowserver Foundation; job ads from TheirStack, searched with looot; public DNS records and certificate-transparency logs (crt.sh). Counts only: no company is named." />
 
-✍️ **The fix.** The blood banks lost no blood because monitoring still worked. Unplugging is the emergency brake, not the design.
+So, why did the blood banks manage to stop the attack in time? Because monitoring (and perhaps alerts) still worked, and humans reacted fast. However, unplugging is the emergency brake.
 
-<FridgeFigure part="sep" title="Separate seeing from controlling" note="Quote: Jeff Lander, Moderna, in Healthcare Packaging, 9 Nov 2026." />
+I'm definitely a fan of automating tasks that shouldn't be performed by humans. However, we often add the controls and not the protection. We have been listening to the "security is everyone's responsibility" motto for years now... maybe it is time to start acting on it.
 
-✍️ **So what.** What you'd tell a CTO or a shop owner on Monday.
+Think security-first: anything that gets connected to a system (including, you guessed, AI agents) needs to have a tight security control with appropriate observability.
 
 {/* FOOTER
 ✍️ **Method:** counts from the Shadowserver Foundation's public IoT dashboard (Europe, by country, daily, 14 Aug–11 Nov 2026), vendors Danfoss, Copeland and Carel; Fortinet for comparison. News found with [looot](https://looot.ai) (disclosure: I'm a cofounder).
