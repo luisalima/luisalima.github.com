@@ -11,7 +11,11 @@ import FridgeFigure from "@/components/FridgeFigure.astro";
 {/* SCAFFOLD (Claude, 2026-11-12). ✍️ = Luisa writes. Title, description, figure titles and notes are hers to reword.
 Facts and sources: data-experiments/2026-11-10-eu-perimeter/NOTES.md. Every number below is checked against it. */}
 
-✍️ **Opening scene.** A supermarket fridge in France on 12 October, a thermostat pushed above 50 °C from far away, and nobody in the shop touched it. Why this caught your eye (the attacks on EU infrastructure lately).
+When you think of critical infrastructure, what do you think of? I bet you didn't think of fridges until the supermarket fridge attack in France on October 12th.
+
+To be fair, my friend Paulo Martins (CISO at Euronext) has been talking about the scenario where your fridge is attacked for years.
+
+So, I got curious. How many fridges got disconnected after the attack? And did traditional network protection measures such as VPNs ago up?
 
 <FridgeFigure part="temp" title="From 3 °C to 50 °C, and nobody touched the fridge" note="Illustration: the shape of the curve is sketched; the peak, above 50 °C, was reported (Guardian, 9 Nov 2026)." />
 
@@ -30,6 +34,10 @@ Facts and sources: data-experiments/2026-11-10-eu-perimeter/NOTES.md. Every numb
 ✍️ **Who reacted.** France, Belgium and Romania pulled the plug fast; Spain didn't move. Facts to use or drop: France 1,865 → 436; Romania 586 → 49; Belgium 337 → 48; Spain 166 → 162. Meanwhile the "old perimeter" (Fortinet VPN and firewall login pages) went from 263,653 to 255,447 (−3%).
 
 <FridgeFigure part="race" title="Who unplugged after the attacks?" note="Data: The Shadowserver Foundation, daily, Aug–Nov 2026; countries with 150+ controls on 11 Oct. The late-September dip hits every country at once: a gap in scanning, not people unplugging." />
+
+✍️ **Did the old perimeter go up?** Your question from the opening, answered. Facts to use or drop: across 39 vendors in Europe, only the fridge controls fell (−57%). VPN and firewall login pages went from 847,156 to 804,231 (−5%); building controls −5%; industrial controllers −1%. Nobody added VPNs in front of fridges in a way a scan can see, and ZTNA (Zscaler, Cloudflare and the like) is invisible to scans by design.
+
+<FridgeFigure part="cats" title="The attacks moved one thing" note="Data: The Shadowserver Foundation, Europe, daily, 15 Aug–11 Nov 2026; 39 vendors grouped by what they mostly make. A vendor isn't a category, so the groups are rough." />
 
 ✍️ **The fix.** The blood banks lost no blood because monitoring still worked. Unplugging is the emergency brake, not the design.
 
