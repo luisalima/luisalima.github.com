@@ -17,40 +17,44 @@ So, I got curious. How many fridges got disconnected after the attack? And did t
 
 <FridgeFigure part="temp" title="From 3 °C to 50 °C... changed remotely" note="Illustration. The peak was reported by Guardian, on 9 Nov 2026." />
 
-And after the fridges in France on October 12th, fridges in other countries in Europe got attacked (including French blood banks).
+Then, in early November, fridges in other countries in Europe got attacked (including French blood banks).
 
 <FridgeFigure part="map" title="Europe's fridges, attacked country by country" note="Dates and countries from press reports: Guardian, Euronews/AFP, AP, Deutsches Ärzteblatt. Map not to scale." />
 
 You might ask, why are fridges online? It is a simple way for technicians to remotely monitor and control the temperature. However, these controls are not supposed to be directly accessed from the internet. In theory, they should only be accessed from inside a protected network (in the old "protect the perimeter" approach) or, ideally, via Zero-Trust Network Access.
 
-So I tried to make a guess... How many fridge controls in Europe could anyone reach online, out in the open?
+I tried to make a guess... How many fridge controls in Europe could anyone reach online, out in the open?
 
 <FridgeFigure part="guess" title="Guess: how many fridge controls in Europe could anyone reach online?" note="Data: The Shadowserver Foundation, IoT device statistics, vendors Danfoss, Copeland and Carel, Europe, 11 Oct 2026." />
 
-5,985 fridges online is 5,985 fridges too many (by the way, I'm also wondering why fridges can get temperatures up to 50C, but I digress).
+5,985 fridge controls online is 5,985 fridge controls too many (by the way, I'm also wondering why fridges can get temperatures up to 50C, but I digress).
 
 <FridgeFigure part="dots" title="Every dot below is one fridge control anyone could reach directly" note="Data: The Shadowserver Foundation, 11 Oct vs 11 Nov 2026. Vendor fingerprints may include some non-fridge devices from the same makers." />
 
-France, Belgium and Romania reacted fast to the attacks and disconnected the fridges (or protected them). But other countries barely moved.
+France, Belgium and Romania reacted fast to the attacks and disconnected the fridges (or protected them). Poland followed more slowly, Italy only partly, and Spain barely moved.
 
 <FridgeFigure part="race" title="Who unplugged after the attacks?" note="Data: The Shadowserver Foundation, daily, late Sep–Nov 2026; countries with 150+ controls on 11 Oct." />
 
-So did the old perimeter (VPNs and firewalls) go up? Did controls for other types of industrial equipment get affected too? I set out to try to understand the consequences of the fridge attack.
+Did the old perimeter (VPNs and firewalls) go up? Did controls for other types of industrial equipment get affected too? I set out to try to understand the consequences of the fridge attack.
 
 <FridgeFigure part="cats" title="So, what did the attacks move after all?" note="Data: The Shadowserver Foundation, Europe, daily, late Sep–Nov 2026; 39 vendors grouped by what they mostly make. A vendor isn't a category, so the groups are rough." />
 
 <FridgeFigure part="hyp" title="What we looked for, and what we found" note="Sources: The Shadowserver Foundation; job ads from TheirStack, searched with looot; public DNS records and certificate-transparency logs (crt.sh). Counts only: no company is named." />
 
-So, why did the blood banks manage to stop the attack in time? Because monitoring (and perhaps alerts) still worked, and humans reacted fast. However, unplugging is the emergency brake.
+The answer: only the fridges moved. Everything else stayed within a few percent, and there's no public sign of what replaced the open connections. Zero-trust access, if anyone bought it, is invisible from the outside by design.
 
-I'm definitely a fan of automating tasks that shouldn't be performed by humans. However, we often add the controls and not the protection. We have been listening to the "security is everyone's responsibility" motto for years now... maybe it is time to start acting on it.
+Why did the blood banks manage to stop the attack in time? Because monitoring (and perhaps alerts) still worked. Unplugging is the emergency brake, and from the outside we can't tell whether those 3,435 controls were unplugged or protected. If they were unplugged, their remote monitoring went dark too.
 
-Think security-first: anything that gets connected to a system (including, you guessed, AI agents) needs to have a tight security control with appropriate observability.
+I'm definitely a fan of automating tasks that shouldn't be performed by humans. But we often add the remote access and not the protection. We have been listening to the "security is everyone's responsibility" motto for years now... maybe it is time to start acting on it.
 
-{/* FOOTER
-✍️ **Method:** counts from the Shadowserver Foundation's public IoT dashboard (Europe, by country, daily, 14 Aug–11 Nov 2026), vendors Danfoss, Copeland and Carel; Fortinet for comparison. News found with [looot](https://looot.ai) (disclosure: I'm a cofounder).
+Think security-first: anything that gets connected to a system needs to have a tight security control with appropriate observability. Including, you guessed it, AI agents.
 
-✍️ **Caveats:** a vendor match can include other devices from the same makers; a device going offline can mean unplugged, firewalled or just not answering that day; the Netherlands' Fortinet count is likely cloud hosting.
+{/* FOOTER */}
 
-**Data:** The Shadowserver Foundation ([dashboard](https://dashboard.shadowserver.org/)). Sources: Guardian, Euronews/AFP, AP, Healthcare Packaging, Deutsches Ärzteblatt (links to add).
-*/}
+---
+
+**Method:** counts from the Shadowserver Foundation's public IoT dashboard (Europe, daily, by country), vendors Danfoss, Copeland and Carel, 11 Oct vs 11 Nov 2026; 39 vendors in six groups for comparison; the charts start on 23 Sep, after a gap in scanning. Job ads from TheirStack (EU retail, the 32 days before vs after 12 Oct). Public DNS records and certificate-transparency logs (crt.sh) of 49 large grocery chains in 14 countries: counts only, no company named. News and job ads found with [looot](https://looot.ai) (disclosure: I'm a cofounder).
+
+**Caveats:** a vendor match can include other devices from the same makers; a control going offline can mean unplugged, firewalled, moved behind a VPN or zero-trust access, or just not answering that day; job ads lag decisions by months; the public certificate logs only reach 23 Oct; the Netherlands' Fortinet count is likely cloud hosting.
+
+**Data:** The Shadowserver Foundation ([dashboard](https://dashboard.shadowserver.org/)). **Sources:** [Reuters, 12 Oct](https://www.reuters.com/business/retail-consumer/french-supermarket-chain-intermarche-hit-by-cyberattack-150-stories-targeted-2026-10-12/); [Guardian, 2 Nov](https://www.theguardian.com/world/2026/nov/02/supermarket-freezers-across-europe-hit-by-second-suspected-cyber-attack); [Euronews, 3 Nov](https://www.euronews.com/2026/11/03/which-countries-in-europe-have-been-hit-by-supermarket-fridge-cyber-incidents); [AP, blood banks](https://apnews.com/article/france-plasma-blood-bank-cyberattack-temperature-fridge-12b80bcf93b8404264209e519c204919); [Deutsches Ärzteblatt](https://www.aerzteblatt.de/news/auch-deutscher-pharmahandler-von-hackerangriff-auf-kuhlsystem-betroffen-0207d2ee-27f4-465c-bbbf-06044e0dde97); [Guardian, 9 Nov](https://www.theguardian.com/world/2026/nov/09/france-blames-irans-revolutionary-guards-for-cyber-attacks-on-supermarket-fridges); [POLITICO, Iran denies](https://www.politico.eu/article/iran-denies-role-in-cyberattacks-on-supermarket-refrigerators/).
