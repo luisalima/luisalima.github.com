@@ -66,7 +66,6 @@ const LBL = /*LABELS*/{
   "map.ev1": "12 Oct. French supermarkets: attackers push fridge thermostats above 50 °C.",
   "map.ev2": "2 Nov. Retailers in 9–11 countries report fridge failures on the same kind of remote control system.",
   "map.ev3": "3–4 Nov. French blood banks' cold stores are hit (no blood lost). A German pharma wholesaler reports its cooling was hacked too.",
-  "map.ev4": "9 Nov. Paris links the attacks to an Iran-linked group. Iran denies it.",
   "map.note": "not to scale · from press reports",
   "map.play": "▶ Play",
   "temp.safe": "safe for chilled food: 0–5 °C",
@@ -78,7 +77,7 @@ const LBL = /*LABELS*/{
   "guess.you": "you:",
   "guess.reveal": "Reveal",
   "guess.more": "About {n}× more than you guessed.",
-  "guess.fewer": "Fewer than you guessed, but each one is a shop.",
+  "guess.fewer": "Fewer than you guessed, but each one controls real fridges.",
   "guess.close": "Close.",
   "guess.answer": "On 11 October, the day before the first attack, Shadowserver saw 5,985 Danfoss, Copeland and Carel fridge controls online in Europe.",
   "dots.cap0": "5,985 dots: every Danfoss, Copeland and Carel fridge control Shadowserver could see online in Europe on 11 October, the day before the first attack.",
@@ -118,7 +117,7 @@ const LBL = /*LABELS*/{
   "hyp.colH": "We guessed",
   "hyp.colHow": "How we checked",
   "hyp.colFound": "What we found",
-  "hyp.h1": "Shops unplugged their fridge controls after the attacks.",
+  "hyp.h1": "Fridge controls went offline after the attacks.",
   "hyp.how1": "Daily counts of Danfoss, Copeland and Carel controls reachable online in Europe (Shadowserver), 11 Oct vs 11 Nov.",
   "hyp.found1": "5,985 → 2,550 (−57%).",
   "hyp.v1": "Yes",
@@ -127,7 +126,7 @@ const LBL = /*LABELS*/{
   "hyp.found2": "Romania −92%, Belgium −86%, France −77%, Italy −33%, Spain −2%.",
   "hyp.v2": "Yes",
   "hyp.h3": "It was a wider clean-up, not just fridges.",
-  "hyp.how3": "39 vendors in six groups: building controls, VPNs and firewalls, solar and power, 4G routers, industrial controllers.",
+  "hyp.how3": "39 vendors in six groups: the fridge makers plus building controls, VPNs and firewalls, solar and power, 4G routers, industrial controllers.",
   "hyp.found3": "Everything else moved between −1% and −5%. Only the fridges fell.",
   "hyp.v3": "No",
   "hyp.h4": "They put the fridges behind a classic VPN or firewall.",
@@ -154,7 +153,7 @@ FIGS.map = () => {
   const svg = document.getElementById("map"); if (!svg) return; svg.innerHTML = ""; clearInterval(window.__mapTimer);
   const T = { NO:[4,0], SE:[5,0], FI:[6,0], DK:[4,1], EE:[7,1], IE:[1,2], UK:[2,2], NL:[3,2], DE:[4,2], PL:[5,2], LV:[7,2], BE:[3,3], LU:[4,3], CZ:[5,3], LT:[7,3], FR:[3,4], CH:[4,4], AT:[5,4], HU:[6,4], PT:[1,5], ES:[2,5], IT:[4,5], SI:[5,5], HR:[6,5] };
   const HIT = { FR:11, BE:32, EE:32, FI:32, IE:32, IT:32, LU:32, NL:32, SE:32, UK:32, DE:34 };
-  const EV = [[0, "map.ev0"], [11, "map.ev1"], [32, "map.ev2"], [34, "map.ev3"], [39, "map.ev4"]];
+  const EV = [[0, "map.ev0"], [11, "map.ev1"], [32, "map.ev2"], [34, "map.ev3"]];
   const S = 62, ox = 60, oy = 14, tiles = {};
   for (const [k, [c, r]] of Object.entries(T)) {
     const g = el("g", { transform: `translate(${ox + c * S},${oy + r * S})` }, svg);
@@ -255,7 +254,7 @@ FIGS.dots = () => {
       cx.fillStyle = a < .99 ? `rgba(139,150,163,${a})` : HOT;
       cx.globalAlpha = p.off ? Math.max(a, .18) : 1; cx.fillRect(x, y, 4.8, 4.8); }
     cx.globalAlpha = 1;
-    if (st.state > 0 || st.from > 0) { cx.globalAlpha = st.state > 0 ? Math.max(e, st.from > 0 ? 1 : 0) : 1 - e; cx.font = "700 22px ui-monospace,monospace"; cx.textAlign = "center"; cx.fillStyle = INK;
+    if (st.state > 0 || st.from > 0) { cx.globalAlpha = st.state > 0 ? Math.max(e, st.from > 0 ? 1 : 0) : 1 - e; cx.font = "700 17px ui-monospace,monospace"; cx.textAlign = "center"; cx.fillStyle = INK;
       C.forEach(([kk], ci) => cx.fillText(kk === "others" ? L("dots.others") : kk, 40 + ci * colW + (per * 6) / 2, H - 20)); cx.globalAlpha = 1; }
     if (k < 1) st.raf = requestAnimationFrame(draw);
   };

@@ -1,9 +1,9 @@
 ---
 title: "The fridges that went offline"
-pubDatetime: 2026-11-17T18:00:00.000Z
+pubDatetime: 2026-11-16T08:00:00.000Z
 description: "After the attacks on Europe's supermarket fridges, 57% of the exposed fridge controls went offline within a month. Are fridges now protected, or simply disconnected?"
 kind: note
-draft: true
+draft: false
 tags: ["security", "data", "infrastructure"]
 ---
 import FridgeFigure from "@/components/FridgeFigure.astro";
@@ -15,7 +15,7 @@ When you think of critical infrastructure, what do you think of? I bet you didn'
 
 So, I got curious. How many fridges got disconnected after the attack? And did traditional perimeter protection measures (such as VPNs) go up in the aftermath?
 
-<FridgeFigure part="temp" title="From 3 °C to 50 °C... changed remotely" note="Illustration. The peak was reported by Guardian, on 9 Nov 2026." />
+<FridgeFigure part="temp" title="From 3 °C to 50 °C... changed remotely" note="Illustration. The peak was reported by Reuters, in October 2026." />
 
 Then, in early November, fridges in other countries in Europe got attacked (including French blood banks).
 
@@ -53,8 +53,8 @@ Think security-first: anything that gets connected to a system needs to have a t
 
 ---
 
-**Method:** counts from the Shadowserver Foundation's public IoT dashboard (Europe, daily, by country), vendors Danfoss, Copeland and Carel, 11 Oct vs 11 Nov 2026; 39 vendors in six groups for comparison; the charts start on 23 Sep, after a gap in scanning. Job ads from TheirStack (EU retail, the 32 days before vs after 12 Oct). Public DNS records and certificate-transparency logs (crt.sh) of 49 large grocery chains in 14 countries: counts only, no company named. News and job ads found with [looot](https://looot.ai) (disclosure: I'm a cofounder).
+**Method:** counts from the Shadowserver Foundation's public IoT dashboard (Europe, daily, by country), vendors Danfoss, Copeland and Carel, 11 Oct vs 11 Nov 2026; 39 vendors in six groups for comparison. Job ads from TheirStack (EU retail, the 32 days before vs after 12 Oct). Public DNS records and certificate-transparency logs (crt.sh) of 49 large grocery chains in 14 countries: counts only, no company named. News and job ads found with [looot](https://looot.ai) (disclosure: I'm a cofounder).
 
-**Caveats:** a vendor match can include other devices from the same makers; a control going offline can mean unplugged, firewalled, moved behind a VPN or zero-trust access, or just not answering that day; job ads lag decisions by months; the public certificate logs only reach 23 Oct; the Netherlands' Fortinet count is likely cloud hosting.
+**Caveats:** a vendor match can include other devices from the same makers; a control going offline can mean unplugged, firewalled, moved behind a VPN or zero-trust access, or just not answering that day; job ads lag decisions by months; the public certificate logs only reach 23 Oct.
 
-**Data:** The Shadowserver Foundation ([dashboard](https://dashboard.shadowserver.org/)). **Sources:** [Reuters, 12 Oct](https://www.reuters.com/business/retail-consumer/french-supermarket-chain-intermarche-hit-by-cyberattack-150-stories-targeted-2026-10-12/); [Guardian, 2 Nov](https://www.theguardian.com/world/2026/nov/02/supermarket-freezers-across-europe-hit-by-second-suspected-cyber-attack); [Euronews, 3 Nov](https://www.euronews.com/2026/11/03/which-countries-in-europe-have-been-hit-by-supermarket-fridge-cyber-incidents); [AP, blood banks](https://apnews.com/article/france-plasma-blood-bank-cyberattack-temperature-fridge-12b80bcf93b8404264209e519c204919); [Deutsches Ärzteblatt](https://www.aerzteblatt.de/news/auch-deutscher-pharmahandler-von-hackerangriff-auf-kuhlsystem-betroffen-0207d2ee-27f4-465c-bbbf-06044e0dde97); [Guardian, 9 Nov](https://www.theguardian.com/world/2026/nov/09/france-blames-irans-revolutionary-guards-for-cyber-attacks-on-supermarket-fridges); [POLITICO, Iran denies](https://www.politico.eu/article/iran-denies-role-in-cyberattacks-on-supermarket-refrigerators/).
+**Data:** The Shadowserver Foundation ([dashboard](https://dashboard.shadowserver.org/)). **Sources:** [Reuters, 12 Oct](https://www.reuters.com/business/retail-consumer/french-supermarket-chain-intermarche-hit-by-cyberattack-150-stories-targeted-2026-10-12/); [Guardian, 2 Nov](https://www.theguardian.com/world/2026/nov/02/supermarket-freezers-across-europe-hit-by-second-suspected-cyber-attack); [Euronews, 3 Nov](https://www.euronews.com/2026/11/03/which-countries-in-europe-have-been-hit-by-supermarket-fridge-cyber-incidents); [AP, blood banks](https://apnews.com/article/france-plasma-blood-bank-cyberattack-temperature-fridge-12b80bcf93b8404264209e519c204919); [Deutsches Ärzteblatt](https://www.aerzteblatt.de/news/auch-deutscher-pharmahandler-von-hackerangriff-auf-kuhlsystem-betroffen-0207d2ee-27f4-465c-bbbf-06044e0dde97).
