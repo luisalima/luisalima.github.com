@@ -27,7 +27,7 @@ I tried to make a guess... How many fridge controls in Europe could anyone reach
 
 <FridgeFigure part="guess" title="Guess: how many fridge controls in Europe could anyone reach online?" note="Data: The Shadowserver Foundation, IoT device statistics, vendors Danfoss, Copeland and Carel, Europe, 11 Oct 2026." />
 
-5,985 fridge controls online is 5,985 fridge controls too many (by the way, I'm also wondering why fridges can get temperatures up to 50C, but I digress).
+5,985 fridge controls online is 5,985 fridge controls too many (by the way, I'm also wondering why fridges can accept configurations of temperatures up to 50C, but I might be digressing here... or not. Validation error?).
 
 <FridgeFigure part="dots" title="Every dot below is one fridge control anyone could reach directly" note="Data: The Shadowserver Foundation, 11 Oct vs 11 Nov 2026. Vendor fingerprints may include some non-fridge devices from the same makers." />
 
@@ -35,19 +35,23 @@ France, Belgium and Romania reacted fast to the attacks and disconnected the fri
 
 <FridgeFigure part="race" title="Who unplugged after the attacks?" note="Data: The Shadowserver Foundation, daily, late Sep–Nov 2026; countries with 150+ controls on 11 Oct." />
 
-Did the old perimeter (VPNs and firewalls) go up? Did controls for other types of industrial equipment get affected too? I set out to try to understand the consequences of the fridge attack.
+Then I started wondering... Did the old perimeter (VPNs and firewalls) go up? Did controls for other types of industrial equipment get affected too? I set out to try to understand the consequences of the fridge attack both in the protection of these types of equipments, and wondered whether they were being protected some other way.
 
 <FridgeFigure part="cats" title="So, what did the attacks move after all?" note="Data: The Shadowserver Foundation, Europe, daily, late Sep–Nov 2026; 39 vendors grouped by what they mostly make. A vendor isn't a category, so the groups are rough." />
 
-<FridgeFigure part="hyp" title="What we looked for, and what we found" note="Sources: The Shadowserver Foundation; job ads from TheirStack, searched with looot; public DNS records and certificate-transparency logs (crt.sh). Counts only: no company is named." />
+<FridgeFigure part="hyp" title="What I looked for, and what I found" note="Sources: The Shadowserver Foundation; job ads from TheirStack, searched with looot; public DNS records and certificate-transparency logs (crt.sh). Counts only: no company is named." />
 
-The answer: only the fridges moved. Everything else stayed within a few percent, and there's no public sign of what replaced the open connections. Zero-trust access, if anyone bought it, is invisible from the outside by design.
+So, it appears that only the fridges moved. Everything else stayed within a few percent of what was observed before, and there's no public sign of what replaced the open connections. Of course, they could have moved to inside the existing VPNs (how did they end up exposed on the internet?). And zero-trust access is, rightly so, invisible from the outside by design, so we have no way of knowing whether these equipments were disconnected or moved to a protection layer.
 
-Why did the blood banks manage to stop the attack in time? Because monitoring (and perhaps alerts) still worked. Unplugging is the emergency brake, and from the outside we can't tell whether those 3,435 controls were unplugged or protected. If they were unplugged, their remote monitoring went dark too.
+Why did the blood banks manage to stop the attack in time? Because monitoring (and perhaps alerts) still worked. But unplugging is the emergency brake, and, again, from the outside we can't tell whether those 3,435 controls were unplugged or suddenly protected. If they were unplugged, their remote monitoring might have gone dark too.
 
-I'm definitely a fan of automating tasks that shouldn't be performed by humans. But we often add the remote access and not the protection. We have been listening to the "security is everyone's responsibility" motto for years now... maybe it is time to start acting on it.
+<FridgeFigure part="home" title="At home, the hubs stayed online" note="Data: The Shadowserver Foundation, Europe, daily, late Sep–Nov 2026. Smart-home hubs = device type smart-home-management (Home Assistant, Somfy, Philips…). Gaps are days the scan missed. No home fridge maker shows up in the scans." />
 
-Think security-first: anything that gets connected to a system needs to have a tight security control with appropriate observability. Including, you guessed it, AI agents.
+✍️ And your fridge at home? (Luisa writes. Facts, all checked: no home fridge maker shows up in Shadowserver's scans; the whole "home appliance" group in Europe was 7 devices on 11 Oct, all robot vacuums. Home smart fridges (Samsung, LG, Bosch) connect out to the maker's cloud and you control them from an app, so the door is your account, not the fridge: in 2017 a flaw in LG's SmartThinQ app let attackers take over accounts and the appliances in them. What a scan does see at home are the hubs: 84,767 smart-home hubs on 11 Oct, 73,313 of them Home Assistant. A reachable hub still asks for a login. A month after the attacks, 95% were still online, against 43% of the shop fridge controls.)
+
+I'm definitely a fan of automating tasks that shouldn't be performed by humans. But we often add the remote access and not the right level of protection. We have been listening to the "security is everyone's responsibility" motto for years now... maybe now is the time to start acting on it.
+
+I like to think security-first. And anything that gets connected to a system needs to have a tight security control with appropriate observability. Including (you guessed it!), AI agents.
 
 {/* FOOTER */}
 
