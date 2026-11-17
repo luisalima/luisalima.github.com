@@ -1,7 +1,7 @@
 ---
 title: "Tracking the fridges that went offline"
 pubDatetime: 2026-11-16T08:00:00.000Z
-description: "After the attacks on Europe's supermarket fridges, 57% of the exposed fridge controls went offline within a month. I wondered... Are fridges now protected, or simply disconnected?"
+description: "After the attacks on Europe's supermarket fridges, 57% of the exposed fridge controls went offline within a month. I wondered... are fridges now protected, or simply disconnected?"
 kind: note
 draft: true
 tags: ["security", "data", "infrastructure"]
@@ -13,57 +13,53 @@ Facts and sources: data-experiments/2026-11-10-eu-perimeter/NOTES.md. Every numb
 
 When you think of critical infrastructure, what do you think of? I bet you didn't think of fridges until the supermarket fridge attack in France on October 12th.
 
+For those who don't pay attention to the news (to be fair, I only knew about this because it got classified as a cyberattack right away), what happened is that fridges in some supermarket chains in France went from 3 °C to 50 °C. That setting was changed remotely and it appears that it was only detected when it was too late and food got wasted.
+
 So, I got curious. How many fridges got disconnected after the attack? And did traditional perimeter protection measures (such as VPNs) go up in the aftermath?
 
 <FridgeFigure part="temp" title="From 3 °C to 50 °C... changed remotely" note="Illustration. The peak was reported by Reuters, in October 2026." />
 
-For those who don't pay attention to the news (to be fair, I only knew about this because it got classified as a cyberattack right away), what happened is that fridges in some supermarket chains in France went from 
-
-3 °C to 50 °C. That setting was changed remotely and it appears that it was only detected when it was too late and food got wasted.
-
-Then, in early November, fridges in other countries in Europe got attacked (including French blood banks, but that attack fortunately got caught in time via the monitoring system).
+Then, in early November, fridges in other countries in Europe got attacked (including French blood banks).
 
 <FridgeFigure part="map" title="Europe's fridges, attacked country by country" note="Dates and countries from press reports: Guardian, Euronews/AFP, AP, Deutsches Ärzteblatt. Map not to scale." />
 
-You might ask, why are fridges online? It is a simple way for technicians to remotely monitor and control the temperature. However, these controls are not supposed to be directly accessed from the internet. In theory, they should only be accessed from inside a protected network (in the old "protect the perimeter" approach) or, ideally, via Zero-Trust Network Access, which is the most modern way for us to protect private endpoints. 
+You might ask, why are fridges online? It is a simple way for technicians to remotely monitor and control the temperature. However, these controls are not supposed to be directly accessed from the internet. In theory, they should only be accessed from inside a protected network (in the old "protect the perimeter" approach) or, ideally, via Zero-Trust Network Access, the newer approach to protecting private endpoints. 
 
-Of course, most people don't even think that fridges and other pieces of critical equipment might be "online" the way our computers are. Guess how many fridge controls in Europe could anyone reach online, out in the open?
+Most people don't even think that fridges and other pieces of critical equipment might be "online" the way our computers are. Guess how many fridge controls in Europe could anyone reach online, out in the open?
 
 <FridgeFigure part="guess" title="Guess: how many fridge controls in Europe could anyone reach online?" note="Data: The Shadowserver Foundation, IoT device statistics, vendors Danfoss, Copeland and Carel, Europe, 11 Oct 2026." />
 
-So I realized that there were 5,985 fridge controls online (and those are "just" the ones that Shadowserver Foundation detected on their IoT device statistics).
-
-5,985 fridge controls online is 5,985 fridge controls too many to be out in the open (by the way, I'm also wondering why fridges can accept configurations of temperatures up to 50C, but I might be digressing here... or not. Validation error?).
+5,985 fridge controls online (and those are "just" the ones that Shadowserver Foundation detected on their IoT device statistics) is 5,985 fridge controls too many to be out in the open (by the way, I'm also wondering why fridges can accept configurations of temperatures up to 50 °C, but I might be digressing here... or not. Validation error?).
 
 <FridgeFigure part="dots" title="Every dot below is one fridge control anyone could reach directly" note="Data: The Shadowserver Foundation, 11 Oct vs 11 Nov 2026. Vendor fingerprints may include some non-fridge devices from the same makers." />
 
-What happened in the aftermath? I thought that pretty much all of these fridges would disappear from the carts. In fact, France, Belgium and Romania reacted fast to the attacks and disconnected the fridges (or protected them). Poland followed more slowly, Italy only partly, and Spain barely moved.
+What happened in the aftermath? I thought that pretty much all of these fridges would disappear from the charts. In fact, France, Belgium and Romania reacted fast to the attacks and disconnected the fridges (or protected them). Poland followed more slowly, Italy only partly, and Spain barely moved.
 
 <FridgeFigure part="race" title="Who unplugged after the attacks?" note="Data: The Shadowserver Foundation, daily, late Sep–Nov 2026; countries with 150+ controls on 11 Oct." />
 
-Then I started wondering... Did the "old perimeter" (that is, the old way to protect endpoints, such as VPNs and firewalls) go up? Did controls for other types of industrial equipment get affected too? I set out to try to understand the consequences of the fridge attack both in the protection of these types of equipments, and wondered whether they were being protected some other way.
+Then I started wondering... Did the "old perimeter" (VPNs and firewalls) go up? Did controls for other types of industrial equipment get affected too?
 
 <FridgeFigure part="cats" title="So, what did the attacks move after all?" note="Data: The Shadowserver Foundation, Europe, daily, late Sep–Nov 2026; 39 vendors grouped by what they mostly make. A vendor isn't a category, so the groups are rough." />
 
 <FridgeFigure part="hyp" title="What I looked for, and what I found" note="Sources: The Shadowserver Foundation; job ads from TheirStack, searched with looot; public DNS records and certificate-transparency logs (crt.sh). Counts only: no company is named." />
 
-So, it appears that only the fridges moved. Everything else stayed within a few percent of what was observed before, and there's no public sign of what replaced the open connections. Of course, they could have moved to inside the existing VPNs (how did they end up exposed on the internet?). And zero-trust access is, rightly so, invisible from the outside by design, so we have no way of knowing whether these equipments were disconnected or moved to a protection layer.
+So, it appears that only the fridges moved. Everything else stayed within a few percent of what was observed before, and there's no public sign of what replaced the open connections. Of course, they could have moved to inside the existing VPNs (how did they end up exposed on the internet?). And zero-trust access is, rightly so, invisible from the outside by design, so we have no way of knowing whether these devices were disconnected or moved to a protection layer.
 
 Why did the blood banks manage to stop the attack in time? Because monitoring (and perhaps alerts) still worked. But unplugging is the emergency brake, and, again, from the outside we can't tell whether those 3,435 controls were unplugged or suddenly protected. If they were unplugged, their remote monitoring might have gone dark too.
 
 <FridgeFigure part="home" title="At home, the hubs stayed online" note="Data: The Shadowserver Foundation, Europe, daily, late Sep–Nov 2026. Smart-home hubs = device type smart-home-management (Home Assistant, Somfy, Philips…). Gaps are days the scan missed. No home fridge maker shows up in the scans." />
 
-Of course, one wonders, what about our fridge at home? I couldn't find home fridge makers in Shadowserver's scans. The "home appliance" group in Europe included 7 devices on October 11th, and they were all robot vacuums. 
+One wonders, what about our fridge at home? I couldn't find home fridge makers in Shadowserver's scans. The "home appliance" group in Europe included 7 devices on October 11th, and they were all robot vacuums. 
 
-The reason is that the architecture itself is different: home smart fridges (such as Samsung, LG and Bosch) connect to directly to the maker's cloud and then you control them from an app. So the way "into your fridge", besides the shopping cart, is your account. This already happened in 2017, when a bug in LG's SmartThinQ app let attackers take over accounts and the appliances in them.
+The reason is that the architecture itself is different: home smart fridges (such as Samsung, LG and Bosch) connect directly to the maker's cloud and then you control them from an app. So the way "into your fridge", besides the shopping cart, is your account. This already happened in 2017, when a bug in LG's SmartThinQ app let attackers take over accounts and the appliances in them.
 
-That being said, there might be a door to other devices at home, since a scan can see the 84,767 smart-home hubs on 11 Oct, 73,313 of them Home Assistant. Of course that a reachable hub still asks for a login, but it's worth it to consider using a zero-trust or VPN in order to avoid having problems if there are bugs in the home assistant software. There wasn't much change in the number of hubs online in the aftermath of the attack: a month after the attacks, 95% were still online, against 43% of the shop fridge controls.
+There wasn't much change in the number of hubs online in the aftermath of the attack: a month after the attacks, 95% were still online, against 43% of the shop fridge controls. That being said, there might be a door to other devices at home, since a scan can see the 84,767 smart-home hubs on October 11th, 73,313 of them Home Assistant. A reachable hub still asks for a login, but it's worth it to consider using zero-trust access or a VPN in order to avoid having problems if there are bugs in the Home Assistant software.
 
 ## What lessons can we take from this?
 
 I'm definitely a fan of automating tasks that shouldn't be performed by humans. But we often add the remote access and not the right level of protection. We have been listening to the "security is everyone's responsibility" motto for years now... maybe now is the time to start acting on it.
 
-I like to think security-first. And anything that gets connected to a system needs to have a tight security control with appropriate observability. Including (you guessed it!), AI agents.
+I like to think security-first. And anything that gets connected to a system needs to have a tight security control with appropriate observability. Including (you guessed it!) AI agents.
 
 {/* FOOTER */}
 
