@@ -1,0 +1,32 @@
+---
+title: "Working title: we pointed outside-in at looot first"
+pubDatetime: 2026-11-26T18:00:00.000Z
+description: "Working description: an open-source report of what anyone can learn about a startup from public data, and what it found on my own company."
+kind: note
+draft: true
+tags: ["security", "looot", "agents", "build-in-public"]
+---
+
+{/* SCAFFOLD (Claude, 2026-11-19). Frame A from the teaser scaffold: we ran it on ourselves first.
+✍️ = your words. Facts under each prompt are checked against the 18 Nov run (outside-in/reports, scratchpad) and PIPELINE.md; delete them as you write.
+Date is a placeholder: launch goes with the repo going public. Only looot.ai results, never another company's. */}
+
+✍️ **Opening scene.** The first test run, 3 Nov: the DMARC answer comes back `p=none`, no reporting. Anyone could send mail as @looot.ai and nobody would know. One line on what that means; no DMARC lecture.
+
+✍️ **What you did about it, in the safe order.** Facts: reporting on first (live by 16 Nov, policy still p=none), then enforcement: `p=reject` verified live on 18 Nov. Monitoring first so we didn't block our own mail.
+
+✍️ **What outside-in is.** Facts: one command, a domain you own, one report (HTML + JSON + receipts). Five sections: first impression, company signals, developer signals, security footprint, agents and AI search. Plus "what to fix first" (at most 5) and a coverage table of what was checked. Public data and passive lookups only, company-level only: people data (employees, emails, phones) is blocked in code.
+
+<ReportShot part="report" title="The looot.ai report, 18 Nov 2026" note="Screenshot to come: the What to fix first box and one section." />
+
+✍️ **What it found on looot, besides DMARC.** Pick two or three. Facts: Google for "looot" shows board-game sites, looot.ai is not in the top 10; ChatGPT names looot for "best API marketplace for AI agents", Gemini and Google's AI Overview don't; HSTS was set to 5 minutes; no security.txt; 4 lookalike domains (looot.io, .co, .net, .org) can receive mail; agent readiness 95/100.
+
+✍️ **Receipts.** Facts: every fact in the report has a source and a date, every call a receipt and a price. The full run on 18 Nov: $0.38, inside a $1 budget cap the tool enforces before each call. "No data" and "failed" are reported differently, and the summaries may not add facts.
+
+✍️ **A mistake it made, and why receipts caught it.** Facts: the GitHub section showed GitHub Inc.'s 426 repositories instead of looot's 73, because it took the organisation from an unrelated Google result (github.com/github/…). The sources on each finding made it visible; fixed 18 Nov. Optional: drop this if it feels like too much inside baseball.
+
+✍️ **Closing.** Repo link once public, and how to run it on your own domain. No engagement question.
+
+{/* FOOTER: disclosure + method. */}
+
+✍️ **Disclosure.** I'm a looot cofounder; outside-in runs on looot's data API, and the report on looot.ai was run on our own domain.
