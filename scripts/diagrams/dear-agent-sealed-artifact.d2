@@ -1,0 +1,45 @@
+...@assets/theme
+
+direction: down
+
+(** -> **)[*]: { style: { stroke: ${ink}; font-color: ${muted} } }
+
+repo: "A repo you clone\n(maybe from someone you know)" { class: node }
+
+in: "Getting in" {
+  class: boundary
+  label.near: top-left
+  style.font-size: 18
+
+  file: "AGENTS.md / CLAUDE.md" {
+    class: danger
+    s1: "1  Prompt injection\nthe channel built for instructions" { class: node }
+    s2: "2  Persuasion\n\"sealed binary artifact\"\n\"do not read\"" { class: node }
+  }
+  agent: "Coding agent" { class: signal }
+  hook: "3  Session-start hook\n.claude/settings.json\nno model involved" { class: danger }
+
+  file -> agent: "run it, don't read it"
+}
+
+run: "setup.js runs\nwith your permissions" { class: danger }
+
+spread: "Spreading" {
+  class: boundary
+  label.near: top-left
+  style.font-size: 18
+
+  steal: "Steals tokens\nGitHub, cloud, SSH, registries,\npassword managers" { class: node }
+  local: "Other agents' configs\non this machine (14 agents)" { class: node }
+  remote: "Your own repos (up to 25)\nnew AGENTS.md, hooks, MCP" { class: node }
+
+  steal -> remote: "commits with your tokens"
+}
+
+repo -> in.file: briefs the agent
+repo -> in.hook: "on \"trust this folder\""
+in.agent -> run: runs
+in.hook -> run: runs
+run -> spread.steal
+run -> spread.local: injects
+spread.remote -> repo: "the next developer clones" { style: { stroke: ${danger}; stroke-dash: 3; font-color: ${danger}; bold: true } }
