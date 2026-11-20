@@ -1,21 +1,15 @@
 ---
 title: "Dear agent, part three: the file agents are told not to read"
-pubDatetime: 2026-11-20T12:00:00.000Z
+pubDatetime: 2026-11-20T16:32:00.000Z
 description: "Pages persuade agents, and GitHub repos have agent instruction files telling coding agents to run a credential stealer without reading it."
 kind: note
-draft: true
+draft: false
 tags: ["field-notes", "ai-security", "prompt-injection", "coding-agents", "supply-chain"]
 series: secure-by-design-for-agents
 seriesOrder: 8
 ---
 
 import SealedFigure from "@/components/SealedFigure.astro";
-
-{/* SCAFFOLD (Claude, 2026-11-19, reworked around three steps). ✍️ = your words. Facts under each prompt are checked against the primary source,
-Bitdefender Labs, "How AI Agents Become New Targets in GitHub Malware Campaign", 17 Nov 2026 (Andrei Anton-Aanei, Alina Bîzgă):
-https://www.bitdefender.com/en-us/blog/labs/how-ai-agents-become-new-targets-in-github-malware-campaign
-Delete the facts as you write. Do NOT name the affected repos: most belong to victims. Cite findings, not the product pitch at the end of their post.
-Spine: three steps, each with its own defence. 1 injection (the instruction file) → treat it as untrusted code. 2 persuasion (the authority wording) → don't rely on the model to resist. 3 no model at all (the hook) → the boundary is the trust click and the sandbox. */}
 
 On 17 November, [Bitdefender](https://www.bitdefender.com/en-us/blog/labs/how-ai-agents-become-new-targets-in-github-malware-campaign) found 22 GitHub repos that have agent instruction files (AGENTS.md, CLAUDE.md) telling coding agents to run a credential stealer without reading it. 
 
