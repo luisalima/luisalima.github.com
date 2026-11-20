@@ -1,0 +1,162 @@
+---
+// Dear agent, part three: the attack as a step-through diagram (night stage, like FridgeFigure).
+// Labels and captions live in LBL below: drafts for Luisa to reword.
+interface Props { part: "paths"; title: string; note?: string }
+const { title, note } = Astro.props;
+---
+<figure class="sa">
+  <p class="sa-t">{title}</p>
+  <div class="stage">
+    <svg id="saSvg" viewBox="0 0 640 392" role="img" aria-label="Diagram: a cloned repo gets in three ways (instruction file, persuasion, session-start hook), runs setup.js, then spreads to your repos and other agents' configs"></svg>
+    <div class="ctl">
+      <button class="ghost" data-sa="1" data-l="sa.btn1">1 · Injection</button>
+      <button class="ghost" data-sa="2" data-l="sa.btn2">2 · Persuasion</button>
+      <button class="ghost" data-sa="3" data-l="sa.btn3">3 · The hook</button>
+      <button class="ghost" data-sa="4" data-l="sa.btn4">Spreading</button>
+      <button class="play" id="saPlay" data-l="sa.replay">▶ Replay</button>
+    </div>
+    <div class="cap" id="saCap" aria-live="polite"></div>
+  </div>
+  {note && <figcaption class="sa-n" set:html={note} />}
+</figure>
+
+<style is:global>
+figure.sa{margin:32px 0;font-family:"Google Sans Code",ui-monospace,monospace}
+figure.sa .sa-t{font-weight:700;font-size:18px;line-height:1.3;margin:0 0 10px;color:var(--foreground)}
+figure.sa .sa-n{font-size:12.5px;color:var(--foreground);opacity:.7;margin-top:8px;line-height:1.5}
+figure.sa .sa-n a{color:inherit}
+figure.sa .stage{margin:0;background:#0d1117;color:#e8edf2;border-radius:12px;padding:18px;position:relative;overflow:hidden;
+  background-image:radial-gradient(#1f2630 1px,transparent 1px);background-size:14px 14px}
+figure.sa .stage svg{display:block;width:100%;height:auto}
+figure.sa .stage svg g,figure.sa .stage svg path{transition:opacity .5s,stroke .5s}
+figure.sa .stage .flow{stroke-dasharray:7 6;animation:saflow .9s linear infinite}
+@keyframes saflow{to{stroke-dashoffset:-13}}
+figure.sa .stage .ph{transition:opacity .5s}
+figure.sa .ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+figure.sa .ctl button{font:inherit;font-size:13px;font-weight:700;padding:6px 12px;border-radius:6px;border:0;background:#e8edf2;color:#0d1117;cursor:pointer}
+figure.sa .ctl button.ghost{background:transparent;color:#e8edf2;border:1px solid #3a4451}
+figure.sa .ctl button[aria-pressed="true"]{background:#3b9eff;color:#0d1117;border-color:#3b9eff}
+figure.sa .ctl button:focus-visible{outline:2px solid #3b9eff;outline-offset:2px}
+figure.sa .cap{font-size:13.5px;line-height:1.5;color:#e8edf2;min-height:4.5em;margin-top:10px}
+@media (prefers-reduced-motion:reduce){figure.sa .stage .flow{animation:none}}
+</style>
+
+<script>
+// @ts-nocheck
+(() => {
+  const NS = "http://www.w3.org/2000/svg", HOT = "#ff6b5e", COLD = "#3b9eff", INK = "#e8edf2", MUTED = "#8b96a3", EDGE = "#3a4451", BOXF = "#111a24";
+  const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const LBL = /*LABELS*/{
+    "sa.repo": "A repo you clone", "sa.repoSub": "maybe from someone you know",
+    "sa.file": "AGENTS.md / CLAUDE.md",
+    "sa.p1": "\"sealed binary artifact\"", "sa.p2": "\"do not read\"", "sa.p3": "\"without asking\"",
+    "sa.agent": "Coding agent", "sa.agentSub": "follows its briefing",
+    "sa.hook": "Session-start hook", "sa.hookSub": ".claude/settings.json",
+    "sa.run": "setup.js runs", "sa.runSub": "with your permissions",
+    "sa.tokens": "Steals tokens", "sa.tokensSub": "GitHub, cloud, SSH…",
+    "sa.configs": "14 agents' configs", "sa.configsSub": "on this machine",
+    "sa.repos": "Your own repos", "sa.reposSub": "up to 25: new AGENTS.md…",
+    "sa.trust": "on \"trust\"", "sa.nomodel": "no model", "sa.loop": "the next developer clones",
+    "sa.cap0": "Three steps to get in, one to spread. Every path ends with setup.js running as you, and the worm plants the same files for the next developer.",
+    "sa.cap1": "1 · Prompt injection: AGENTS.md and CLAUDE.md are the channel built for instructions, and the agent is supposed to follow them.",
+    "sa.cap2": "2 · Persuasion: the file poses as internal security policy, so the agent doesn't question it.",
+    "sa.cap3": "3 · The hook: trust the folder and .claude/settings.json runs the command. No model decides anything here.",
+    "sa.cap4": "Spreading: with your tokens it commits the same files to your own repos (up to 25), and injects them into other agents' configs on your machine.",
+    "sa.btn1": "1 · Injection", "sa.btn2": "2 · Persuasion", "sa.btn3": "3 · The hook", "sa.btn4": "Spreading", "sa.replay": "▶ Replay"
+  }/*END*/;
+  window.FIG_LABELS = window.FIG_LABELS || {};
+  const L = (k) => (window.FIG_LABELS[k] != null ? window.FIG_LABELS[k] : LBL[k]) ?? k;
+
+  // node: [x, y, w, h] per layout; kind sets the stroke colour (red only for the danger nodes)
+  const KIND = { repo: "ink", file: "hot", agent: "cold", hook: "hot", run: "hot", tokens: "ink", configs: "ink", repos: "ink" };
+  const LAY = {
+    wide: { vb: [640, 392], ts: 13, ss: 10.5, ps: 11,
+      n: { repo: [14, 42, 176, 56], file: [230, 20, 200, 100], agent: [476, 42, 150, 56], hook: [230, 150, 180, 56], run: [476, 150, 150, 56],
+           tokens: [476, 250, 150, 56], configs: [476, 326, 150, 50], repos: [230, 250, 200, 56] },
+      e: { e1: [[190, 70], [228, 70]], e2: [[430, 70], [474, 70]], e3: [[120, 98], [120, 178], [228, 178]], e4: [[551, 98], [551, 148]],
+           e5: [[410, 178], [474, 178]], e6: [[551, 206], [551, 248]], e7: [[626, 178], [634, 178], [634, 351], [628, 351]],
+           e8: [[476, 278], [432, 278]], e9: [[230, 290], [60, 290], [60, 100]] },
+      lab: { e3: [174, 170], e5: [442, 170], e9: [145, 306] } },
+    narrow: { vb: [360, 462], ts: 12.5, ss: 10, ps: 10.5,
+      n: { repo: [14, 10, 162, 52], file: [14, 90, 162, 96], agent: [14, 220, 162, 52], hook: [196, 90, 152, 52], run: [196, 220, 152, 52],
+           tokens: [196, 310, 152, 52], configs: [14, 310, 162, 52], repos: [196, 400, 152, 52] },
+      e: { e1: [[95, 62], [95, 88]], e2: [[95, 186], [95, 218]], e3: [[176, 36], [272, 36], [272, 88]], e4: [[176, 246], [194, 246]],
+           e5: [[272, 142], [272, 218]], e6: [[272, 272], [272, 308]], e7: [[220, 272], [220, 290], [95, 290], [95, 308]],
+           e8: [[272, 362], [272, 398]], e9: [[196, 426], [6, 426], [6, 36], [12, 36]] },
+      lab: {} },
+  };
+  // which marks each step lights; step 0 = everything
+  const ON = {
+    1: ["repo", "file", "agent", "e1", "e2"],
+    2: ["file", "agent", "e2", "ph"],
+    3: ["repo", "hook", "run", "e3", "e5"],
+    4: ["agent", "run", "tokens", "configs", "repos", "repo", "e4", "e6", "e7", "e8", "e9"],
+  };
+
+  const svg = document.getElementById("saSvg"); if (!svg) return;
+  const cap = document.getElementById("saCap");
+  const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+  const tx = (p, x, y, s, o = {}) => { const t = el("text", { x, y, "font-size": o.size || 13, fill: o.fill || INK, "text-anchor": o.anchor || "middle", "font-weight": o.w || 400 }, p); t.textContent = s; return t; };
+  let marks = {}, step = 0, timers = [], layout = null;
+
+  const draw = (name) => {
+    layout = name; const G = LAY[name]; svg.innerHTML = ""; marks = {};
+    svg.setAttribute("viewBox", `0 0 ${G.vb[0]} ${G.vb[1]}`);
+    el("defs", {}, svg).innerHTML = `<marker id="saA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="${INK}"/></marker><marker id="saR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="${HOT}"/></marker>`;
+    for (const [id, pts] of Object.entries(G.e)) {
+      const loop = id === "e9";
+      const p = el("path", { d: "M" + pts.map((q) => q.join(",")).join("L"), fill: "none", stroke: loop ? HOT : INK, "stroke-width": loop ? 2.5 : 2, "marker-end": loop ? "url(#saR)" : "url(#saA)" }, svg);
+      const g = el("g", {}, svg); g.appendChild(p);
+      if (G.lab[id]) tx(g, G.lab[id][0], G.lab[id][1], L(id === "e3" ? "sa.trust" : id === "e5" ? "sa.nomodel" : "sa.loop"), { size: 10.5, fill: loop ? HOT : MUTED, w: loop ? 700 : 400 });
+      marks[id] = { g, p };
+    }
+    for (const [id, [x, y, w, h]] of Object.entries(G.n)) {
+      const g = el("g", {}, svg), k = KIND[id];
+      const col = k === "hot" ? HOT : k === "cold" ? COLD : "#5a6573";
+      el("rect", { x, y, width: w, height: h, rx: 8, fill: BOXF, stroke: col, "stroke-width": k === "ink" ? 1.5 : 2.5 }, g);
+      if (id === "file") {
+        tx(g, x + w / 2, y + 22, L("sa.file"), { size: name === "narrow" ? 11 : G.ts, w: 700, fill: HOT });
+        const ph = el("g", { class: "ph" }, g); marks.ph = { g: ph, items: [] };
+        ["sa.p1", "sa.p2", "sa.p3"].forEach((key, i) => { const t = tx(ph, x + w / 2, y + 46 + i * 18, L(key), { size: G.ps, fill: "#ffb3ab" }); t.style.transition = "opacity .4s"; marks.ph.items.push(t); });
+      } else {
+        tx(g, x + w / 2, y + h / 2 - 3, L("sa." + id), { size: G.ts, w: 700, fill: k === "hot" ? "#ffd9d5" : INK });
+        tx(g, x + w / 2, y + h / 2 + 14, L("sa." + id + "Sub"), { size: G.ss, fill: MUTED });
+      }
+      el("title", {}, g).textContent = L("sa." + id) + (id === "file" ? "" : ": " + L("sa." + id + "Sub"));
+      marks[id] = { g };
+    }
+    show(step, true);
+  };
+
+  const show = (s, instant) => {
+    step = s;
+    document.querySelectorAll("[data-sa]").forEach((b) => b.setAttribute("aria-pressed", String(+b.dataset.sa === s)));
+    const on = s === 0 ? null : new Set(ON[s]);
+    for (const [id, m] of Object.entries(marks)) {
+      const lit = !on || on.has(id);
+      m.g.style.opacity = lit ? 1 : (id === "ph" ? 0 : 0.18);
+      if (m.p) m.p.classList.toggle("flow", !!on && lit);
+    }
+    // persuasion: the three phrases appear one by one
+    if (marks.ph) marks.ph.items.forEach((t, i) => {
+      if (s === 2 && !instant && !RM) { t.style.opacity = 0; timers.push(setTimeout(() => (t.style.opacity = 1), 350 + i * 650)); }
+      else t.style.opacity = 1;
+    });
+    if (s !== 2 && on && !on.has("ph") && on.has("file")) marks.ph.g.style.opacity = 0.35;
+    cap.textContent = L("sa.cap" + s);
+  };
+
+  const stop = () => { timers.forEach(clearTimeout); timers = []; };
+  const play = () => { stop(); [1, 2, 3, 4, 0].forEach((s, i) => timers.push(setTimeout(() => show(s), i * 3600))); };
+  document.querySelectorAll("[data-sa]").forEach((b) => (b.onclick = () => { stop(); show(+b.dataset.sa); }));
+  document.getElementById("saPlay").onclick = play;
+  document.querySelectorAll("figure.sa [data-l]").forEach((e) => (e.textContent = L(e.dataset.l)));
+
+  const pick = () => ((svg.parentElement.clientWidth || 640) < 520 ? "narrow" : "wide");
+  draw(pick());
+  if (window.ResizeObserver) new ResizeObserver(() => { const n = pick(); if (n !== layout) draw(n); }).observe(svg.parentElement);
+  if (RM) return show(0, true);
+  const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); play(); } }, { threshold: 0.4 });
+  io.observe(svg);
+})();
+</script>
