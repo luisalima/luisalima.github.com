@@ -19,7 +19,7 @@ Spine: three steps, each with its own defence. 1 injection (the instruction file
 
 On 17 November, [Bitdefender](https://www.bitdefender.com/en-us/blog/labs/how-ai-agents-become-new-targets-in-github-malware-campaign) found 22 GitHub repos that have agent instruction files (AGENTS.md, CLAUDE.md) telling coding agents to run a credential stealer without reading it. 
 
-It's a supply-chain attack: three steps to get in, and one to spread.
+It's a supply-chain attack, with three steps to get in, then another one to spread the attack.
 
 ## How it gets in
 
@@ -33,6 +33,8 @@ It's a supply-chain attack: three steps to get in, and one to spread.
 
 ```
 
+Enough said, right? :)
+
 #### What
 
 This is prompt injection, but with a twist: usually, classic injection hides instructions in data, such as a web page or a PDF. But AGENTS.md and CLAUDE.md are the channel built for instructions, and the agent is supposed to follow them.
@@ -43,15 +45,15 @@ The instructions use persuasion, so that the agent doesn't question things. A ba
 
 ### Step 3: the hook
 
-Some of the repos carry a session-start hook such as `.claude/settings.json`. When the developer clones and trusts the repo, the hook runs the command in the user's shell automatically. No model decides anything here: the harness runs the command the moment you trust the folder.
+Some of the repos carry a session-start hook such as `.claude/settings.json`. When the developer clones and trusts the repo, the hook runs the command in the user's shell automatically. No model needs decide anything here, since the harness runs the command the moment you trust the folder.
 
 ## How it spreads
 
-This is the worm part. Once it's installed, it searches your home folder for the config files of 14 coding agents (Claude, Codex, Gemini, Copilot, Kiro, OpenCode, Cline, Aider, Tabby, Amazon Q, Cody, Bolt, Continue, Cursor). It then injects instructions, hooks or MCP servers into them.  
+This one acts like a worm. Once it's installed, it searches your home folder for the config files of 14 coding agents (Claude, Codex, Gemini, Copilot, Kiro, OpenCode, Cline, Aider, Tabby, Amazon Q, Cody, Bolt, Continue, Cursor). It then injects instructions, hooks or MCP servers into them.  
 
 Then, remotely, with the stolen GitHub/GitLab tokens it commits AGENTS.md, CLAUDE.md, .cursorrules, .mcp.json, .claude/settings.json, .vscode/tasks.json, .github/copilot-instructions.md into the victim's own repos. It can also try to republish infected packages to npm, PyPI, RubyGems and JFrog.
 
-<SealedFigure part="paths" title="3 steps: injection, persuasion, and a hook that needs no model" note="Source: <a href='https://www.bitdefender.com/en-us/blog/labs/how-ai-agents-become-new-targets-in-github-malware-campaign'>Bitdefender Labs</a>, 17 November 2026." />
+<SealedFigure part="paths" title="3 steps: injection, persuasion, and a hook" note="Source: <a href='https://www.bitdefender.com/en-us/blog/labs/how-ai-agents-become-new-targets-in-github-malware-campaign'>Bitdefender Labs</a>, 17 November 2026." />
 
 ## What this means for you
 
