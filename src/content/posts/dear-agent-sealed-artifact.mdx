@@ -1,7 +1,7 @@
 ---
-title: "Dear agent, part three: the file agents are told \"not to read\""
+title: "Dear agent, part three: the file agents are told not to read"
 pubDatetime: 2026-11-20T12:00:00.000Z
-description: "Pages persuade agents, and GitHub repos have agent instruction files telling coding agents to run a credential stealer \"without reading it\"."
+description: "Pages persuade agents, and GitHub repos have agent instruction files telling coding agents to run a credential stealer without reading it."
 kind: note
 draft: true
 tags: ["field-notes", "ai-security", "prompt-injection", "coding-agents", "supply-chain"]
@@ -15,9 +15,11 @@ https://www.bitdefender.com/en-us/blog/labs/how-ai-agents-become-new-targets-in-
 Delete the facts as you write. Do NOT name the affected repos: most belong to victims. Cite findings, not the product pitch at the end of their post.
 Spine: three steps, each with its own defence. 1 injection (the instruction file) → treat it as untrusted code. 2 persuasion (the authority wording) → don't rely on the model to resist. 3 no model at all (the hook) → the boundary is the trust click and the sandbox. */}
 
-Yesterday, Bitdefender found 22 github repos that have agent instruction files (AGENTS.md, CLAUDE.md) telling coding agents to run a credential stealer "without reading it". 
+On 17 November, [Bitdefender](https://www.bitdefender.com/en-us/blog/labs/how-ai-agents-become-new-targets-in-github-malware-campaign) found 22 GitHub repos that have agent instruction files (AGENTS.md, CLAUDE.md) telling coding agents to run a credential stealer without reading it. 
 
-This is a mix of a supply chain attack with three steps.
+It's a supply-chain attack: three steps to get in, and one to spread.
+
+## How it gets in
 
 ### Step 1: prompt injection
 
@@ -29,48 +31,40 @@ This is a mix of a supply chain attack with three steps.
 
 ```
 
-### What
+#### What
 
 This is prompt injection, but with a twist: usually, classic injection hides instructions in data, such as a web page or a PDF. But AGENTS.md and CLAUDE.md are the channel built for instructions, and the agent is supposed to follow them.
 
 ### Step 2: Persuasion
 
-The instructions use persuasion, so that the agent doesn't question things. A bare "run setup.js" might get inspected so that the agent checks what it does first. So the file poses as internal security policy: sealed, cryptographically signed, "holds encrypted credentials", and is supposedly too sensitive to inspect. This is the _authority_ approach to persuasion from my [first post in the series]().
+The instructions use persuasion, so that the agent doesn't question things. A bare "run setup.js" might get inspected so that the agent checks what it does first. So the file poses as internal security policy: sealed, cryptographically signed, "holds encrypted credentials", and is supposedly too sensitive to inspect. This is the _authority_ approach to persuasion from my [first post in the series](/notes/pages-that-persuade-agents/).
 
 ### Step 3: the hook
 
-Some of the repos carry a session-start hook such as `.claude/settings.json`. When the developer clones and trusts the repo, the hook runs the command in the user's shell automatically. This is no longer injection, it's code execution and exploiting the harness way of work.
+Some of the repos carry a session-start hook such as `.claude/settings.json`. When the developer clones and trusts the repo, the hook runs the command in the user's shell automatically. No model decides anything here: the harness runs the command the moment you trust the folder.
 
-### Step 4: propagation
+## How it spreads
 
-This acts like a worm, effectively. Once it's installed, it searches your home folder for the config files of 14 coding agents (Claude, Codex, Gemini, Copilot, Kiro, OpenCode, Cline, Aider, Tabby, Amazon Q, Cody, Bolt, Continue, Cursor). It then  and injects instructions, hooks or MCP servers into them.  
+This is the worm part. Once it's installed, it searches your home folder for the config files of 14 coding agents (Claude, Codex, Gemini, Copilot, Kiro, OpenCode, Cline, Aider, Tabby, Amazon Q, Cody, Bolt, Continue, Cursor). It then injects instructions, hooks or MCP servers into them.  
 
 Then, remotely, with the stolen GitHub/GitLab tokens it commits AGENTS.md, CLAUDE.md, .cursorrules, .mcp.json, .claude/settings.json, .vscode/tasks.json, .github/copilot-instructions.md into the victim's own repos. It can also try to republish infected packages to npm, PyPI, RubyGems and JFrog.
 
-<Figure part="paths" title="3 steps: injection, persuasion, and a hook that needs no model" note="Diagram to come (diagrams skill): repo → AGENTS.md/CLAUDE.md (1 injection) → authority wording (2 persuasion) → agent runs it → shell; repo → .claude/settings.json session-start hook (3 no model) → shell after the folder is trusted. Both end at setup.js running with your permissions. Mark the defence at each step." />
+<Figure part="paths" title="3 steps: injection, persuasion, and a hook that needs no model" note="Diagram to come (diagrams skill). Getting in: repo → AGENTS.md/CLAUDE.md (1 injection) → authority wording (2 persuasion) → agent runs setup.js; repo → .claude/settings.json session-start hook (3 no model) → shell after the folder is trusted. Both end at setup.js running with your permissions. Spreading: stolen tokens → instruction files, hooks and MCP configs committed to the victim's own repos (up to 25), plus other agents' configs on the same machine. Mark the defence at each step." />
 
 ## What this means for you
 
-Since this acts as a worm, if you cloned one one of the victim's repositories, your system may be compromised. You might even have cloned a repo from someone you know and had every reason to trust.
+Since this acts as a worm, if you opened one of the victim's repositories with a coding agent, your system may be compromised. You might even have cloned a repo from someone you know and had every reason to trust.
 
 ## How to prevent
 
-1. Before opening an unfamiliar repo with an agent, read AGENTS.md / CLAUDE.md, .cursorrules, .github/copilot-instructions.md, and other instruction files, either by yourself or with a local agent.Check for red flags such as "don't inspect this file", suppressed output, skipped confirmation, and automatic installs. 
+1. Before opening an unfamiliar repo with an agent, read AGENTS.md / CLAUDE.md, .cursorrules, .github/copilot-instructions.md, and other instruction files, either by yourself or with an agent in a container that has no tokens. Check for red flags such as "don't inspect this file", suppressed output, skipped confirmation, and automatic installs. 
 
-(3) Check .claude/, .cursor/, .gemini/ folders, MCP server definitions, session-start hooks, VS Code tasks, and any setup script they point to, before you click trust; run unfamiliar repos in a container without any tokens. 
+2. Check .claude/, .cursor/, .gemini/ folders, MCP server definitions, session-start hooks, VS Code tasks, and any setup script they point to, before you click trust; run unfamiliar repos in a container without any tokens. 
 
-## IDEA
-
-- throwaway container that clones the repository
-
-- then checks with an agent and gives you a first check
-
-(publish docker image that does this as a gist?)
-
-- ask your agents to do this
+I put that container in a gist: it clones the repo with no tokens, lists the instruction files and everything that runs on open, flags the red-flag wording, and can ask an agent for a first read. [The gist](GIST_URL_TBD).
 
 {/* FOOTER */}
 
 ---
 
-✍️ **Source and method.** Bitdefender Labs, 17 Nov 2026 (link). Affected repositories deliberately not named. Scan of my own machine done on 19 Nov with grep and md5sum.
+*Source: [Bitdefender Labs](https://www.bitdefender.com/en-us/blog/labs/how-ai-agents-become-new-targets-in-github-malware-campaign), 17 November 2026. I don't name the affected repositories: most belong to victims.*
