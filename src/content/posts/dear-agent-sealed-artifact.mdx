@@ -63,7 +63,7 @@ Since this acts as a worm, if you opened one of the victim's repositories with a
 
 2. Check .claude/, .cursor/, .gemini/ folders, MCP server definitions, session-start hooks, VS Code tasks, and any setup script they point to, before you click trust; run unfamiliar repos in a container without any tokens. 
 
-I put that container in a gist: it clones the repo with no tokens, lists the instruction files and everything that runs on open, flags the red-flag wording, and can ask an agent for a first read. [The gist](GIST_URL_TBD).
+I put that container in a small repository: it clones the repo with no tokens, lists the instruction files and everything that runs on open, flags the red-flag wording, and can ask several coding agents (Claude Code, Codex, Gemini CLI) for a first read. [agent-repo-preflight](https://github.com/luisalima/agent-repo-preflight).
 
 {/* FOOTER */}
 
